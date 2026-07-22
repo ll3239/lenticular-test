@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entryway box — style variants</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #12141a; color: #e8eaef; height: 100vh; display: flex; flex-direction: column;
+    }
+    header {
+      padding: 12px 16px; border-bottom: 1px solid #2a2e38;
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    }
+    header h1 { font-size: 15px; font-weight: 600; }
+    header p { font-size: 12px; color: #8b92a3; }
+    main { flex: 1; display: grid; grid-template-columns: 1fr 300px; min-height: 0; }
+    #viewport { position: relative; background: linear-gradient(#2a2e38, #1a1d24); }
+    #canvas-container { width: 100%; height: 100%; }
+    #label {
+      position: absolute; top: 12px; left: 12px;
+      background: rgba(0,0,0,0.75); padding: 10px 14px; border-radius: 10px; font-size: 13px;
+      backdrop-filter: blur(6px);
+    }
+    aside {
+      border-left: 1px solid #2a2e38; padding: 14px; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .card {
+      border: 2px solid #2e3340; border-radius: 10px; padding: 10px 12px;
+      cursor: pointer; background: #181b22; transition: border-color 0.15s, background 0.15s;
+    }
+    .card:hover { border-color: #4a5568; }
+    .card.active { border-color: #6b9fff; background: #1a2233; }
+    .card h3 { font-size: 14px; margin-bottom: 4px; }
+    .card .zh { font-size: 12px; color: #9aa3b5; margin-bottom: 6px; }
+    .card p { font-size: 11px; color: #7a8496; line-height: 1.4; }
+    .tag {
+      display: inline-block; margin-top: 6px; font-size: 10px; padding: 2px 6px;
+      border-radius: 4px; background: #252a35; color: #a8b0c0;
+    }
+    button {
+      background: #22262f; color: #eee; border: 1px solid #3a4050;
+      border-radius: 6px; padding: 6px 10px; font-size: 12px; cursor: pointer;
+    }
+    .hint { font-size: 11px; color: #6a7385; line-height: 1.45; margin-top: 8px; }
+    code { color: #8cf; font-size: 11px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>门口收纳盒 · 外观对比</h1>
+      <p>6 款风格 — 点击切换 · 拖拽旋转</p>
+    </div>
+    <button id="reset">重置视角</button>
+  </header>
+  <main>
+    <div id="viewport">
+      <div id="canvas-container"></div>
+      <div id="label">Loading…</div>
+    </div>
+    <aside id="style-list"></aside>
+  </main>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+
+    const STYLES = [
+      { id: 'minimal', name: 'Minimal', zh: '极简直角', look: '直角、干净、偏北欧', color: 0xc8cdd8 },
+      { id: 'rounded', name: 'Rounded', zh: '圆角柔和', look: '圆角底、边缘更温柔', color: 0xd4c4b0 },
+      { id: 'chamfer', name: 'Chamfer', zh: '倒角线框', look: '顶部斜切、设计师感', color: 0xb8c8d8 },
+      { id: 'tiered', name: 'Tiered', zh: '阶梯分层', look: '外壁分段台阶', color: 0xc0b8a8 },
+      { id: 'wells', name: 'Bottle Wells', zh: '精油定位环', look: '6 个圆形瓶位环', color: 0xb8d0c0 },
+      { id: 'accent', name: 'Accent', zh: '双槽装饰', look: '圆角 + 侧面槽线', color: 0xc8b8d8 },
+    ];
+
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x1a1d24);
+
+    const camera = new THREE.PerspectiveCamera(45, 1, 1, 2000);
+    camera.position.set(280, 220, 320);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(102, 107, 45);
+    controls.enableDamping = true;
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+    const key = new THREE.DirectionalLight(0xffffff, 0.9);
+    key.position.set(200, 400, 300);
+    key.castShadow = true;
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0xaaccff, 0.35);
+    fill.position.set(-200, 100, -100);
+    scene.add(fill);
+
+    const grid = new THREE.GridHelper(400, 20, 0x3a4050, 0x252830);
+    grid.position.set(102, 0, 107);
+    scene.add(grid);
+
+    const loader = new STLLoader();
+    const group = new THREE.Group();
+    scene.add(group);
+
+    let activeMesh = null;
+    const styleList = document.getElementById('style-list');
+
+    function loadStyle(style) {
+      const url = `/output/styles/entryway_box_${style.id}.stl`;
+      loader.load(url, (geo) => {
+        geo.computeVertexNormals();
+        geo.center();
+        geo.translate(102, 107, 45);
+        if (activeMesh) group.remove(activeMesh);
+        const mat = new THREE.MeshStandardMaterial({
+          color: style.color,
+          metalness: 0.08,
+          roughness: 0.62,
+          flatShading: false,
+        });
+        activeMesh = new THREE.Mesh(geo, mat);
+        activeMesh.castShadow = true;
+        activeMesh.receiveShadow = true;
+        group.add(activeMesh);
+        document.getElementById('label').innerHTML =
+          `<strong>${style.name}</strong> · ${style.zh}<br><span style="color:#9aa3b5">${style.look}</span>`;
+      }, undefined, () => {
+        document.getElementById('label').textContent =
+          `Missing ${url} — run: python3 scripts/generate_entryway_storage_box.py --all-styles`;
+      });
+    }
+
+    STYLES.forEach((s, i) => {
+      const el = document.createElement('div');
+      el.className = 'card' + (i === 0 ? ' active' : '');
+      el.innerHTML = `<h3>${s.name}</h3><div class="zh">${s.zh}</div><p>${s.look}</p><span class="tag">${s.id}.stl</span>`;
+      el.onclick = () => {
+        document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+        loadStyle(s);
+      };
+      styleList.appendChild(el);
+    });
+
+    loadStyle(STYLES[0]);
+
+    document.getElementById('reset').onclick = () => {
+      camera.position.set(280, 220, 320);
+      controls.target.set(102, 107, 45);
+      controls.update();
+    };
+
+    function resize() {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    (function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    })();
+  </script>
+</body>
+</html>

@@ -230,6 +230,7 @@ def build_mesh(
     l_int: float,
     h_front: float,
     h_back: float,
+    style: str = "minimal",
 ) -> tuple[list, list]:
     verts: list = []
     faces: list = []
@@ -240,7 +241,12 @@ def build_mesh(
     outer_w = w_int + 2 * wall
     outer_l = l_int + 2 * wall
 
-    add_box(verts, faces, 0, 0, oz, outer_w, outer_l, oz + bottom)
+    if style in ("rounded", "accent"):
+        from entryway_styles import apply_rounded_base
+
+        apply_rounded_base(verts, faces, outer_w=outer_w, outer_l=outer_l, bottom=bottom, radius=8.0)
+    else:
+        add_box(verts, faces, 0, 0, oz, outer_w, outer_l, oz + bottom)
     z_floor = oz + bottom
 
     add_sloped_side_wall(
@@ -307,6 +313,26 @@ def build_mesh(
         add_horizontal_divider(
             verts, faces, x0=ox + 100, x1=ox + w_int, y_center=oy + y_edge,
             thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
+        )
+
+    if style != "minimal":
+        from entryway_styles import apply_style
+
+        apply_style(
+            style,
+            verts,
+            faces,
+            ox=ox,
+            oy=oy,
+            w_int=w_int,
+            l_int=l_int,
+            wall=wall,
+            bottom=bottom,
+            z_floor=z_floor,
+            h_front=h_front,
+            h_back=h_back,
+            outer_w=outer_w,
+            outer_l=outer_l,
         )
 
     return verts, faces
@@ -406,9 +432,21 @@ def bambu_print_settings() -> dict:
 
 
 def main() -> None:
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).parent))
+    from entryway_styles import STYLES, style_catalog
+
     parser = argparse.ArgumentParser(description="Generate sloped entryway storage box STL for Bambu Lab")
     parser.add_argument("--out", type=Path, default=Path("output/entryway_storage_box.stl"))
     parser.add_argument("--spec-out", type=Path, default=Path("output/entryway_storage_box_spec.json"))
+    parser.add_argument(
+        "--style",
+        choices=list(STYLES.keys()),
+        default="minimal",
+        help="Visual style variant (use --all-styles to export every version)",
+    )
+    parser.add_argument("--all-styles", action="store_true", help="Write all style STLs to output/styles/")
     parser.add_argument("--wall", type=float, default=WALL)
     parser.add_argument("--divider", type=float, default=DIVIDER)
     parser.add_argument("--bottom", type=float, default=BOTTOM)
@@ -419,13 +457,40 @@ def main() -> None:
     parser.add_argument("--h-back", type=float, default=H_BACK, help="Rim height at back / letters end (mm)")
     args = parser.parse_args()
 
-    verts, faces = build_mesh(
-        wall=args.wall, divider=args.divider, bottom=args.bottom, lip=args.lip,
-        w_int=args.width, l_int=args.length, h_front=args.h_front, h_back=args.h_back,
+    styles_to_build = list(STYLES.keys()) if args.all_styles else [args.style]
+    mesh_kw = dict(
+        wall=args.wall,
+        divider=args.divider,
+        bottom=args.bottom,
+        lip=args.lip,
+        w_int=args.width,
+        l_int=args.length,
+        h_front=args.h_front,
+        h_back=args.h_back,
     )
-    write_binary_stl(args.out, verts, faces, "Entryway storage box v2 - Bambu")
+
+    last_faces = 0
+    for st in styles_to_build:
+        out = Path(f"output/styles/entryway_box_{st}.stl") if args.all_styles else args.out
+        verts, faces = build_mesh(**mesh_kw, style=st)
+        write_binary_stl(out, verts, faces, f"Entryway box {st} - Bambu")
+        last_faces = len(faces)
+        print(f"Wrote {out} [{st}] ({len(faces) * 2} triangles)")
+
+    if args.all_styles:
+        import shutil
+
+        styles_dir = Path("output/styles")
+        styles_dir.mkdir(parents=True, exist_ok=True)
+        shutil.copy(styles_dir / "entryway_box_minimal.stl", "output/entryway_storage_box.stl")
+        catalog_path = styles_dir / "catalog.json"
+        with open(catalog_path, "w", encoding="utf-8") as f:
+            json.dump({"styles": style_catalog(), "viewer": "viewer/entryway.html"}, f, indent=2, ensure_ascii=False)
+        print(f"Wrote {catalog_path}")
 
     spec = {
+        "style": args.style if not args.all_styles else "all",
+        "style_variants": style_catalog(),
         "orientation": "Y=0 is entryway front (with lip); Y=210 is back wall (letters).",
         "internal_mm": {"width": args.width, "length": args.length},
         "outer_mm": {
@@ -464,12 +529,13 @@ def main() -> None:
     with open(path, "w", encoding="utf-8") as f:
         json.dump(spec, f, indent=2, ensure_ascii=False)
 
-    print(f"Wrote {args.out} ({len(faces) * 2} triangles)")
     print(f"Wrote {args.spec_out}")
     print(
         f"Outer: {spec['outer_mm']['width']:.0f} x {spec['outer_mm']['length']:.0f} mm, "
         f"height front {spec['outer_mm']['height_front']:.0f} mm -> back {spec['outer_mm']['height_back']:.0f} mm"
     )
+    if args.all_styles:
+        print("Preview: python3 -m http.server 8766  →  http://localhost:8766/viewer/entryway.html")
 
 
 if __name__ == "__main__":

@@ -9,8 +9,30 @@ Hand-sketched layout: letters / keys / cards / receipts / power banks / cables /
 ```bash
 python3 scripts/generate_entryway_storage_box.py
 # -> output/entryway_storage_box.stl  (~204 x 214 mm footprint, fits Bambu bed)
-# -> output/entryway_storage_box_spec.json
+
+# All 6 visual style variants:
+python3 scripts/generate_entryway_storage_box.py --all-styles
+# -> output/styles/entryway_box_*.stl
+
+# Single style:
+python3 scripts/generate_entryway_storage_box.py --style rounded --out output/my_box.stl
 ```
+
+**Preview styles in browser:**
+
+```bash
+python3 -m http.server 8766
+# open http://localhost:8766/viewer/entryway.html
+```
+
+| Style | 中文 | 特点 |
+|-------|------|------|
+| `minimal` | 极简直角 | 干净北欧风，打印最快 |
+| `rounded` | 圆角柔和 | 圆角底 + 柔化顶边 |
+| `chamfer` | 倒角线框 | 顶部斜切，设计师感 |
+| `tiered` | 阶梯分层 | 外壁分段台边 |
+| `wells` | 精油定位环 | 6 个圆形瓶位环 |
+| `accent` | 双槽装饰 | 圆角 + 侧面装饰槽 |
 
 Open the STL in **Bambu Studio** (File → Import), place flat on the bed, slice, and send to the printer.
 

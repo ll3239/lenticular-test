@@ -1,4 +1,55 @@
 {
+  "style": "all",
+  "style_variants": [
+    {
+      "id": "minimal",
+      "name_en": "Minimal",
+      "name_zh": "极简直角",
+      "description": "Clean sharp edges, no decoration. Modern and print-fast.",
+      "look": "直角、干净、偏北欧",
+      "stl": "output/styles/entryway_box_minimal.stl"
+    },
+    {
+      "id": "rounded",
+      "name_en": "Rounded",
+      "name_zh": "圆角柔和",
+      "description": "8 mm rounded outer base corners and softened top rim.",
+      "look": "圆角底、边缘更温柔",
+      "stl": "output/styles/entryway_box_rounded.stl"
+    },
+    {
+      "id": "chamfer",
+      "name_en": "Chamfer",
+      "name_zh": "倒角线框",
+      "description": "45° chamfer on the top outer edge — crisp designer frame look.",
+      "look": "顶部斜切、像线框托盘",
+      "stl": "output/styles/entryway_box_chamfer.stl"
+    },
+    {
+      "id": "tiered",
+      "name_en": "Tiered",
+      "name_zh": "阶梯分层",
+      "description": "Subtle horizontal ledges on the outside at each layout tier.",
+      "look": "外壁分段台阶、建筑感",
+      "stl": "output/styles/entryway_box_tiered.stl"
+    },
+    {
+      "id": "wells",
+      "name_en": "Bottle Wells",
+      "name_zh": "精油凹槽",
+      "description": "Six circular retaining rings in the oil bay floor to hold bottles.",
+      "look": "精油格有圆形定位环",
+      "stl": "output/styles/entryway_box_wells.stl"
+    },
+    {
+      "id": "accent",
+      "name_en": "Accent Groove",
+      "name_zh": "双槽装饰",
+      "description": "Rounded base + two horizontal accent grooves on the sides.",
+      "look": "圆角 + 侧面装饰槽线",
+      "stl": "output/styles/entryway_box_accent.stl"
+    }
+  ],
   "orientation": "Y=0 is entryway front (with lip); Y=210 is back wall (letters).",
   "internal_mm": {
     "width": 200.0,
