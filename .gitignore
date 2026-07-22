@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Large intermediate exports (keep final connected cube + previews)
+output/cube_lineart_*.stl
+output/cube_6faces.stl
+output/cube_2flip*.stl
+output/lenticular_*.stl
+output/cube_full_depth_lines.stl
+output/cube_lines_blanks.stl
+output/cube_stepped_depth_lines.stl

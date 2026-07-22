@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connected depth-line cube</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f0f12; color: #eee; height: 100vh; display: flex; flex-direction: column;
+    }
+    header {
+      padding: 10px 16px; border-bottom: 1px solid #2a2a30;
+      display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+    }
+    header h1 { font-size: 14px; }
+    header p { font-size: 12px; color: #999; }
+    button {
+      background: #1c1c22; color: #eee; border: 1px solid #3a3a44;
+      border-radius: 6px; padding: 6px 10px; font-size: 12px; cursor: pointer;
+    }
+    button.active { background: #2a3a2a; border-color: #5a8; }
+    main { flex: 1; display: grid; grid-template-columns: 1fr 340px; min-height: 0; }
+    #viewport { position: relative; background: #3a3a42; }
+    #canvas-container { width: 100%; height: 100%; }
+    #label {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(0,0,0,0.8); padding: 8px 12px; border-radius: 8px; font-size: 13px;
+    }
+    aside {
+      border-left: 1px solid #2a2a30; padding: 12px; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .panel h2 {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
+      color: #777; margin-bottom: 8px;
+    }
+    .note {
+      background: #1a241a; border: 1px solid #3a5a3a; border-radius: 8px;
+      padding: 10px; font-size: 12px; color: #bdb; line-height: 1.45;
+    }
+    .warn {
+      background: #2a2018; border: 1px solid #654; border-radius: 8px;
+      padding: 10px; font-size: 12px; color: #dcb; line-height: 1.45;
+    }
+    .compare img {
+      width: 100%; border-radius: 6px; background: #111; display: block;
+      border: 1px solid #333;
+    }
+    .face-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+    .thumbs { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .thumb {
+      border: 2px solid #333; border-radius: 8px; padding: 4px; cursor: pointer; background: #1a1a1e;
+    }
+    .thumb.active { border-color: #6a6; }
+    .thumb img { width: 100%; display: block; border-radius: 4px; }
+    .thumb span { font-size: 10px; color: #999; display: block; margin-top: 4px; text-align: center; }
+    .info { font-size: 12px; color: #aaa; line-height: 1.45; }
+    code { color: #9c9; font-size: 11px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Connected depth-line cube</h1>
+      <p>Continuous connected vertical lines · depth = shade · compare photo ↔ lines</p>
+    </div>
+    <button id="reset">Reset</button>
+    <button id="depthColor" class="active">Depth colors ON</button>
+    <button id="grazing">Grazing light</button>
+  </header>
+  <main>
+    <div id="viewport">
+      <div id="canvas-container"></div>
+      <div id="label">Loading STL…</div>
+    </div>
+    <aside>
+      <div class="note">
+        <strong>Model updated:</strong> each vertical line is now one <em>connected</em> ribbon
+        (not disconnected floating bars). Depth spans ~full half-cube from the photo.
+      </div>
+      <div class="warn">
+        If the photo still isn’t obvious after this view, it’s the model — not just the viewer.
+        Use the comparison images below to judge clarity.
+      </div>
+      <div class="panel">
+        <h2>Photo vs depth lines (face 1)</h2>
+        <div class="compare">
+          <img id="compare-img" src="/output/line_blank_faces/01_compare.png" alt="comparison" />
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Jump to face</h2>
+        <div class="face-btns" id="btns"></div>
+      </div>
+      <div class="panel">
+        <h2>All face comparisons</h2>
+        <div class="thumbs" id="thumbs"></div>
+      </div>
+      <div class="panel info">
+        STL: <code>output/cube_connected_depth.stl</code>
+      </div>
+    </aside>
+  </main>
+
+  <script type="importmap">
+  { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }}
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+
+    const SIZE = 50;
+    const C = SIZE / 2;
+    const FACES = [
+      { id: 'front',  label: 'Front',  n: '01', cam: [C, C + 95, C] },
+      { id: 'back',   label: 'Back',   n: '02', cam: [C, C - 95, C] },
+      { id: 'right',  label: 'Right',  n: '03', cam: [C + 95, C, C] },
+      { id: 'left',   label: 'Left',   n: '04', cam: [C - 95, C, C] },
+      { id: 'top',    label: 'Top',    n: '05', cam: [C, C, C + 95] },
+      { id: 'bottom', label: 'Bottom', n: '06', cam: [C, C, C - 95] },
+    ];
+
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x3a3a42);
+
+    const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 500);
+    camera.position.set(0, 110, C);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(C, C, C);
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.35);
+    scene.add(ambient);
+    const key = new THREE.DirectionalLight(0xffffff, 1.1);
+    key.position.set(C, C + 120, C + 40);
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0x88aaff, 0.35);
+    fill.position.set(C - 80, C - 40, C);
+    scene.add(fill);
+    const rim = new THREE.DirectionalLight(0xffccaa, 0.45);
+    rim.position.set(C + 40, C - 100, C + 60);
+    scene.add(rim);
+
+    let mesh = null;
+    let depthColorOn = true;
+    let grazing = false;
+
+    function resize() {
+      const w = container.clientWidth, h = Math.max(container.clientHeight, 1);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function colorByDepth(geometry) {
+      geometry.computeBoundingBox();
+      const pos = geometry.attributes.position;
+      const colors = new Float32Array(pos.count * 3);
+      // Approximate depth from distance to cube center along each axis
+      const bb = geometry.boundingBox;
+      for (let i = 0; i < pos.count; i++) {
+        const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+        // Depth into cube ≈ how far from outer surface
+        const dx = Math.min(x, SIZE - x);
+        const dy = Math.min(y, SIZE - y);
+        const dz = Math.min(z, SIZE - z);
+        // Face relief uses one small axis distance from outer face
+        const nearFace = Math.min(dx, dy, dz);
+        // Invert: near surface (small inset from 0..SIZE edges) → warm/light
+        // Use max distance from center of the three for "how deep the ridge is"
+        const fromCenter = Math.max(Math.abs(x - C), Math.abs(y - C), Math.abs(z - C));
+        // Outer surface ~25 for 50mm cube half; map
+        const t = Math.min(1, Math.max(0, (25 - fromCenter + 2) / 22));
+        // depth color: shallow=cream, deep=dark blue-gray
+        const r = 0.95 - t * 0.75;
+        const g = 0.90 - t * 0.55;
+        const b = 0.80 - t * 0.25;
+        colors[i * 3] = r;
+        colors[i * 3 + 1] = g;
+        colors[i * 3 + 2] = b;
+      }
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    }
+
+    function snap(face) {
+      camera.position.set(...face.cam);
+      controls.target.set(C, C, C);
+      controls.update();
+      document.getElementById('label').textContent = face.label + ' — connected depth lines';
+      document.getElementById('compare-img').src = `/output/line_blank_faces/${face.n}_compare.png`;
+      document.querySelectorAll('.thumb').forEach(el => el.classList.toggle('active', el.dataset.id === face.id));
+      document.querySelectorAll('#btns button').forEach(el => el.classList.toggle('active', el.dataset.id === face.id));
+    }
+
+    function applyLights() {
+      if (grazing) {
+        ambient.intensity = 0.15;
+        key.intensity = 1.4;
+        key.position.set(C - 30, C + 140, C);
+        rim.intensity = 0.7;
+      } else {
+        ambient.intensity = 0.35;
+        key.intensity = 1.1;
+        key.position.set(C, C + 120, C + 40);
+        rim.intensity = 0.45;
+      }
+    }
+
+    new STLLoader().load('/output/cube_connected_depth.stl', (geo) => {
+      geo.computeVertexNormals();
+      colorByDepth(geo);
+      mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
+        color: 0xe8e4dc,
+        metalness: 0.05,
+        roughness: 0.55,
+        vertexColors: true,
+        flatShading: false,
+      }));
+      scene.add(mesh);
+
+      document.getElementById('btns').innerHTML = FACES.map(
+        f => `<button data-id="${f.id}">${f.label}</button>`
+      ).join('');
+      document.querySelectorAll('#btns button').forEach(b => {
+        b.onclick = () => snap(FACES.find(f => f.id === b.dataset.id));
+      });
+
+      document.getElementById('thumbs').innerHTML = FACES.map(f => `
+        <div class="thumb" data-id="${f.id}">
+          <img src="/output/line_blank_faces/${f.n}_compare.png" alt="${f.label}" />
+          <span>${f.label}</span>
+        </div>`).join('');
+      document.querySelectorAll('.thumb').forEach(el => {
+        el.onclick = () => snap(FACES.find(f => f.id === el.dataset.id));
+      });
+
+      snap(FACES[0]);
+      document.getElementById('label').textContent = 'Front — connected depth lines (photo should be readable)';
+    }, undefined, (err) => {
+      document.getElementById('label').textContent = 'STL missing — generating? ' + err;
+    });
+
+    document.getElementById('reset').onclick = () => {
+      camera.position.set(90, 90, 90);
+      controls.target.set(C, C, C);
+    };
+    document.getElementById('depthColor').onclick = (e) => {
+      depthColorOn = !depthColorOn;
+      if (mesh) {
+        mesh.material.vertexColors = depthColorOn;
+        mesh.material.needsUpdate = true;
+      }
+      e.target.classList.toggle('active', depthColorOn);
+      e.target.textContent = depthColorOn ? 'Depth colors ON' : 'Depth colors OFF';
+    };
+    document.getElementById('grazing').onclick = (e) => {
+      grazing = !grazing;
+      applyLights();
+      e.target.classList.toggle('active', grazing);
+    };
+
+    (function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    })();
+  </script>
+</body>
+</html>
