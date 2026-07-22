@@ -17,8 +17,8 @@
     header h1 { font-size: 15px; font-weight: 600; }
     header p { font-size: 12px; color: #8b92a3; }
     main { flex: 1; display: grid; grid-template-columns: 1fr 300px; min-height: 0; }
-    #viewport { position: relative; background: linear-gradient(#2a2e38, #1a1d24); }
-    #canvas-container { width: 100%; height: 100%; }
+    #viewport { position: relative; background: linear-gradient(#2a2e38, #1a1d24); min-height: 0; }
+    #canvas-container { width: 100%; height: 100%; touch-action: none; }
     #label {
       position: absolute; top: 12px; left: 12px;
       background: rgba(0,0,0,0.75); padding: 10px 14px; border-radius: 10px; font-size: 13px;
@@ -47,13 +47,43 @@
     }
     .hint { font-size: 11px; color: #6a7385; line-height: 1.45; margin-top: 8px; }
     code { color: #8cf; font-size: 11px; }
+
+    /* Phone layout */
+    @media (max-width: 768px) {
+      body { height: 100dvh; }
+      header { padding: 10px 12px; }
+      header h1 { font-size: 14px; }
+      main {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr auto;
+      }
+      #viewport { min-height: 52dvh; }
+      aside {
+        border-left: none;
+        border-top: 1px solid #2a2e38;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 10px;
+        gap: 8px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .card {
+        min-width: 140px;
+        flex: 0 0 auto;
+      }
+      #label {
+        font-size: 12px;
+        max-width: calc(100% - 24px);
+      }
+    }
   </style>
 </head>
 <body>
   <header>
     <div>
       <h1>门口收纳盒 · 外观对比</h1>
-      <p>6 款风格 — 点击切换 · 拖拽旋转</p>
+      <p id="subtitle">6 款风格 — 单指旋转 · 双指缩放</p>
     </div>
     <button id="reset">重置视角</button>
   </header>
@@ -102,6 +132,15 @@
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.target.set(102, 107, 45);
     controls.enableDamping = true;
+    controls.rotateSpeed = 0.65;
+    controls.panSpeed = 0.6;
+    controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
+
+    const isMobile = matchMedia('(max-width: 768px)').matches;
+    if (isMobile) {
+      camera.position.set(320, 260, 360);
+      document.getElementById('subtitle').textContent = '下方滑动选款 · 单指旋转 · 双指缩放';
+    }
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.55));
     const key = new THREE.DirectionalLight(0xffffff, 0.9);
@@ -124,7 +163,7 @@
     const styleList = document.getElementById('style-list');
 
     function loadStyle(style) {
-      const url = `/output/styles/entryway_box_${style.id}.stl`;
+      const url = `../output/styles/entryway_box_${style.id}.stl`;
       loader.load(url, (geo) => {
         geo.computeVertexNormals();
         geo.center();

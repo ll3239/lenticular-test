@@ -21,9 +21,15 @@ python3 scripts/generate_entryway_storage_box.py --style rounded --out output/my
 **Preview styles in browser:**
 
 ```bash
-python3 -m http.server 8766
-# open http://localhost:8766/viewer/entryway.html
+bash scripts/serve_preview.sh
+# Computer: http://127.0.0.1:8766/viewer/entryway.html
+# Phone (same WiFi): http://192.168.x.x:8766/viewer/entryway.html
 ```
+
+**Phone tips:** use `serve_preview.sh` (binds `0.0.0.0`). Phone and PC must share WiFi. One finger = rotate, two fingers = zoom/pan.
+
+**Online (after merge to `main`):** enable GitHub Pages (Settings → Pages → GitHub Actions), then open  
+`https://ll3239.github.io/lenticular-test/viewer/entryway.html` on your phone — works anywhere, no WiFi trick.
 
 | Style | 中文 | 特点 |
 |-------|------|------|
