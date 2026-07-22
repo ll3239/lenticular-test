@@ -1,0 +1,105 @@
+{
+  "internal_mm": {
+    "width": 200.0,
+    "length": 210.0
+  },
+  "outer_mm": {
+    "width": 204.0,
+    "length": 214.0,
+    "height_front": 32.0,
+    "height_back": 52.0
+  },
+  "slope": {
+    "front_rim_mm": 30.0,
+    "back_rim_mm": 50.0,
+    "note": "Linear slope along length; letters end is shallow, earphones/oils end is deep."
+  },
+  "compartments_mm": [
+    {
+      "name": "letters",
+      "x0": 0,
+      "x1": 200,
+      "y0": 0,
+      "y1": 30,
+      "internal_depth": 25
+    },
+    {
+      "name": "keys",
+      "x0": 0,
+      "x1": 100,
+      "y0": 30,
+      "y1": 50,
+      "internal_depth": 22
+    },
+    {
+      "name": "card_1",
+      "x0": 0,
+      "x1": 100,
+      "y0": 50,
+      "y1": 70,
+      "internal_depth": 12
+    },
+    {
+      "name": "card_2",
+      "x0": 0,
+      "x1": 100,
+      "y0": 70,
+      "y1": 90,
+      "internal_depth": 12
+    },
+    {
+      "name": "receipts",
+      "x0": 0,
+      "x1": 100,
+      "y0": 90,
+      "y1": 110,
+      "internal_depth": 28
+    },
+    {
+      "name": "power_bank_1",
+      "x0": 100,
+      "x1": 200,
+      "y0": 30,
+      "y1": 60,
+      "internal_depth": 18
+    },
+    {
+      "name": "power_bank_2",
+      "x0": 100,
+      "x1": 200,
+      "y0": 60,
+      "y1": 90,
+      "internal_depth": 18
+    },
+    {
+      "name": "data_cable",
+      "x0": 100,
+      "x1": 200,
+      "y0": 90,
+      "y1": 110,
+      "internal_depth": 32
+    },
+    {
+      "name": "earphones_oils_L",
+      "x0": 0,
+      "x1": 100,
+      "y0": 110,
+      "y1": 210,
+      "internal_depth": 45
+    },
+    {
+      "name": "earphones_oils_R",
+      "x0": 100,
+      "x1": 200,
+      "y0": 110,
+      "y1": 210,
+      "internal_depth": 45
+    }
+  ],
+  "print_notes": {
+    "software": "Import STL into Bambu Studio (not MakerWorld MakerLab — that is for sharing models).",
+    "orientation": "Print flat on the bottom face (largest flat side down).",
+    "material": "PLA or PETG, 0.2 mm layers, 2-3 walls, 15-20% infill (mostly solid walls).",
+    "bed_size_check": "Needs ~204 x 214 mm bed (fits Bambu P1/X1/A1 series)."
+  }
+}

@@ -2,6 +2,18 @@
 
 Square cube where each face encodes a different photo as **connected vertical lines at continuous depth** (darker → deeper into the cube). No LED required.
 
+## Entryway storage box (sloped organizer)
+
+Hand-sketched layout: letters / keys / cards / receipts / power banks / cables / earphones + oils.
+
+```bash
+python3 scripts/generate_entryway_storage_box.py
+# -> output/entryway_storage_box.stl  (~204 x 214 mm footprint, fits Bambu bed)
+# -> output/entryway_storage_box_spec.json
+```
+
+Open the STL in **Bambu Studio** (File → Import), place flat on the bed, slice, and send to the printer. See spec JSON for compartment depths and assumed item sizes.
+
 ## Latest print file
 
 - `output/cube_connected_depth.stl` — 50 mm cube, 6 faces, connected depth lines  
