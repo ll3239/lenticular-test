@@ -12,7 +12,11 @@ python3 scripts/generate_entryway_storage_box.py
 # -> output/entryway_storage_box_spec.json
 ```
 
-Open the STL in **Bambu Studio** (File → Import), place flat on the bed, slice, and send to the printer. See spec JSON for compartment depths and assumed item sizes.
+Open the STL in **Bambu Studio** (File → Import), place flat on the bed, slice, and send to the printer.
+
+**Print presets (optimized):** import `bambu/entryway_box_process_petg.json` + `bambu/entryway_box_filament_petg.json` (or PLA pair). Full guide: [`bambu/PRINT_GUIDE.md`](bambu/PRINT_GUIDE.md).
+
+See `output/entryway_storage_box_spec.json` for compartment dimensions and `bambu_optimized` slice parameters.
 
 ## Latest print file
 

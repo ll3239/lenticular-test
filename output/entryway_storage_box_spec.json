@@ -103,8 +103,82 @@
     }
   ],
   "print_notes": {
-    "software": "Import STL into Bambu Studio.",
+    "software": "Bambu Studio — import STL + optional preset JSON from bambu/",
     "orientation": "Print flat on the bottom face.",
-    "material": "PLA or PETG, 0.2 mm layers, 3 walls, 15-20% infill."
+    "see_also": "bambu/PRINT_GUIDE.md"
+  },
+  "bambu_optimized": {
+    "recommended_material": {
+      "primary": "PETG",
+      "alternative": "PLA",
+      "reason": "PETG is tougher for dividers and daily entryway use; PLA is fine for indoor light use."
+    },
+    "preset_files": {
+      "petg_process": "bambu/entryway_box_process_petg.json",
+      "petg_filament": "bambu/entryway_box_filament_petg.json",
+      "pla_process": "bambu/entryway_box_process_pla.json",
+      "pla_filament": "bambu/entryway_box_filament_pla.json",
+      "guide": "bambu/PRINT_GUIDE.md",
+      "import": "Bambu Studio → File → Import → Import Configs → select JSON pair"
+    },
+    "orientation": {
+      "placement": "Bottom face flat on bed (Z up = box height)",
+      "supports": false,
+      "brim_mm_petg": 5,
+      "brim_mm_pla": 3
+    },
+    "process_petg": {
+      "layer_height_mm": 0.2,
+      "line_width_mm": 0.42,
+      "wall_loops": 3,
+      "top_shell_layers": 5,
+      "bottom_shell_layers": 6,
+      "sparse_infill_percent": 18,
+      "sparse_infill_pattern": "gyroid",
+      "detect_thin_wall": true,
+      "enable_support": false,
+      "initial_layer_speed_mm_s": 35,
+      "outer_wall_speed_mm_s": 100,
+      "sparse_infill_speed_mm_s": 220
+    },
+    "process_pla": {
+      "layer_height_mm": 0.2,
+      "line_width_mm": 0.42,
+      "wall_loops": 3,
+      "top_shell_layers": 5,
+      "bottom_shell_layers": 6,
+      "sparse_infill_percent": 20,
+      "sparse_infill_pattern": "gyroid",
+      "detect_thin_wall": true,
+      "enable_support": false,
+      "initial_layer_speed_mm_s": 40,
+      "outer_wall_speed_mm_s": 120,
+      "sparse_infill_speed_mm_s": 250
+    },
+    "temperatures": {
+      "petg": {
+        "nozzle_c": 245,
+        "nozzle_first_layer_c": 250,
+        "bed_c": 78,
+        "fan_max_percent": 40
+      },
+      "pla": {
+        "nozzle_c": 220,
+        "nozzle_first_layer_c": 225,
+        "bed_c": 60,
+        "fan_max_percent": 100
+      }
+    },
+    "estimates": {
+      "time_hours": "3.5-5",
+      "filament_grams": "180-220",
+      "nozzle_mm": 0.4
+    },
+    "optional_fine_nozzle": {
+      "nozzle_mm": 0.2,
+      "layer_height_mm": 0.1,
+      "wall_loops": 4,
+      "note": "Use if 1.5 mm dividers look weak; print time roughly doubles."
+    }
   }
 }

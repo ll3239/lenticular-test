@@ -1,0 +1,31 @@
+{
+  "type": "filament",
+  "from": "User",
+  "inherits": "Bambu PETG Basic @BBL X1C",
+  "name": "Entryway Box PETG @BBL X1C",
+  "filament_settings_id": "Entryway Box PETG @BBL X1C",
+  "compatible_printers": [
+    "Bambu Lab X1 Carbon 0.4 nozzle",
+    "Bambu Lab X1 0.4 nozzle",
+    "Bambu Lab P1S 0.4 nozzle",
+    "Bambu Lab P1P 0.4 nozzle",
+    "Bambu Lab A1 0.4 nozzle",
+    "Bambu Lab A1 mini 0.4 nozzle"
+  ],
+  "version": "1.9.0.0",
+  "filament_type": ["PETG"],
+  "nozzle_temperature": ["245"],
+  "nozzle_temperature_initial_layer": ["250"],
+  "bed_temperature": ["78"],
+  "bed_temperature_initial_layer": ["80"],
+  "fan_max_speed": ["40"],
+  "fan_min_speed": ["10"],
+  "fan_cooling_layer_time": ["30"],
+  "slow_down_for_layer_cooling": ["1"],
+  "slow_down_layer_time": ["8"],
+  "slow_down_min_speed": ["20"],
+  "filament_max_volumetric_speed": ["12"],
+  "filament_flow_ratio": ["0.98"],
+  "filament_retraction_length": ["0.8"],
+  "filament_z_hop": ["0.2"]
+}

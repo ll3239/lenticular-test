@@ -68,9 +68,8 @@ COMPARTMENTS: tuple[Compartment, ...] = (
 
 
 def rim_height(y: float, h_front: float, h_back: float, length: float) -> float:
-    """Linear rim: shallow at back (y=L), deeper at front (y=0) — note y measured from front."""
+    """Linear rim along Y: low at front (y=0), high at back / letters (y=L)."""
     t = np.clip(y / length, 0.0, 1.0)
-    # back (t=1) -> h_back, front (t=0) -> h_front
     return h_front + (h_back - h_front) * t
 
 
@@ -338,6 +337,74 @@ def write_binary_stl(path: Path, verts: list, faces: list, header_text: str = "E
             f.write(struct.pack("<H", 0))
 
 
+def bambu_print_settings() -> dict:
+    """Optimized Bambu Studio parameters for this organizer."""
+    return {
+        "recommended_material": {
+            "primary": "PETG",
+            "alternative": "PLA",
+            "reason": "PETG is tougher for dividers and daily entryway use; PLA is fine for indoor light use.",
+        },
+        "preset_files": {
+            "petg_process": "bambu/entryway_box_process_petg.json",
+            "petg_filament": "bambu/entryway_box_filament_petg.json",
+            "pla_process": "bambu/entryway_box_process_pla.json",
+            "pla_filament": "bambu/entryway_box_filament_pla.json",
+            "guide": "bambu/PRINT_GUIDE.md",
+            "import": "Bambu Studio → File → Import → Import Configs → select JSON pair",
+        },
+        "orientation": {
+            "placement": "Bottom face flat on bed (Z up = box height)",
+            "supports": False,
+            "brim_mm_petg": 5,
+            "brim_mm_pla": 3,
+        },
+        "process_petg": {
+            "layer_height_mm": 0.2,
+            "line_width_mm": 0.42,
+            "wall_loops": 3,
+            "top_shell_layers": 5,
+            "bottom_shell_layers": 6,
+            "sparse_infill_percent": 18,
+            "sparse_infill_pattern": "gyroid",
+            "detect_thin_wall": True,
+            "enable_support": False,
+            "initial_layer_speed_mm_s": 35,
+            "outer_wall_speed_mm_s": 100,
+            "sparse_infill_speed_mm_s": 220,
+        },
+        "process_pla": {
+            "layer_height_mm": 0.2,
+            "line_width_mm": 0.42,
+            "wall_loops": 3,
+            "top_shell_layers": 5,
+            "bottom_shell_layers": 6,
+            "sparse_infill_percent": 20,
+            "sparse_infill_pattern": "gyroid",
+            "detect_thin_wall": True,
+            "enable_support": False,
+            "initial_layer_speed_mm_s": 40,
+            "outer_wall_speed_mm_s": 120,
+            "sparse_infill_speed_mm_s": 250,
+        },
+        "temperatures": {
+            "petg": {"nozzle_c": 245, "nozzle_first_layer_c": 250, "bed_c": 78, "fan_max_percent": 40},
+            "pla": {"nozzle_c": 220, "nozzle_first_layer_c": 225, "bed_c": 60, "fan_max_percent": 100},
+        },
+        "estimates": {
+            "time_hours": "3.5-5",
+            "filament_grams": "180-220",
+            "nozzle_mm": 0.4,
+        },
+        "optional_fine_nozzle": {
+            "nozzle_mm": 0.2,
+            "layer_height_mm": 0.1,
+            "wall_loops": 4,
+            "note": "Use if 1.5 mm dividers look weak; print time roughly doubles.",
+        },
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate sloped entryway storage box STL for Bambu Lab")
     parser.add_argument("--out", type=Path, default=Path("output/entryway_storage_box.stl"))
@@ -386,10 +453,11 @@ def main() -> None:
             for c in COMPARTMENTS
         ],
         "print_notes": {
-            "software": "Import STL into Bambu Studio.",
+            "software": "Bambu Studio — import STL + optional preset JSON from bambu/",
             "orientation": "Print flat on the bottom face.",
-            "material": "PLA or PETG, 0.2 mm layers, 3 walls, 15-20% infill.",
+            "see_also": "bambu/PRINT_GUIDE.md",
         },
+        "bambu_optimized": bambu_print_settings(),
     }
     path = args.spec_out
     path.parent.mkdir(parents=True, exist_ok=True)

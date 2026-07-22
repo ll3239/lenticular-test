@@ -1,0 +1,25 @@
+{
+  "type": "filament",
+  "from": "User",
+  "inherits": "Bambu PLA Basic @BBL X1C",
+  "name": "Entryway Box PLA @BBL X1C",
+  "filament_settings_id": "Entryway Box PLA @BBL X1C",
+  "compatible_printers": [
+    "Bambu Lab X1 Carbon 0.4 nozzle",
+    "Bambu Lab X1 0.4 nozzle",
+    "Bambu Lab P1S 0.4 nozzle",
+    "Bambu Lab P1P 0.4 nozzle",
+    "Bambu Lab A1 0.4 nozzle",
+    "Bambu Lab A1 mini 0.4 nozzle"
+  ],
+  "version": "1.9.0.0",
+  "filament_type": ["PLA"],
+  "nozzle_temperature": ["220"],
+  "nozzle_temperature_initial_layer": ["225"],
+  "bed_temperature": ["60"],
+  "bed_temperature_initial_layer": ["65"],
+  "fan_max_speed": ["100"],
+  "fan_min_speed": ["100"],
+  "filament_max_volumetric_speed": ["15"],
+  "filament_flow_ratio": ["1.0"]
+}
