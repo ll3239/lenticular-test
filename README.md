@@ -28,8 +28,15 @@ bash scripts/serve_preview.sh
 
 **Phone tips:** use `serve_preview.sh` (binds `0.0.0.0`). Phone and PC must share WiFi. One finger = rotate, two fingers = zoom/pan.
 
-**Online (after merge to `main`):** enable GitHub Pages (Settings → Pages → GitHub Actions), then open  
-`https://ll3239.github.io/lenticular-test/viewer/entryway.html` on your phone — works anywhere, no WiFi trick.
+**Screenshot gallery (works on phone — no 3D needed):**
+
+```bash
+python3 scripts/render_entryway_previews.py --all-angles
+bash scripts/serve_preview.sh
+# Phone: http://192.168.x.x:8766/viewer/gallery.html
+```
+
+Key images: `output/previews/compare_all_iso.png` · `compare_all_top.png` · `compare_all_side.png`
 
 | Style | 中文 | 特点 |
 |-------|------|------|
