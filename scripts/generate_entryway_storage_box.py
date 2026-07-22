@@ -47,9 +47,10 @@ LIP = 5.0  # front retaining lip height above local rim
 W_INT = 200.0
 L_INT = 210.0
 
-# Shallow back (letters) -> deeper front (oil bottles 80 mm tall)
-H_BACK = 28.0
-H_FRONT = 88.0
+# Side profile: highest at back (letters), slopes down toward front (entryway).
+# Front rim must still clear 80 mm oil bottles.
+H_FRONT = 86.0
+H_BACK = 92.0
 
 COMPARTMENTS: tuple[Compartment, ...] = (
     Compartment("earphones_other", 0, 100, 0, 100, 48),
@@ -244,12 +245,12 @@ def build_mesh(
     z_floor = oz + bottom
 
     add_sloped_side_wall(
-        verts, faces, side="left", y0=oy, y1=oy + l_int,
+        verts, faces, side="left", y0=oy, y1=oy + l_int, y_origin=oy,
         x_face=ox, thickness=wall, h_front=h_front, h_back=h_back,
         length=l_int, z_floor=z_floor,
     )
     add_sloped_side_wall(
-        verts, faces, side="right", y0=oy, y1=oy + l_int,
+        verts, faces, side="right", y0=oy, y1=oy + l_int, y_origin=oy,
         x_face=ox + w_int, thickness=wall, h_front=h_front, h_back=h_back,
         length=l_int, z_floor=z_floor,
     )
@@ -369,7 +370,7 @@ def main() -> None:
         "slope": {
             "front_rim_mm": args.h_front,
             "back_rim_mm": args.h_back,
-            "note": "Deeper at front for 80 mm oil bottles; shallow at back for letters.",
+            "note": "Side view: high at back (letters) -> low at front (entryway). Front rim still clears 80 mm oil bottles.",
         },
         "front_lip_mm": args.lip,
         "item_assumptions": {

@@ -7,13 +7,13 @@
   "outer_mm": {
     "width": 204.0,
     "length": 214.0,
-    "height_front": 90.0,
-    "height_back": 30.0
+    "height_front": 88.0,
+    "height_back": 94.0
   },
   "slope": {
-    "front_rim_mm": 88.0,
-    "back_rim_mm": 28.0,
-    "note": "Deeper at front for 80 mm oil bottles; shallow at back for letters."
+    "front_rim_mm": 86.0,
+    "back_rim_mm": 92.0,
+    "note": "Side view: high at back (letters) -> low at front (entryway). Front rim still clears 80 mm oil bottles."
   },
   "front_lip_mm": 5.0,
   "item_assumptions": {
