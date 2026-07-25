@@ -443,7 +443,8 @@ def build_mesh(
     if style in ("rounded", "accent"):
         from entryway_styles import apply_rounded_base
 
-        apply_rounded_base(verts, faces, outer_w=outer_w, outer_l=outer_l, bottom=bottom, radius=8.0)
+        corner_r = 12.0 if style == "rounded" else 8.0
+        apply_rounded_base(verts, faces, outer_w=outer_w, outer_l=outer_l, bottom=bottom, radius=corner_r)
     else:
         add_box(verts, faces, 0, 0, oz, outer_w, outer_l, oz + bottom)
     z_floor = oz + bottom
@@ -626,7 +627,7 @@ def main() -> None:
     parser.add_argument(
         "--style",
         choices=list(STYLES.keys()),
-        default="minimal",
+        default="rounded",
         help="Visual style variant (use --all-styles to export every version)",
     )
     parser.add_argument(
@@ -743,7 +744,7 @@ def main() -> None:
 
         styles_dir = Path("output/styles")
         styles_dir.mkdir(parents=True, exist_ok=True)
-        shutil.copy(styles_dir / "entryway_box_minimal.stl", "output/entryway_storage_box.stl")
+        shutil.copy(styles_dir / "entryway_box_rounded.stl", "output/entryway_storage_box.stl")
         catalog_path = styles_dir / "catalog.json"
         with open(catalog_path, "w", encoding="utf-8") as f:
             json.dump({"styles": style_catalog(), "viewer": "viewer/entryway.html"}, f, indent=2, ensure_ascii=False)

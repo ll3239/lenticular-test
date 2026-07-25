@@ -296,6 +296,35 @@ def apply_oil_wells(
             )
 
 
+def apply_outer_corner_rounds(
+    verts: list,
+    faces: list,
+    *,
+    outer_w: float,
+    outer_l: float,
+    wall: float,
+    z_floor: float,
+    h_front: float,
+    h_back: float,
+    l_int: float,
+    radius: float = 10.0,
+) -> None:
+    """Quarter-round vertical pillars on the four outer footprint corners."""
+    gen = _gen()
+    rim_height = gen.rim_height
+
+    r = min(radius, outer_w / 2 - 1, outer_l / 2 - 1)
+    corners = (
+        (r, r, 0.0, h_front),
+        (outer_w - r, r, 0.0, h_front),
+        (r, outer_l - r, l_int, h_back),
+        (outer_w - r, outer_l - r, l_int, h_back),
+    )
+    for cx, cy, y_local, h_rim in corners:
+        z_top = z_floor + h_rim
+        add_cylinder_z(verts, faces, cx, cy, z_floor, z_top, r, segments=16)
+
+
 def apply_soft_rim_cap(
     verts: list,
     faces: list,
@@ -352,7 +381,15 @@ def apply_style(
     if style == "rounded":
         apply_soft_rim_cap(
             verts, faces, ox=ox, oy=oy, w_int=w_int, l_int=l_int, wall=wall,
-            z_floor=z_floor, h_front=h_front, h_back=h_back,
+            z_floor=z_floor, h_front=h_front, h_back=h_back, cap_h=2.5,
+        )
+        apply_rim_chamfer(
+            verts, faces, ox=ox, oy=oy, w_int=w_int, l_int=l_int, wall=wall,
+            h_front=h_front, h_back=h_back, l_int_val=l_int, z_floor=z_floor, chamfer=2.5,
+        )
+        apply_outer_corner_rounds(
+            verts, faces, outer_w=outer_w, outer_l=outer_l, wall=wall, z_floor=z_floor,
+            h_front=h_front, h_back=h_back, l_int=l_int, radius=10.0,
         )
     if style == "chamfer":
         apply_rim_chamfer(

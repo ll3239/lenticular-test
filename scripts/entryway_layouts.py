@@ -95,8 +95,8 @@ LAYOUT_PRESETS: dict[str, LayoutPreset] = {
         id="classic",
         name_zh="经典紧凑",
         name_en="Classic",
-        tagline="200×210 贴墙放，最省空间",
-        style="minimal",
+        tagline="200×210 原图布局 · 圆角美观 · 一次打印",
+        style="rounded",
         layout=Layout(gutter=0, margin_x=0, margin_y=0),
     ),
     "landscape": LayoutPreset(
