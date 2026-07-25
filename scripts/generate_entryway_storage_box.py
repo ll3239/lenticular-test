@@ -132,7 +132,7 @@ DIVIDER = 1.5
 BOTTOM = 2.0
 LIP = 5.0
 
-DEFAULT_LAYOUT = LAYOUT_MODULAR
+DEFAULT_LAYOUT = LAYOUT_COMPACT
 W_INT = DEFAULT_LAYOUT.w_int
 L_INT = DEFAULT_LAYOUT.l_int
 
@@ -523,8 +523,8 @@ def main() -> None:
     parser.add_argument(
         "--layout",
         choices=("modular", "compact"),
-        default="modular",
-        help="modular = gapped blocks (rectangular footprint); compact = old 200×210",
+        default="compact",
+        help="compact = 200×210 mm per hand sketch; modular = gapped wider tray",
     )
     parser.add_argument("--all-styles", action="store_true", help="Write all style STLs to output/styles/")
     parser.add_argument("--wall", type=float, default=WALL)
