@@ -271,18 +271,20 @@ def apply_oil_wells(
     verts: list,
     faces: list,
     *,
-    ox: float,
-    oy: float,
+    x0: float,
+    x1: float,
+    y0: float,
+    y1: float,
     ring_h: float = 4.0,
     bottle_dia: float = 30.0,
     z_floor: float,
 ) -> None:
     """Six bottle retaining rings in the oil bay."""
     margin = 12.0
-    bay_x0 = ox + 100 + margin
-    bay_x1 = ox + 200 - margin
-    bay_y0 = oy + margin
-    bay_y1 = oy + 100 - margin
+    bay_x0 = x0 + margin
+    bay_x1 = x1 - margin
+    bay_y0 = y0 + margin
+    bay_y1 = y1 - margin
     xs = np.linspace(bay_x0 + bottle_dia / 2, bay_x1 - bottle_dia / 2, 3)
     ys = np.linspace(bay_y0 + bottle_dia / 2, bay_y1 - bottle_dia / 2, 2)
     r_outer = bottle_dia / 2 + 2.5
@@ -343,6 +345,7 @@ def apply_style(
     h_back: float,
     outer_w: float,
     outer_l: float,
+    layout=None,
 ) -> None:
     if style == "minimal":
         return
@@ -362,7 +365,16 @@ def apply_style(
             z_floor=z_floor, h_front=h_front, h_back=h_back,
         )
     if style == "wells":
-        apply_oil_wells(verts, faces, ox=ox, oy=oy, z_floor=z_floor)
+        if layout is not None:
+            comps = {c.name: c for c in layout.compartments()}
+            o = comps["essential_oils"]
+            apply_oil_wells(
+                verts, faces,
+                x0=ox + o.x0, x1=ox + o.x1, y0=oy + o.y0, y1=oy + o.y1,
+                z_floor=z_floor,
+            )
+        else:
+            apply_oil_wells(verts, faces, x0=ox + 100, x1=ox + 200, y0=oy, y1=oy + 100, z_floor=z_floor)
     if style == "accent":
         apply_accent_grooves(
             verts, faces, ox=ox, oy=oy, w_int=w_int, l_int=l_int, wall=wall,

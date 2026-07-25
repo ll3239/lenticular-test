@@ -2,20 +2,18 @@
 """
 Generate a sloped entryway storage organizer STL for Bambu Lab printers.
 
-Layout (internal mm, top view). Y=0 is the entryway FRONT (lip here); Y=210 is BACK (letters).
+Layout (internal mm, top view). Y=0 is the entryway FRONT (lip here); back = letters.
 
-  +----------+-----------+  Y=0   FRONT + lip
-  | earphones| 6 oil     |
-  | + other  | bottles   |  100 mm
-  +----------+-----------+  Y=100
-  | keys     | power bank|  (vertical 11 cm)
-  | card     | power bank|
-  | card     | data cable|  80 mm
-  | receipts |           |
-  +----------+-----------+  Y=180
-  |      letters          |  30 mm
-  +-----------------------+  Y=210  BACK
-       100 mm    100 mm
+Modular layout — same cell sizes (100×100, 100×80, …) with gutters between blocks:
+
+  ┌─ margin ─┬──100──┬ gutter ┬──100──┬─ margin ─┐
+  │ earphones│       │        │  oils  │          │  100
+  ├──────────┴───────┤        ├────────┴──────────┤
+  │ keys / cards …   │ gutter │ power banks …     │   80
+  ├──────────────────┴────────┴───────────────────┤
+  │              letters (full width)              │   30
+  └────────────────────────────────────────────────┘
+        → longer rectangle footprint (~244 × 270 mm internal)
 """
 
 from __future__ import annotations
@@ -39,32 +37,109 @@ class Compartment:
     depth: float  # internal height from floor (mm)
 
 
+@dataclass(frozen=True)
+class Layout:
+    """Compartment grid with gutters — cells keep original sketch sizes."""
+
+    col_w: float = 100.0
+    gutter: float = 10.0
+    margin_x: float = 10.0
+    margin_y: float = 10.0
+    front_h: float = 100.0
+    mid_h: float = 80.0
+    letters_h: float = 30.0
+
+    @property
+    def w_int(self) -> float:
+        return 2 * self.margin_x + 2 * self.col_w + self.gutter
+
+    @property
+    def l_int(self) -> float:
+        return (
+            2 * self.margin_y
+            + self.front_h
+            + self.gutter
+            + self.mid_h
+            + self.gutter
+            + self.letters_h
+        )
+
+    @property
+    def x_left0(self) -> float:
+        return self.margin_x
+
+    @property
+    def x_left1(self) -> float:
+        return self.margin_x + self.col_w
+
+    @property
+    def x_right0(self) -> float:
+        return self.x_left1 + self.gutter
+
+    @property
+    def x_right1(self) -> float:
+        return self.x_right0 + self.col_w
+
+    @property
+    def y_front0(self) -> float:
+        return self.margin_y
+
+    @property
+    def y_front1(self) -> float:
+        return self.y_front0 + self.front_h
+
+    @property
+    def y_mid0(self) -> float:
+        return self.y_front1 + self.gutter
+
+    @property
+    def y_mid1(self) -> float:
+        return self.y_mid0 + self.mid_h
+
+    @property
+    def y_letters0(self) -> float:
+        return self.y_mid1 + self.gutter
+
+    @property
+    def y_letters1(self) -> float:
+        return self.y_letters0 + self.letters_h
+
+    def compartments(self) -> tuple[Compartment, ...]:
+        xl0, xl1, xr0, xr1 = self.x_left0, self.x_left1, self.x_right0, self.x_right1
+        yf0, yf1 = self.y_front0, self.y_front1
+        ym0, ym1 = self.y_mid0, self.y_mid1
+        yl0, yl1 = self.y_letters0, self.y_letters1
+        return (
+            Compartment("earphones_other", xl0, xl1, yf0, yf1, 48),
+            Compartment("essential_oils", xr0, xr1, yf0, yf1, 82),
+            Compartment("keys", xl0, xl1, ym0, ym0 + 20, 22),
+            Compartment("card_1", xl0, xl1, ym0 + 20, ym0 + 40, 12),
+            Compartment("card_2", xl0, xl1, ym0 + 40, ym0 + 60, 12),
+            Compartment("receipts", xl0, xl1, ym0 + 60, ym1, 28),
+            Compartment("power_bank_1", xr0, xr1, ym0, ym0 + 30, 112),
+            Compartment("power_bank_2", xr0, xr1, ym0 + 30, ym0 + 60, 112),
+            Compartment("data_cable", xr0, xr1, ym0 + 60, ym1, 32),
+            Compartment("letters", 0, self.w_int, yl0, yl1, 25),
+        )
+
+
+LAYOUT_COMPACT = Layout(gutter=0, margin_x=0, margin_y=0)  # legacy 200×210
+LAYOUT_MODULAR = Layout()
+
+
 WALL = 2.0
 DIVIDER = 1.5
 BOTTOM = 2.0
-LIP = 5.0  # front retaining lip height above local rim
+LIP = 5.0
 
-W_INT = 200.0
-L_INT = 210.0
+DEFAULT_LAYOUT = LAYOUT_MODULAR
+W_INT = DEFAULT_LAYOUT.w_int
+L_INT = DEFAULT_LAYOUT.l_int
 
-# Side profile: highest at back (letters), slopes down toward front (entryway).
-# Front rim must still clear 80 mm oil bottles.
 H_FRONT = 86.0
 H_BACK = 92.0
 
-COMPARTMENTS: tuple[Compartment, ...] = (
-    Compartment("earphones_other", 0, 100, 0, 100, 48),
-    Compartment("essential_oils", 100, 200, 0, 100, 82),  # 6 x dia 30, h 80
-    Compartment("keys", 0, 100, 100, 120, 22),
-    Compartment("card_1", 0, 100, 120, 140, 12),
-    Compartment("card_2", 0, 100, 140, 160, 12),
-    Compartment("receipts", 0, 100, 160, 180, 28),
-    # Power banks stored vertically: footprint 80 x 30 mm, height 110 mm
-    Compartment("power_bank_1", 100, 200, 100, 130, 112),
-    Compartment("power_bank_2", 100, 200, 130, 160, 112),
-    Compartment("data_cable", 100, 200, 160, 180, 32),
-    Compartment("letters", 0, 200, 180, 210, 25),
-)
+COMPARTMENTS = DEFAULT_LAYOUT.compartments()
 
 
 def rim_height(y: float, h_front: float, h_back: float, length: float) -> float:
@@ -222,16 +297,17 @@ def add_vertical_divider(
 
 def build_mesh(
     *,
+    layout: Layout,
     wall: float,
     divider: float,
     bottom: float,
     lip: float,
-    w_int: float,
-    l_int: float,
     h_front: float,
     h_back: float,
     style: str = "minimal",
 ) -> tuple[list, list]:
+    w_int = layout.w_int
+    l_int = layout.l_int
     verts: list = []
     faces: list = []
 
@@ -283,35 +359,32 @@ def build_mesh(
         wall=wall, lip_h=lip, rim_z=front_rim_z,
     )
 
-    # Bottom / middle split (y=100)
-    add_horizontal_divider(
-        verts, faces, x0=ox, x1=ox + w_int, y_center=oy + 100,
-        thickness=divider, divider_height=divider_h(oy + 100, 82), z_floor=z_floor,
-    )
+    xl0, xl1 = layout.x_left0, layout.x_left1
+    xr0, xr1 = layout.x_right0, layout.x_right1
+    yf1 = layout.y_front1
+    ym0, ym1 = layout.y_mid0, layout.y_mid1
+    x_col_div = (layout.x_left1 + layout.x_right0) / 2
 
-    # Letters shelf (y=180)
     add_horizontal_divider(
-        verts, faces, x0=ox, x1=ox + w_int, y_center=oy + 180,
-        thickness=divider, divider_height=divider_h(oy + 180, 25), z_floor=z_floor,
+        verts, faces, x0=ox, x1=ox + w_int, y_center=oy + yf1 + layout.gutter / 2,
+        thickness=divider, divider_height=divider_h(oy + yf1, 82), z_floor=z_floor,
     )
-
-    # Center column (front + middle only; open letters bay spans full width)
+    add_horizontal_divider(
+        verts, faces, x0=ox, x1=ox + w_int, y_center=oy + ym1 + layout.gutter / 2,
+        thickness=divider, divider_height=divider_h(oy + ym1, 25), z_floor=z_floor,
+    )
     add_vertical_divider(
-        verts, faces, y0=oy, y1=oy + 180, x_center=ox + 100,
-        thickness=divider, divider_height=divider_h(oy + 50, 82), z_floor=z_floor,
+        verts, faces, y0=oy + layout.y_front0, y1=oy + ym1, x_center=ox + x_col_div,
+        thickness=divider, divider_height=divider_h(oy + layout.y_front0 + 50, 82), z_floor=z_floor,
     )
-
-    # Left column shelves in middle section
-    for y_edge, depth in ((120, 22), (140, 12), (160, 12)):
+    for y_edge, depth in ((ym0 + 20, 22), (ym0 + 40, 12), (ym0 + 60, 12)):
         add_horizontal_divider(
-            verts, faces, x0=ox, x1=ox + 100, y_center=oy + y_edge,
+            verts, faces, x0=ox + xl0, x1=ox + xl1, y_center=oy + y_edge,
             thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
         )
-
-    # Right column shelves in middle section
-    for y_edge, depth in ((130, 112), (160, 112), (180, 32)):
+    for y_edge, depth in ((ym0 + 30, 112), (ym0 + 60, 112), (ym1, 32)):
         add_horizontal_divider(
-            verts, faces, x0=ox + 100, x1=ox + w_int, y_center=oy + y_edge,
+            verts, faces, x0=ox + xr0, x1=ox + xr1, y_center=oy + y_edge,
             thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
         )
 
@@ -333,6 +406,7 @@ def build_mesh(
             h_back=h_back,
             outer_w=outer_w,
             outer_l=outer_l,
+            layout=layout,
         )
 
     return verts, faces
@@ -446,25 +520,39 @@ def main() -> None:
         default="minimal",
         help="Visual style variant (use --all-styles to export every version)",
     )
+    parser.add_argument(
+        "--layout",
+        choices=("modular", "compact"),
+        default="modular",
+        help="modular = gapped blocks (rectangular footprint); compact = old 200×210",
+    )
     parser.add_argument("--all-styles", action="store_true", help="Write all style STLs to output/styles/")
     parser.add_argument("--wall", type=float, default=WALL)
     parser.add_argument("--divider", type=float, default=DIVIDER)
     parser.add_argument("--bottom", type=float, default=BOTTOM)
     parser.add_argument("--lip", type=float, default=LIP)
-    parser.add_argument("--width", type=float, default=W_INT)
-    parser.add_argument("--length", type=float, default=L_INT)
+    parser.add_argument("--gutter", type=float, default=10.0, help="Gap between blocks (mm, modular layout)")
+    parser.add_argument("--margin-x", type=float, default=10.0, help="Side inner margin (mm)")
+    parser.add_argument("--margin-y", type=float, default=10.0, help="Front/back inner margin (mm)")
     parser.add_argument("--h-front", type=float, default=H_FRONT, help="Rim height at entryway front (mm)")
     parser.add_argument("--h-back", type=float, default=H_BACK, help="Rim height at back / letters end (mm)")
     args = parser.parse_args()
 
+    if args.layout == "compact":
+        layout = LAYOUT_COMPACT
+    else:
+        layout = Layout(gutter=args.gutter, margin_x=args.margin_x, margin_y=args.margin_y)
+
+    compartments = layout.compartments()
+    w_int, l_int = layout.w_int, layout.l_int
+
     styles_to_build = list(STYLES.keys()) if args.all_styles else [args.style]
     mesh_kw = dict(
+        layout=layout,
         wall=args.wall,
         divider=args.divider,
         bottom=args.bottom,
         lip=args.lip,
-        w_int=args.width,
-        l_int=args.length,
         h_front=args.h_front,
         h_back=args.h_back,
     )
@@ -490,12 +578,20 @@ def main() -> None:
 
     spec = {
         "style": args.style if not args.all_styles else "all",
+        "layout": args.layout,
         "style_variants": style_catalog(),
-        "orientation": "Y=0 is entryway front (with lip); Y=210 is back wall (letters).",
-        "internal_mm": {"width": args.width, "length": args.length},
+        "orientation": "Y=0 is entryway front (with lip); back = letters.",
+        "internal_mm": {"width": w_int, "length": l_int},
+        "layout_mm": {
+            "gutter": layout.gutter,
+            "margin_x": layout.margin_x,
+            "margin_y": layout.margin_y,
+            "cell_width": layout.col_w,
+            "note": "Same cell sizes as original sketch; extra size = gutters + margins.",
+        },
         "outer_mm": {
-            "width": args.width + 2 * args.wall,
-            "length": args.length + 2 * args.wall,
+            "width": w_int + 2 * args.wall,
+            "length": l_int + 2 * args.wall,
             "height_front": args.h_front + args.bottom,
             "height_back": args.h_back + args.bottom,
         },
@@ -515,7 +611,7 @@ def main() -> None:
                 "x0": c.x0, "x1": c.x1, "y0": c.y0, "y1": c.y1,
                 "internal_depth": c.depth,
             }
-            for c in COMPARTMENTS
+            for c in compartments
         ],
         "print_notes": {
             "software": "Bambu Studio — import STL + optional preset JSON from bambu/",

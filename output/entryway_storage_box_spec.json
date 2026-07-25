@@ -1,5 +1,6 @@
 {
-  "style": "all",
+  "style": "minimal",
+  "layout": "modular",
   "style_variants": [
     {
       "id": "minimal",
@@ -50,14 +51,21 @@
       "stl": "output/styles/entryway_box_accent.stl"
     }
   ],
-  "orientation": "Y=0 is entryway front (with lip); Y=210 is back wall (letters).",
+  "orientation": "Y=0 is entryway front (with lip); back = letters.",
   "internal_mm": {
-    "width": 200.0,
-    "length": 210.0
+    "width": 230.0,
+    "length": 250.0
+  },
+  "layout_mm": {
+    "gutter": 10.0,
+    "margin_x": 10.0,
+    "margin_y": 10.0,
+    "cell_width": 100.0,
+    "note": "Same cell sizes as original sketch; extra size = gutters + margins."
   },
   "outer_mm": {
-    "width": 204.0,
-    "length": 214.0,
+    "width": 234.0,
+    "length": 254.0,
     "height_front": 88.0,
     "height_back": 94.0
   },
@@ -74,82 +82,82 @@
   "compartments_mm": [
     {
       "name": "earphones_other",
-      "x0": 0,
-      "x1": 100,
-      "y0": 0,
-      "y1": 100,
+      "x0": 10.0,
+      "x1": 110.0,
+      "y0": 10.0,
+      "y1": 110.0,
       "internal_depth": 48
     },
     {
       "name": "essential_oils",
-      "x0": 100,
-      "x1": 200,
-      "y0": 0,
-      "y1": 100,
+      "x0": 120.0,
+      "x1": 220.0,
+      "y0": 10.0,
+      "y1": 110.0,
       "internal_depth": 82
     },
     {
       "name": "keys",
-      "x0": 0,
-      "x1": 100,
-      "y0": 100,
-      "y1": 120,
+      "x0": 10.0,
+      "x1": 110.0,
+      "y0": 120.0,
+      "y1": 140.0,
       "internal_depth": 22
     },
     {
       "name": "card_1",
-      "x0": 0,
-      "x1": 100,
-      "y0": 120,
-      "y1": 140,
+      "x0": 10.0,
+      "x1": 110.0,
+      "y0": 140.0,
+      "y1": 160.0,
       "internal_depth": 12
     },
     {
       "name": "card_2",
-      "x0": 0,
-      "x1": 100,
-      "y0": 140,
-      "y1": 160,
+      "x0": 10.0,
+      "x1": 110.0,
+      "y0": 160.0,
+      "y1": 180.0,
       "internal_depth": 12
     },
     {
       "name": "receipts",
-      "x0": 0,
-      "x1": 100,
-      "y0": 160,
-      "y1": 180,
+      "x0": 10.0,
+      "x1": 110.0,
+      "y0": 180.0,
+      "y1": 200.0,
       "internal_depth": 28
     },
     {
       "name": "power_bank_1",
-      "x0": 100,
-      "x1": 200,
-      "y0": 100,
-      "y1": 130,
+      "x0": 120.0,
+      "x1": 220.0,
+      "y0": 120.0,
+      "y1": 150.0,
       "internal_depth": 112
     },
     {
       "name": "power_bank_2",
-      "x0": 100,
-      "x1": 200,
-      "y0": 130,
-      "y1": 160,
+      "x0": 120.0,
+      "x1": 220.0,
+      "y0": 150.0,
+      "y1": 180.0,
       "internal_depth": 112
     },
     {
       "name": "data_cable",
-      "x0": 100,
-      "x1": 200,
-      "y0": 160,
-      "y1": 180,
+      "x0": 120.0,
+      "x1": 220.0,
+      "y0": 180.0,
+      "y1": 200.0,
       "internal_depth": 32
     },
     {
       "name": "letters",
       "x0": 0,
-      "x1": 200,
-      "y0": 180,
-      "y1": 210,
+      "x1": 230.0,
+      "y0": 210.0,
+      "y1": 240.0,
       "internal_depth": 25
     }
   ],
