@@ -13,7 +13,7 @@ Modular layout — same cell sizes (100×100, 100×80, …) with gutters between
   ├──────────────────┴────────┴───────────────────┤
   │              letters (full width)              │   30
   └────────────────────────────────────────────────┘
-        → longer rectangle footprint (~244 × 270 mm internal)
+        → 横长方形 footprint: 宽 252 × 深 238 mm (外廓 256×242, 贴墙放)
 """
 
 from __future__ import annotations
@@ -43,8 +43,8 @@ class Layout:
 
     col_w: float = 100.0
     gutter: float = 10.0
-    margin_x: float = 10.0
-    margin_y: float = 10.0
+    margin_x: float = 21.0  # wider side margins → 横长方形 (宽 > 深)
+    margin_y: float = 4.0
     front_h: float = 100.0
     mid_h: float = 80.0
     letters_h: float = 30.0
@@ -532,8 +532,8 @@ def main() -> None:
     parser.add_argument("--bottom", type=float, default=BOTTOM)
     parser.add_argument("--lip", type=float, default=LIP)
     parser.add_argument("--gutter", type=float, default=10.0, help="Gap between blocks (mm, modular layout)")
-    parser.add_argument("--margin-x", type=float, default=10.0, help="Side inner margin (mm)")
-    parser.add_argument("--margin-y", type=float, default=10.0, help="Front/back inner margin (mm)")
+    parser.add_argument("--margin-x", type=float, default=21.0, help="Side inner margin (mm)")
+    parser.add_argument("--margin-y", type=float, default=4.0, help="Front/back inner margin (mm)")
     parser.add_argument("--h-front", type=float, default=H_FRONT, help="Rim height at entryway front (mm)")
     parser.add_argument("--h-back", type=float, default=H_BACK, help="Rim height at back / letters end (mm)")
     args = parser.parse_args()
