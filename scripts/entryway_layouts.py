@@ -62,11 +62,35 @@ def _core_grid(x0: float, y0: float) -> tuple[Compartment, ...]:
     )
 
 
+def _row_four_compartments() -> tuple[Compartment, ...]:
+    """Four large bays in one row (door side), letters band at back — 400×130 mm."""
+    return (
+        Compartment("earphones_other", 0, COL, 0, FRONT, 48),
+        Compartment("essential_oils", COL, 2 * COL, 0, FRONT, 82),
+        Compartment("keys", 2 * COL, 3 * COL, 0, 20, 22),
+        Compartment("card_1", 2 * COL, 3 * COL, 20, 40, 12),
+        Compartment("card_2", 2 * COL, 3 * COL, 40, 60, 12),
+        Compartment("receipts", 2 * COL, 3 * COL, 60, MID, 28),
+        Compartment("power_bank_1", 3 * COL, 4 * COL, 0, 30, 112),
+        Compartment("power_bank_2", 3 * COL, 4 * COL, 30, 60, 112),
+        Compartment("data_cable", 3 * COL, 4 * COL, 60, MID, 32),
+        Compartment("letters", 0, 4 * COL, FRONT, FRONT + LETTERS, 25),
+    )
+
+
 def _letters_band(x0: float, x1: float, y0: float) -> Compartment:
     return Compartment("letters", x0, x1, y0, y0 + LETTERS, 25)
 
 
 LAYOUT_PRESETS: dict[str, LayoutPreset] = {
+    "row_four": LayoutPreset(
+        id="row_four",
+        name_zh="横长一行四格",
+        name_en="Row of Four",
+        tagline="400×130 四格一排，信件在最后（靠墙）",
+        style="rounded",
+        custom_compartments=_row_four_compartments(),
+    ),
     "classic": LayoutPreset(
         id="classic",
         name_zh="经典紧凑",

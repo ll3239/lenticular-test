@@ -295,6 +295,39 @@ def add_vertical_divider(
     add_box(verts, faces, x0, y0, z_floor, x1, y1, z_floor + divider_height)
 
 
+def _add_dividers_row_four(
+    verts: list,
+    faces: list,
+    *,
+    ox: float,
+    oy: float,
+    divider: float,
+    z_floor: float,
+    divider_h,
+) -> None:
+    """One row of four 100 mm bays + letters band at back (y=100–130)."""
+    row_y1 = 100.0
+    add_horizontal_divider(
+        verts, faces, x0=ox, x1=ox + 400.0, y_center=oy + row_y1,
+        thickness=divider, divider_height=divider_h(oy + row_y1, 25), z_floor=z_floor,
+    )
+    for x_div in (100.0, 200.0, 300.0):
+        add_vertical_divider(
+            verts, faces, y0=oy, y1=oy + row_y1, x_center=ox + x_div,
+            thickness=divider, divider_height=divider_h(oy + row_y1 / 2, 82), z_floor=z_floor,
+        )
+    for y_edge, depth in ((20, 22), (40, 12), (60, 12)):
+        add_horizontal_divider(
+            verts, faces, x0=ox + 200.0, x1=ox + 300.0, y_center=oy + y_edge,
+            thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
+        )
+    for y_edge, depth in ((30, 112), (60, 112), (80, 32)):
+        add_horizontal_divider(
+            verts, faces, x0=ox + 300.0, x1=ox + 400.0, y_center=oy + y_edge,
+            thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
+        )
+
+
 def _add_dividers_mail_spine(
     verts: list,
     faces: list,
@@ -451,6 +484,10 @@ def build_mesh(
 
     if preset_id == "mail_spine":
         _add_dividers_mail_spine(
+            verts, faces, ox=ox, oy=oy, divider=divider, z_floor=z_floor, divider_h=divider_h,
+        )
+    elif preset_id == "row_four":
+        _add_dividers_row_four(
             verts, faces, ox=ox, oy=oy, divider=divider, z_floor=z_floor, divider_h=divider_h,
         )
     else:

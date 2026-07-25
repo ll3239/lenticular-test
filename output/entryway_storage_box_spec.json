@@ -1,73 +1,7 @@
 {
   "style": "minimal",
-  "layout": "compact",
-  "layout_presets": [
-    {
-      "id": "classic",
-      "name_zh": "经典紧凑",
-      "name_en": "Classic",
-      "tagline": "200×210 贴墙放，最省空间",
-      "style": "minimal",
-      "internal_mm": {
-        "width": 200.0,
-        "length": 210.0
-      },
-      "stl": "output/layouts/entryway_classic.stl",
-      "png": "output/layouts/entryway_classic_top.png"
-    },
-    {
-      "id": "landscape",
-      "name_zh": "横长分块",
-      "name_en": "Landscape Gaps",
-      "tagline": "248×236 块间留缝，横长方形",
-      "style": "rounded",
-      "internal_mm": {
-        "width": 248.0,
-        "length": 236.0
-      },
-      "stl": "output/layouts/entryway_landscape.stl",
-      "png": "output/layouts/entryway_landscape_top.png"
-    },
-    {
-      "id": "mail_spine",
-      "name_zh": "信件侧栏",
-      "name_en": "Mail Spine",
-      "tagline": "230×210 右侧竖信件槽，主区更整",
-      "style": "chamfer",
-      "internal_mm": {
-        "width": 230,
-        "length": 210
-      },
-      "stl": "output/layouts/entryway_mail_spine.stl",
-      "png": "output/layouts/entryway_mail_spine_top.png"
-    },
-    {
-      "id": "terrace",
-      "name_zh": "阶梯宽边",
-      "name_en": "Terrace",
-      "tagline": "242×238 宽边距，像台阶托盘",
-      "style": "tiered",
-      "internal_mm": {
-        "width": 242.0,
-        "length": 238.0
-      },
-      "stl": "output/layouts/entryway_terrace.stl",
-      "png": "output/layouts/entryway_terrace_top.png"
-    },
-    {
-      "id": "gallery",
-      "name_zh": "展示宽盒",
-      "name_en": "Gallery",
-      "tagline": "252×238 大留白，像陈列盒",
-      "style": "accent",
-      "internal_mm": {
-        "width": 252.0,
-        "length": 238.0
-      },
-      "stl": "output/layouts/entryway_gallery.stl",
-      "png": "output/layouts/entryway_gallery_top.png"
-    }
-  ],
+  "layout": "row_four",
+  "layout_presets": null,
   "style_variants": [
     {
       "id": "minimal",
@@ -120,8 +54,8 @@
   ],
   "orientation": "Y=0 is entryway front (with lip); back = letters.",
   "internal_mm": {
-    "width": 200.0,
-    "length": 210.0
+    "width": 400.0,
+    "length": 130.0
   },
   "layout_mm": {
     "gutter": 0,
@@ -131,8 +65,8 @@
     "note": "Same cell sizes as original sketch; extra size = gutters + margins."
   },
   "outer_mm": {
-    "width": 204.0,
-    "length": 214.0,
+    "width": 404.0,
+    "length": 134.0,
     "height_front": 88.0,
     "height_back": 94.0
   },
@@ -165,66 +99,66 @@
     },
     {
       "name": "keys",
-      "x0": 0,
-      "x1": 100.0,
-      "y0": 100.0,
-      "y1": 120.0,
+      "x0": 200.0,
+      "x1": 300.0,
+      "y0": 0,
+      "y1": 20,
       "internal_depth": 22
     },
     {
       "name": "card_1",
-      "x0": 0,
-      "x1": 100.0,
-      "y0": 120.0,
-      "y1": 140.0,
+      "x0": 200.0,
+      "x1": 300.0,
+      "y0": 20,
+      "y1": 40,
       "internal_depth": 12
     },
     {
       "name": "card_2",
-      "x0": 0,
-      "x1": 100.0,
-      "y0": 140.0,
-      "y1": 160.0,
+      "x0": 200.0,
+      "x1": 300.0,
+      "y0": 40,
+      "y1": 60,
       "internal_depth": 12
     },
     {
       "name": "receipts",
-      "x0": 0,
-      "x1": 100.0,
-      "y0": 160.0,
-      "y1": 180.0,
+      "x0": 200.0,
+      "x1": 300.0,
+      "y0": 60,
+      "y1": 80.0,
       "internal_depth": 28
     },
     {
       "name": "power_bank_1",
-      "x0": 100.0,
-      "x1": 200.0,
-      "y0": 100.0,
-      "y1": 130.0,
+      "x0": 300.0,
+      "x1": 400.0,
+      "y0": 0,
+      "y1": 30,
       "internal_depth": 112
     },
     {
       "name": "power_bank_2",
-      "x0": 100.0,
-      "x1": 200.0,
-      "y0": 130.0,
-      "y1": 160.0,
+      "x0": 300.0,
+      "x1": 400.0,
+      "y0": 30,
+      "y1": 60,
       "internal_depth": 112
     },
     {
       "name": "data_cable",
-      "x0": 100.0,
-      "x1": 200.0,
-      "y0": 160.0,
-      "y1": 180.0,
+      "x0": 300.0,
+      "x1": 400.0,
+      "y0": 60,
+      "y1": 80.0,
       "internal_depth": 32
     },
     {
       "name": "letters",
       "x0": 0,
-      "x1": 200.0,
-      "y0": 180.0,
-      "y1": 210.0,
+      "x1": 400.0,
+      "y0": 100.0,
+      "y1": 130.0,
       "internal_depth": 25
     }
   ],

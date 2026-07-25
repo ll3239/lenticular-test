@@ -181,7 +181,7 @@ def draw_preset(
 
 
 def draw_comparison(out: Path) -> None:
-    presets = list(LAYOUT_PRESETS.values())
+    presets = [LAYOUT_PRESETS["row_four"], *[p for p in LAYOUT_PRESETS.values() if p.id != "row_four"]]
     fig, axes = plt.subplots(2, 3, figsize=(18, 11), dpi=150)
     fig.patch.set_facecolor("#fafafa")
     fig.suptitle(
