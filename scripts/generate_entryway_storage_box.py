@@ -295,8 +295,99 @@ def add_vertical_divider(
     add_box(verts, faces, x0, y0, z_floor, x1, y1, z_floor + divider_height)
 
 
+def _add_dividers_mail_spine(
+    verts: list,
+    faces: list,
+    *,
+    ox: float,
+    oy: float,
+    divider: float,
+    z_floor: float,
+    divider_h,
+) -> None:
+    """Core 200×180 grid + full-height letters spine at x=200–230."""
+    xl0, xl1, xr0, xr1 = 0.0, 100.0, 100.0, 200.0
+    yf1, ym0, ym1 = 100.0, 100.0, 180.0
+    spine_x = 200.0
+
+    add_horizontal_divider(
+        verts, faces, x0=ox, x1=ox + spine_x, y_center=oy + yf1,
+        thickness=divider, divider_height=divider_h(oy + yf1, 82), z_floor=z_floor,
+    )
+    add_horizontal_divider(
+        verts, faces, x0=ox, x1=ox + spine_x, y_center=oy + ym1,
+        thickness=divider, divider_height=divider_h(oy + ym1, 25), z_floor=z_floor,
+    )
+    add_vertical_divider(
+        verts, faces, y0=oy, y1=oy + ym1, x_center=ox + 100.0,
+        thickness=divider, divider_height=divider_h(oy + 50, 82), z_floor=z_floor,
+    )
+    add_vertical_divider(
+        verts, faces, y0=oy, y1=oy + 210.0, x_center=ox + spine_x,
+        thickness=divider, divider_height=divider_h(oy + 105, 210), z_floor=z_floor,
+    )
+    for y_edge, depth in ((ym0 + 20, 22), (ym0 + 40, 12), (ym0 + 60, 12)):
+        add_horizontal_divider(
+            verts, faces, x0=ox + xl0, x1=ox + xl1, y_center=oy + y_edge,
+            thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
+        )
+    for y_edge, depth in ((ym0 + 30, 112), (ym0 + 60, 112), (ym1, 32)):
+        add_horizontal_divider(
+            verts, faces, x0=ox + xr0, x1=ox + xr1, y_center=oy + y_edge,
+            thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
+        )
+
+
+def _add_dividers_grid(
+    verts: list,
+    faces: list,
+    *,
+    ox: float,
+    oy: float,
+    layout: Layout,
+    w_int: float,
+    divider: float,
+    z_floor: float,
+    divider_h,
+    letters_at_back: bool,
+) -> None:
+    xl0, xl1 = layout.x_left0, layout.x_left1
+    xr0, xr1 = layout.x_right0, layout.x_right1
+    yf1 = layout.y_front1
+    ym0, ym1 = layout.y_mid0, layout.y_mid1
+    x_col_div = (layout.x_left1 + layout.x_right0) / 2
+    gx1 = xr1  # grid content width for partial shelves
+
+    add_horizontal_divider(
+        verts, faces, x0=ox, x1=ox + (w_int if letters_at_back else gx1),
+        y_center=oy + yf1 + layout.gutter / 2,
+        thickness=divider, divider_height=divider_h(oy + yf1, 82), z_floor=z_floor,
+    )
+    if letters_at_back:
+        add_horizontal_divider(
+            verts, faces, x0=ox, x1=ox + w_int, y_center=oy + ym1 + layout.gutter / 2,
+            thickness=divider, divider_height=divider_h(oy + ym1, 25), z_floor=z_floor,
+        )
+    add_vertical_divider(
+        verts, faces, y0=oy + layout.y_front0, y1=oy + ym1, x_center=ox + x_col_div,
+        thickness=divider, divider_height=divider_h(oy + layout.y_front0 + 50, 82), z_floor=z_floor,
+    )
+    for y_edge, depth in ((ym0 + 20, 22), (ym0 + 40, 12), (ym0 + 60, 12)):
+        add_horizontal_divider(
+            verts, faces, x0=ox + xl0, x1=ox + xl1, y_center=oy + y_edge,
+            thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
+        )
+    for y_edge, depth in ((ym0 + 30, 112), (ym0 + 60, 112), (ym1, 32)):
+        add_horizontal_divider(
+            verts, faces, x0=ox + xr0, x1=ox + xr1, y_center=oy + y_edge,
+            thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
+        )
+
+
 def build_mesh(
     *,
+    w_int: float,
+    l_int: float,
     layout: Layout,
     wall: float,
     divider: float,
@@ -305,9 +396,8 @@ def build_mesh(
     h_front: float,
     h_back: float,
     style: str = "minimal",
+    preset_id: str = "classic",
 ) -> tuple[list, list]:
-    w_int = layout.w_int
-    l_int = layout.l_int
     verts: list = []
     faces: list = []
 
@@ -359,33 +449,14 @@ def build_mesh(
         wall=wall, lip_h=lip, rim_z=front_rim_z,
     )
 
-    xl0, xl1 = layout.x_left0, layout.x_left1
-    xr0, xr1 = layout.x_right0, layout.x_right1
-    yf1 = layout.y_front1
-    ym0, ym1 = layout.y_mid0, layout.y_mid1
-    x_col_div = (layout.x_left1 + layout.x_right0) / 2
-
-    add_horizontal_divider(
-        verts, faces, x0=ox, x1=ox + w_int, y_center=oy + yf1 + layout.gutter / 2,
-        thickness=divider, divider_height=divider_h(oy + yf1, 82), z_floor=z_floor,
-    )
-    add_horizontal_divider(
-        verts, faces, x0=ox, x1=ox + w_int, y_center=oy + ym1 + layout.gutter / 2,
-        thickness=divider, divider_height=divider_h(oy + ym1, 25), z_floor=z_floor,
-    )
-    add_vertical_divider(
-        verts, faces, y0=oy + layout.y_front0, y1=oy + ym1, x_center=ox + x_col_div,
-        thickness=divider, divider_height=divider_h(oy + layout.y_front0 + 50, 82), z_floor=z_floor,
-    )
-    for y_edge, depth in ((ym0 + 20, 22), (ym0 + 40, 12), (ym0 + 60, 12)):
-        add_horizontal_divider(
-            verts, faces, x0=ox + xl0, x1=ox + xl1, y_center=oy + y_edge,
-            thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
+    if preset_id == "mail_spine":
+        _add_dividers_mail_spine(
+            verts, faces, ox=ox, oy=oy, divider=divider, z_floor=z_floor, divider_h=divider_h,
         )
-    for y_edge, depth in ((ym0 + 30, 112), (ym0 + 60, 112), (ym1, 32)):
-        add_horizontal_divider(
-            verts, faces, x0=ox + xr0, x1=ox + xr1, y_center=oy + y_edge,
-            thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
+    else:
+        _add_dividers_grid(
+            verts, faces, ox=ox, oy=oy, layout=layout, w_int=w_int, divider=divider,
+            z_floor=z_floor, divider_h=divider_h, letters_at_back=True,
         )
 
     if style != "minimal":
@@ -509,6 +580,7 @@ def main() -> None:
     import sys
 
     sys.path.insert(0, str(Path(__file__).parent))
+    from entryway_layouts import LAYOUT_PRESETS, preset_catalog
     from entryway_styles import STYLES, style_catalog
 
     parser = argparse.ArgumentParser(description="Generate sloped entryway storage box STL for Bambu Lab")
@@ -526,6 +598,17 @@ def main() -> None:
         default="compact",
         help="compact = 200×210 mm per hand sketch; modular = gapped wider tray",
     )
+    parser.add_argument(
+        "--preset",
+        choices=tuple(LAYOUT_PRESETS.keys()),
+        default=None,
+        help="Layout preset (overrides --layout when set)",
+    )
+    parser.add_argument(
+        "--all-layouts",
+        action="store_true",
+        help="Export every layout preset STL to output/layouts/",
+    )
     parser.add_argument("--all-styles", action="store_true", help="Write all style STLs to output/styles/")
     parser.add_argument("--wall", type=float, default=WALL)
     parser.add_argument("--divider", type=float, default=DIVIDER)
@@ -538,32 +621,85 @@ def main() -> None:
     parser.add_argument("--h-back", type=float, default=H_BACK, help="Rim height at back / letters end (mm)")
     args = parser.parse_args()
 
-    if args.layout == "compact":
-        layout = LAYOUT_COMPACT
-    else:
-        layout = Layout(gutter=args.gutter, margin_x=args.margin_x, margin_y=args.margin_y)
+    def resolve_preset(preset_id: str):
+        preset = LAYOUT_PRESETS[preset_id]
+        grid = preset.layout if preset.is_grid() else LAYOUT_COMPACT
+        return preset, grid, preset.w_int, preset.l_int, preset.compartments
 
-    compartments = layout.compartments()
+    layout = LAYOUT_COMPACT
     w_int, l_int = layout.w_int, layout.l_int
+    compartments = layout.compartments()
+    preset_id = "classic"
 
-    styles_to_build = list(STYLES.keys()) if args.all_styles else [args.style]
-    mesh_kw = dict(
-        layout=layout,
-        wall=args.wall,
-        divider=args.divider,
-        bottom=args.bottom,
-        lip=args.lip,
-        h_front=args.h_front,
-        h_back=args.h_back,
-    )
+    if args.preset:
+        preset, layout, w_int, l_int, compartments = resolve_preset(args.preset)
+        preset_id = args.preset
+    elif args.layout != "compact":
+        layout = Layout(gutter=args.gutter, margin_x=args.margin_x, margin_y=args.margin_y)
+        w_int, l_int = layout.w_int, layout.l_int
+        compartments = layout.compartments()
 
-    last_faces = 0
-    for st in styles_to_build:
-        out = Path(f"output/styles/entryway_box_{st}.stl") if args.all_styles else args.out
-        verts, faces = build_mesh(**mesh_kw, style=st)
-        write_binary_stl(out, verts, faces, f"Entryway box {st} - Bambu")
-        last_faces = len(faces)
-        print(f"Wrote {out} [{st}] ({len(faces) * 2} triangles)")
+    style = args.style
+    if args.preset:
+        style = LAYOUT_PRESETS[args.preset].style if not args.all_styles else args.style
+
+    if args.all_layouts:
+        layouts_dir = Path("output/layouts")
+        layouts_dir.mkdir(parents=True, exist_ok=True)
+        for pid, preset in LAYOUT_PRESETS.items():
+            _, grid, w_int, l_int, compartments = resolve_preset(pid)
+            verts, faces = build_mesh(
+                w_int=w_int,
+                l_int=l_int,
+                layout=grid,
+                wall=args.wall,
+                divider=args.divider,
+                bottom=args.bottom,
+                lip=args.lip,
+                h_front=args.h_front,
+                h_back=args.h_back,
+                style=preset.style,
+                preset_id=pid,
+            )
+            out = layouts_dir / f"entryway_{pid}.stl"
+            write_binary_stl(out, verts, faces, f"Entryway {pid} - Bambu")
+            print(f"Wrote {out} [{pid}/{preset.style}] ({len(faces) * 2} triangles, {w_int:.0f}x{l_int:.0f} mm)")
+        catalog_path = layouts_dir / "catalog.json"
+        with open(catalog_path, "w", encoding="utf-8") as f:
+            json.dump({"layouts": preset_catalog(), "viewer": "viewer/gallery.html"}, f, indent=2, ensure_ascii=False)
+        print(f"Wrote {catalog_path}")
+        if not args.all_styles and args.preset is None:
+            import shutil
+
+            shutil.copy(layouts_dir / "entryway_classic.stl", args.out)
+        layout, w_int, l_int, compartments = resolve_preset("classic")[1:]
+
+    build_single = (not args.all_layouts) or args.all_styles or args.preset
+    if build_single:
+        styles_to_build = list(STYLES.keys()) if args.all_styles else [style]
+        mesh_kw = dict(
+            w_int=w_int,
+            l_int=l_int,
+            layout=layout,
+            wall=args.wall,
+            divider=args.divider,
+            bottom=args.bottom,
+            lip=args.lip,
+            h_front=args.h_front,
+            h_back=args.h_back,
+            preset_id=preset_id if args.preset or args.layout == "compact" else "classic",
+        )
+
+        for st in styles_to_build:
+            if args.all_styles:
+                out = Path(f"output/styles/entryway_box_{st}.stl")
+            elif args.preset and args.preset != "classic":
+                out = Path(f"output/layouts/entryway_{args.preset}.stl")
+            else:
+                out = args.out
+            verts, faces = build_mesh(**mesh_kw, style=st)
+            write_binary_stl(out, verts, faces, f"Entryway box {st} - Bambu")
+            print(f"Wrote {out} [{st}] ({len(faces) * 2} triangles)")
 
     if args.all_styles:
         import shutil
@@ -578,7 +714,8 @@ def main() -> None:
 
     spec = {
         "style": args.style if not args.all_styles else "all",
-        "layout": args.layout,
+        "layout": args.preset or args.layout,
+        "layout_presets": preset_catalog() if args.all_layouts else None,
         "style_variants": style_catalog(),
         "orientation": "Y=0 is entryway front (with lip); back = letters.",
         "internal_mm": {"width": w_int, "length": l_int},
