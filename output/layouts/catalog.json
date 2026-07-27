@@ -1,14 +1,27 @@
 {
   "layouts": [
     {
+      "id": "row_four",
+      "name_zh": "横长一行四格",
+      "name_en": "Row of Four",
+      "tagline": "400×130 四格一排，信件在最后（靠墙）",
+      "style": "rounded",
+      "internal_mm": {
+        "width": 400.0,
+        "length": 130.0
+      },
+      "stl": "output/layouts/entryway_row_four.stl",
+      "png": "output/layouts/entryway_row_four_top.png"
+    },
+    {
       "id": "classic",
       "name_zh": "经典紧凑",
       "name_en": "Classic",
-      "tagline": "200×210 贴墙放，最省空间",
-      "style": "minimal",
+      "tagline": "200×228 原图布局 · 槽位留公差 · P1S 一次打印",
+      "style": "rounded",
       "internal_mm": {
         "width": 200.0,
-        "length": 210.0
+        "length": 228.0
       },
       "stl": "output/layouts/entryway_classic.stl",
       "png": "output/layouts/entryway_classic_top.png"
@@ -21,7 +34,7 @@
       "style": "rounded",
       "internal_mm": {
         "width": 248.0,
-        "length": 236.0
+        "length": 254.0
       },
       "stl": "output/layouts/entryway_landscape.stl",
       "png": "output/layouts/entryway_landscape_top.png"
@@ -47,7 +60,7 @@
       "style": "tiered",
       "internal_mm": {
         "width": 242.0,
-        "length": 238.0
+        "length": 256.0
       },
       "stl": "output/layouts/entryway_terrace.stl",
       "png": "output/layouts/entryway_terrace_top.png"
@@ -60,7 +73,7 @@
       "style": "accent",
       "internal_mm": {
         "width": 252.0,
-        "length": 238.0
+        "length": 256.0
       },
       "stl": "output/layouts/entryway_gallery.stl",
       "png": "output/layouts/entryway_gallery_top.png"

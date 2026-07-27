@@ -1,6 +1,6 @@
 {
-  "style": "all",
-  "layout": "compact",
+  "style": "rounded",
+  "layout": "classic",
   "layout_presets": null,
   "style_variants": [
     {
@@ -15,8 +15,8 @@
       "id": "rounded",
       "name_en": "Rounded",
       "name_zh": "圆角柔和",
-      "description": "8 mm rounded outer base corners and softened top rim.",
-      "look": "圆角底、边缘更温柔",
+      "description": "True 10 mm rounded outer walls and a 12 mm rounded base.",
+      "look": "圆角外壁、圆角底，边缘更温柔",
       "stl": "output/styles/entryway_box_rounded.stl"
     },
     {
@@ -55,7 +55,7 @@
   "orientation": "Y=0 is entryway front (with lip); back = letters.",
   "internal_mm": {
     "width": 200.0,
-    "length": 210.0
+    "length": 228.0
   },
   "layout_mm": {
     "gutter": 0,
@@ -66,7 +66,7 @@
   },
   "outer_mm": {
     "width": 204.0,
-    "length": 214.0,
+    "length": 232.0,
     "height_front": 88.0,
     "height_back": 94.0
   },
@@ -102,31 +102,31 @@
       "x0": 0,
       "x1": 100.0,
       "y0": 100.0,
-      "y1": 120.0,
+      "y1": 124.0,
       "internal_depth": 22
     },
     {
       "name": "card_1",
       "x0": 0,
       "x1": 100.0,
-      "y0": 120.0,
-      "y1": 140.0,
+      "y0": 124.0,
+      "y1": 146.0,
       "internal_depth": 12
     },
     {
       "name": "card_2",
       "x0": 0,
       "x1": 100.0,
-      "y0": 140.0,
-      "y1": 160.0,
+      "y0": 146.0,
+      "y1": 168.0,
       "internal_depth": 12
     },
     {
       "name": "receipts",
       "x0": 0,
       "x1": 100.0,
-      "y0": 160.0,
-      "y1": 180.0,
+      "y0": 168.0,
+      "y1": 198.0,
       "internal_depth": 28
     },
     {
@@ -134,31 +134,31 @@
       "x0": 100.0,
       "x1": 200.0,
       "y0": 100.0,
-      "y1": 130.0,
+      "y1": 133.0,
       "internal_depth": 112
     },
     {
       "name": "power_bank_2",
       "x0": 100.0,
       "x1": 200.0,
-      "y0": 130.0,
-      "y1": 160.0,
+      "y0": 133.0,
+      "y1": 166.0,
       "internal_depth": 112
     },
     {
       "name": "data_cable",
       "x0": 100.0,
       "x1": 200.0,
-      "y0": 160.0,
-      "y1": 180.0,
+      "y0": 166.0,
+      "y1": 198.0,
       "internal_depth": 32
     },
     {
       "name": "letters",
       "x0": 0,
       "x1": 200.0,
-      "y0": 180.0,
-      "y1": 210.0,
+      "y0": 198.0,
+      "y1": 228.0,
       "internal_depth": 25
     }
   ],

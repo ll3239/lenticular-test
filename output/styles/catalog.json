@@ -12,8 +12,8 @@
       "id": "rounded",
       "name_en": "Rounded",
       "name_zh": "圆角柔和",
-      "description": "8 mm rounded outer base corners and softened top rim.",
-      "look": "圆角底、边缘更温柔",
+      "description": "True 10 mm rounded outer walls and a 12 mm rounded base.",
+      "look": "圆角外壁、圆角底，边缘更温柔",
       "stl": "output/styles/entryway_box_rounded.stl"
     },
     {

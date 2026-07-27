@@ -2,7 +2,7 @@
 """
 Draw the layout exactly like the user's hand sketch (top view).
 
-- Internal 200 x 210 mm (20 x 21 cm), each cell keeps original sizes
+- Internal 200 x 228 mm (20 x 22.8 cm), with practical item clearance
 - TOP of image = back / wall / 信件
 - BOTTOM = door / 门口
 - WIDTH = 20 cm (horizontal on page)
@@ -22,25 +22,25 @@ from generate_entryway_storage_box import LAYOUT_COMPACT
 plt.rcParams["font.sans-serif"] = ["Noto Sans CJK SC", "DejaVu Sans"]
 plt.rcParams["axes.unicode_minus"] = False
 
-# User-confirmed layout (internal mm). y=0 is FRONT/door, y=210 is BACK/letters.
+# User-confirmed layout (internal mm). y=0 is FRONT/door, y=228 is BACK/letters.
 # But we DRAW with wall at TOP of image (y inverted for display).
 CELLS = [
     # (x0,x1, y0,y1, color, label) — y from front(0) to back(210)
     (0, 100, 0, 100, "#c8d8e8", "耳机+其他"),
     (100, 200, 0, 100, "#b8dcc8", "精油×6"),
-    (0, 100, 100, 120, "#e8dcc8", "钥匙"),
-    (0, 100, 120, 140, "#ece8d8", "卡"),
-    (0, 100, 140, 160, "#ece8d8", "卡"),
-    (0, 100, 160, 180, "#e0d0c0", "收据"),
-    (100, 200, 100, 130, "#d0d8e8", "充电宝↑"),
-    (100, 200, 130, 160, "#d0d8e8", "充电宝↑"),
-    (100, 200, 160, 180, "#d8e0d0", "数据线"),
-    (0, 200, 180, 210, "#e8e0d0", "信件"),
+    (0, 100, 100, 124, "#e8dcc8", "钥匙"),
+    (0, 100, 124, 146, "#ece8d8", "卡"),
+    (0, 100, 146, 168, "#ece8d8", "卡"),
+    (0, 100, 168, 198, "#e0d0c0", "收据"),
+    (100, 200, 100, 133, "#d0d8e8", "充电宝↑"),
+    (100, 200, 133, 166, "#d0d8e8", "充电宝↑"),
+    (100, 200, 166, 198, "#d8e0d0", "数据线"),
+    (0, 200, 198, 228, "#e8e0d0", "信件"),
 ]
 
 
 def draw_top_sketch(out: Path) -> None:
-    w, h = 200.0, 210.0
+    w, h = 200.0, 228.0
     fig, ax = plt.subplots(figsize=(11, 6.5), dpi=180)
     fig.patch.set_facecolor("#fffef8")
 
@@ -52,7 +52,7 @@ def draw_top_sketch(out: Path) -> None:
     ax.axis("off")
     ax.set_title("Hand sketch layout (top view)  俯视图 · 按你的原图", fontsize=14, fontweight="bold", pad=12)
 
-    # Outer tray — horizontal rectangle 20 x 21 cm
+    # Outer tray — 20 x 22.8 cm after adding practical item clearances
     tray = FancyBboxPatch(
         (0, 0), w, h,
         boxstyle="round,pad=0,rounding_size=6",
@@ -75,7 +75,7 @@ def draw_top_sketch(out: Path) -> None:
     ax.annotate("", xy=(0, h + 8), xytext=(w, h + 8), arrowprops=dict(arrowstyle="<->", lw=1.8, color="#333"))
     ax.text(w / 2, h + 16, "20 cm", ha="center", fontsize=12, fontweight="bold")
     ax.annotate("", xy=(-8, 0), xytext=(-8, h), arrowprops=dict(arrowstyle="<->", lw=1.8, color="#333"))
-    ax.text(-18, h / 2, "21 cm", rotation=90, va="center", ha="center", fontsize=12, fontweight="bold")
+    ax.text(-18, h / 2, "22.8 cm", rotation=90, va="center", ha="center", fontsize=12, fontweight="bold")
 
     ax.text(w / 2, -12, "↓ 门口 DOOR", ha="center", fontsize=11, color="#c33", fontweight="bold")
     ax.text(w / 2, h + 28, "↑ 靠墙 BACK / 信件", ha="center", fontsize=11, color="#555", fontweight="bold")

@@ -36,8 +36,8 @@ STYLES: dict[str, StyleInfo] = {
         "rounded",
         "Rounded",
         "圆角柔和",
-        "8 mm rounded outer base corners and softened top rim.",
-        "圆角底、边缘更温柔",
+        "True 10 mm rounded outer walls and a 12 mm rounded base.",
+        "圆角外壁、圆角底，边缘更温柔",
     ),
     "chamfer": StyleInfo(
         "chamfer",
@@ -265,6 +265,8 @@ def add_hollow_cylinder_z(
         i3 = (cx + r_inner * math.cos(a0), cy + r_inner * math.sin(a0), z1)
         add_quad(verts, faces, o0, o1, o2, o3)
         add_quad(verts, faces, i1, i0, i3, i2)
+        add_quad(verts, faces, o3, o2, i2, i3)
+        add_quad(verts, faces, o1, o0, i0, i1)
 
 
 def apply_oil_wells(
@@ -292,7 +294,7 @@ def apply_oil_wells(
     for cx in xs:
         for cy in ys:
             add_hollow_cylinder_z(
-                verts, faces, float(cx), float(cy), z_floor, z_floor + ring_h, r_outer, r_inner, segments=20
+                verts, faces, float(cx), float(cy), z_floor - 0.4, z_floor + ring_h, r_outer, r_inner, segments=20
             )
 
 
@@ -379,18 +381,9 @@ def apply_style(
     if style == "minimal":
         return
     if style == "rounded":
-        apply_soft_rim_cap(
-            verts, faces, ox=ox, oy=oy, w_int=w_int, l_int=l_int, wall=wall,
-            z_floor=z_floor, h_front=h_front, h_back=h_back, cap_h=2.5,
-        )
-        apply_rim_chamfer(
-            verts, faces, ox=ox, oy=oy, w_int=w_int, l_int=l_int, wall=wall,
-            h_front=h_front, h_back=h_back, l_int_val=l_int, z_floor=z_floor, chamfer=2.5,
-        )
-        apply_outer_corner_rounds(
-            verts, faces, outer_w=outer_w, outer_l=outer_l, wall=wall, z_floor=z_floor,
-            h_front=h_front, h_back=h_back, l_int=l_int, radius=10.0,
-        )
+        # Rounded base and true quarter-annulus corner walls are constructed
+        # directly by build_mesh so they preserve the usable compartment area.
+        return
     if style == "chamfer":
         apply_rim_chamfer(
             verts, faces, ox=ox, oy=oy, w_int=w_int, l_int=l_int, wall=wall,

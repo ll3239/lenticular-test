@@ -1,6 +1,6 @@
 # Entryway storage box — Bambu Studio print guide
 
-Optimized for a **204 × 214 mm** functional organizer with **1.5 mm dividers** and **2 mm walls**.
+Optimized for a **204 × 232 mm** functional organizer with **1.5 mm dividers** and **2 mm walls**.
 
 ## Recommended material
 
@@ -88,7 +88,9 @@ If dividers look weak or gaps appear:
 
 ## Manual checklist in Bambu Studio
 
-- [ ] Object centered on bed (204 × 214 mm — fits P1/X1/A1; tight on A1 mini **256 mm** bed — OK)
+- [ ] Object centered on bed (204 × 232 mm; with a 5 mm brim: about 214 × 242 mm)
+- [ ] Fits **P1/P1S/X1/A1 (256 × 256 mm)** with 14 mm total margin on the tighter axis
+- [ ] Does **not** fit **A1 mini (180 × 180 mm)**; use a split model for that printer
 - [ ] **Detect thin walls** enabled (Process → Strength → Advanced)
 - [ ] **Precise wall** on (better 1.5 mm dividers)
 - [ ] No support material

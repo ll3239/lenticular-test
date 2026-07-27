@@ -9,7 +9,7 @@ from generate_entryway_storage_box import Compartment, Layout
 # Fixed cell sizes from hand sketch (mm)
 COL = 100.0
 FRONT = 100.0
-MID = 80.0
+MID = 98.0
 LETTERS = 30.0
 
 
@@ -47,18 +47,18 @@ class LayoutPreset:
 
 
 def _core_grid(x0: float, y0: float) -> tuple[Compartment, ...]:
-    """Standard 200×210 cell block offset by (x0, y0)."""
+    """Corrected 200×228 cell block offset by (x0, y0)."""
     xl, xr = x0, x0 + COL
     return (
         Compartment("earphones_other", xl, xl + COL, y0, y0 + FRONT, 48),
         Compartment("essential_oils", xr, xr + COL, y0, y0 + FRONT, 82),
-        Compartment("keys", xl, xl + COL, y0 + FRONT, y0 + FRONT + 20, 22),
-        Compartment("card_1", xl, xl + COL, y0 + FRONT + 20, y0 + FRONT + 40, 12),
-        Compartment("card_2", xl, xl + COL, y0 + FRONT + 40, y0 + FRONT + 60, 12),
-        Compartment("receipts", xl, xl + COL, y0 + FRONT + 60, y0 + FRONT + MID, 28),
-        Compartment("power_bank_1", xr, xr + COL, y0 + FRONT, y0 + FRONT + 30, 112),
-        Compartment("power_bank_2", xr, xr + COL, y0 + FRONT + 30, y0 + FRONT + 60, 112),
-        Compartment("data_cable", xr, xr + COL, y0 + FRONT + 60, y0 + FRONT + MID, 32),
+        Compartment("keys", xl, xl + COL, y0 + FRONT, y0 + FRONT + 24, 22),
+        Compartment("card_1", xl, xl + COL, y0 + FRONT + 24, y0 + FRONT + 46, 12),
+        Compartment("card_2", xl, xl + COL, y0 + FRONT + 46, y0 + FRONT + 68, 12),
+        Compartment("receipts", xl, xl + COL, y0 + FRONT + 68, y0 + FRONT + MID, 28),
+        Compartment("power_bank_1", xr, xr + COL, y0 + FRONT, y0 + FRONT + 33, 112),
+        Compartment("power_bank_2", xr, xr + COL, y0 + FRONT + 33, y0 + FRONT + 66, 112),
+        Compartment("data_cable", xr, xr + COL, y0 + FRONT + 66, y0 + FRONT + MID, 32),
     )
 
 
@@ -95,7 +95,7 @@ LAYOUT_PRESETS: dict[str, LayoutPreset] = {
         id="classic",
         name_zh="经典紧凑",
         name_en="Classic",
-        tagline="200×210 原图布局 · 圆角美观 · 一次打印",
+        tagline="200×228 原图布局 · 槽位留公差 · P1S 一次打印",
         style="rounded",
         layout=Layout(gutter=0, margin_x=0, margin_y=0),
     ),

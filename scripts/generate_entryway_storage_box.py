@@ -46,7 +46,9 @@ class Layout:
     margin_x: float = 21.0  # wider side margins → 横长方形 (宽 > 深)
     margin_y: float = 4.0
     front_h: float = 100.0
-    mid_h: float = 80.0
+    # 98 mm gives two 30 mm power banks and a 30 mm cable bundle real
+    # clearance after accounting for the 1.5 mm dividers.
+    mid_h: float = 98.0
     letters_h: float = 30.0
 
     @property
@@ -112,18 +114,18 @@ class Layout:
         return (
             Compartment("earphones_other", xl0, xl1, yf0, yf1, 48),
             Compartment("essential_oils", xr0, xr1, yf0, yf1, 82),
-            Compartment("keys", xl0, xl1, ym0, ym0 + 20, 22),
-            Compartment("card_1", xl0, xl1, ym0 + 20, ym0 + 40, 12),
-            Compartment("card_2", xl0, xl1, ym0 + 40, ym0 + 60, 12),
-            Compartment("receipts", xl0, xl1, ym0 + 60, ym1, 28),
-            Compartment("power_bank_1", xr0, xr1, ym0, ym0 + 30, 112),
-            Compartment("power_bank_2", xr0, xr1, ym0 + 30, ym0 + 60, 112),
-            Compartment("data_cable", xr0, xr1, ym0 + 60, ym1, 32),
+            Compartment("keys", xl0, xl1, ym0, ym0 + 24, 22),
+            Compartment("card_1", xl0, xl1, ym0 + 24, ym0 + 46, 12),
+            Compartment("card_2", xl0, xl1, ym0 + 46, ym0 + 68, 12),
+            Compartment("receipts", xl0, xl1, ym0 + 68, ym1, 28),
+            Compartment("power_bank_1", xr0, xr1, ym0, ym0 + 33, 112),
+            Compartment("power_bank_2", xr0, xr1, ym0 + 33, ym0 + 66, 112),
+            Compartment("data_cable", xr0, xr1, ym0 + 66, ym1, 32),
             Compartment("letters", 0, self.w_int, yl0, yl1, 25),
         )
 
 
-LAYOUT_COMPACT = Layout(gutter=0, margin_x=0, margin_y=0)  # legacy 200×210
+LAYOUT_COMPACT = Layout(gutter=0, margin_x=0, margin_y=0)  # corrected 200×228
 LAYOUT_MODULAR = Layout()
 
 
@@ -175,7 +177,7 @@ def add_box(verts: list, faces: list, x0, y0, z0, x1, y1, z1) -> None:
     add_quad(verts, faces, brb, blb, tlb, trb)
     add_quad(verts, faces, blb, blf, tlf, tlb)
     add_quad(verts, faces, brf, brb, trb, trf)
-    add_quad(verts, faces, blf, brb, trb, tlf)
+    add_quad(verts, faces, blf, blb, brb, brf)
     add_quad(verts, faces, tlf, trf, trb, tlb)
 
 
@@ -193,14 +195,15 @@ def add_sloped_side_wall(
     h_back: float,
     length: float,
     z_floor: float,
+    cap_ends: bool = True,
 ) -> None:
     z0 = z_floor
     z_at_y0 = z_floor + rim_height(y0 - y_origin, h_front, h_back, length)
     z_at_y1 = z_floor + rim_height(y1 - y_origin, h_front, h_back, length)
     if side == "left":
-        x0, x1 = x_face, x_face + thickness
-    elif side == "right":
         x0, x1 = x_face - thickness, x_face
+    elif side == "right":
+        x0, x1 = x_face, x_face + thickness
     else:
         raise ValueError(side)
 
@@ -211,9 +214,11 @@ def add_sloped_side_wall(
         add_quad(verts, faces, (x1, y0, z0), (x1, y1, z0), (x1, y1, z_at_y1), (x1, y0, z_at_y0))
         add_quad(verts, faces, (x0, y1, z0), (x0, y0, z0), (x0, y0, z_at_y0), (x0, y1, z_at_y1))
 
-    add_quad(verts, faces, (x0, y0, z0), (x1, y0, z0), (x1, y0, z_at_y0), (x0, y0, z_at_y0))
-    add_quad(verts, faces, (x0, y1, z0), (x1, y1, z0), (x1, y1, z_at_y1), (x0, y1, z_at_y1))
+    if cap_ends:
+        add_quad(verts, faces, (x0, y0, z0), (x1, y0, z0), (x1, y0, z_at_y0), (x0, y0, z_at_y0))
+        add_quad(verts, faces, (x0, y1, z0), (x1, y1, z0), (x1, y1, z_at_y1), (x0, y1, z_at_y1))
     add_quad(verts, faces, (x0, y0, z_at_y0), (x1, y0, z_at_y0), (x1, y1, z_at_y1), (x0, y1, z_at_y1))
+    add_quad(verts, faces, (x0, y0, z0), (x0, y1, z0), (x1, y1, z0), (x1, y0, z0))
 
 
 def add_front_back_wall(
@@ -227,21 +232,63 @@ def add_front_back_wall(
     thickness: float,
     height: float,
     z_floor: float,
+    cap_ends: bool = True,
 ) -> None:
     z0 = z_floor
     z1 = z_floor + height
     if edge == "front":
-        y0, y1 = y_face, y_face + thickness
+        y0, y1 = y_face - thickness, y_face
         add_quad(verts, faces, (x0, y0, z0), (x1, y0, z0), (x1, y0, z1), (x0, y0, z1))
         add_quad(verts, faces, (x1, y1, z0), (x0, y1, z0), (x0, y1, z1), (x1, y1, z1))
     else:
-        y0, y1 = y_face - thickness, y_face
+        y0, y1 = y_face, y_face + thickness
         add_quad(verts, faces, (x1, y1, z0), (x0, y1, z0), (x0, y1, z1), (x1, y1, z1))
         add_quad(verts, faces, (x0, y0, z0), (x1, y0, z0), (x1, y0, z1), (x0, y0, z1))
 
     add_quad(verts, faces, (x0, y0, z1), (x1, y0, z1), (x1, y1, z1), (x0, y1, z1))
     add_quad(verts, faces, (x0, y0, z0), (x0, y1, z0), (x1, y1, z0), (x1, y0, z0))
+    if cap_ends:
+        add_quad(verts, faces, (x0, y0, z0), (x0, y0, z1), (x0, y1, z1), (x0, y1, z0))
+        add_quad(verts, faces, (x1, y0, z0), (x1, y1, z0), (x1, y1, z1), (x1, y0, z1))
 
+
+def add_rounded_corner_wall(
+    verts: list,
+    faces: list,
+    *,
+    cx: float,
+    cy: float,
+    angle0: float,
+    angle1: float,
+    inner_radius: float,
+    thickness: float,
+    oy: float,
+    length: float,
+    h_front: float,
+    h_back: float,
+    z_floor: float,
+    segments: int = 8,
+) -> None:
+    """Quarter-annulus wall joining shortened straight walls."""
+    outer_radius = inner_radius + thickness
+    angles = np.linspace(angle0, angle1, segments + 1)
+    for a0, a1 in zip(angles[:-1], angles[1:]):
+        def point(radius: float, angle: float, top: bool):
+            x = cx + radius * np.cos(angle)
+            y = cy + radius * np.sin(angle)
+            z = z_floor
+            if top:
+                z += rim_height(y - oy, h_front, h_back, length)
+            return (x, y, z)
+
+        oi0, oi1 = point(outer_radius, a0, False), point(outer_radius, a1, False)
+        ot0, ot1 = point(outer_radius, a0, True), point(outer_radius, a1, True)
+        ii0, ii1 = point(inner_radius, a0, False), point(inner_radius, a1, False)
+        it0, it1 = point(inner_radius, a0, True), point(inner_radius, a1, True)
+        add_quad(verts, faces, oi0, oi1, ot1, ot0)
+        add_quad(verts, faces, ii1, ii0, it0, it1)
+        add_quad(verts, faces, ot0, ot1, it1, it0)
+        add_quad(verts, faces, ii0, ii1, oi1, oi0)
 
 def add_front_lip(
     verts: list,
@@ -256,7 +303,9 @@ def add_front_lip(
     lip_thickness: float = 3.0,
 ) -> None:
     """Retaining lip on the front edge (inside the box)."""
-    y0 = y_front
+    # Overlap the front wall instead of merely touching it; this produces a
+    # robust boolean union and avoids non-manifold coplanar seams.
+    y0 = y_front - wall
     y1 = y_front + lip_thickness
     z0 = rim_z
     z1 = rim_z + lip_h
@@ -359,12 +408,12 @@ def _add_dividers_mail_spine(
         verts, faces, y0=oy, y1=oy + 210.0, x_center=ox + spine_x,
         thickness=divider, divider_height=divider_h(oy + 105, 210), z_floor=z_floor,
     )
-    for y_edge, depth in ((ym0 + 20, 22), (ym0 + 40, 12), (ym0 + 60, 12)):
+    for y_edge, depth in ((ym0 + 24, 22), (ym0 + 46, 12), (ym0 + 68, 12)):
         add_horizontal_divider(
             verts, faces, x0=ox + xl0, x1=ox + xl1, y_center=oy + y_edge,
             thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
         )
-    for y_edge, depth in ((ym0 + 30, 112), (ym0 + 60, 112), (ym1, 32)):
+    for y_edge, depth in ((ym0 + 33, 112), (ym0 + 66, 112), (ym1, 32)):
         add_horizontal_divider(
             verts, faces, x0=ox + xr0, x1=ox + xr1, y_center=oy + y_edge,
             thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
@@ -440,33 +489,56 @@ def build_mesh(
     outer_w = w_int + 2 * wall
     outer_l = l_int + 2 * wall
 
+    rounded_walls = style == "rounded"
+    corner_radius = 10.0
     if style in ("rounded", "accent"):
         from entryway_styles import apply_rounded_base
 
-        corner_r = 12.0 if style == "rounded" else 8.0
+        corner_r = corner_radius + wall if rounded_walls else 8.0
         apply_rounded_base(verts, faces, outer_w=outer_w, outer_l=outer_l, bottom=bottom, radius=corner_r)
     else:
         add_box(verts, faces, 0, 0, oz, outer_w, outer_l, oz + bottom)
     z_floor = oz + bottom
 
     add_sloped_side_wall(
-        verts, faces, side="left", y0=oy, y1=oy + l_int, y_origin=oy,
+        verts, faces, side="left",
+        y0=oy + (corner_radius if rounded_walls else -wall),
+        y1=oy + l_int - (corner_radius if rounded_walls else -wall), y_origin=oy,
         x_face=ox, thickness=wall, h_front=h_front, h_back=h_back,
-        length=l_int, z_floor=z_floor,
+        length=l_int, z_floor=z_floor, cap_ends=not rounded_walls,
     )
     add_sloped_side_wall(
-        verts, faces, side="right", y0=oy, y1=oy + l_int, y_origin=oy,
+        verts, faces, side="right",
+        y0=oy + (corner_radius if rounded_walls else -wall),
+        y1=oy + l_int - (corner_radius if rounded_walls else -wall), y_origin=oy,
         x_face=ox + w_int, thickness=wall, h_front=h_front, h_back=h_back,
-        length=l_int, z_floor=z_floor,
+        length=l_int, z_floor=z_floor, cap_ends=not rounded_walls,
     )
     add_front_back_wall(
-        verts, faces, edge="front", x0=ox, x1=ox + w_int, y_face=oy,
-        thickness=wall, height=h_front, z_floor=z_floor,
+        verts, faces, edge="front",
+        x0=ox + (corner_radius if rounded_walls else -wall),
+        x1=ox + w_int - (corner_radius if rounded_walls else -wall), y_face=oy,
+        thickness=wall, height=h_front, z_floor=z_floor, cap_ends=not rounded_walls,
     )
     add_front_back_wall(
-        verts, faces, edge="back", x0=ox, x1=ox + w_int, y_face=oy + l_int,
-        thickness=wall, height=h_back, z_floor=z_floor,
+        verts, faces, edge="back",
+        x0=ox + (corner_radius if rounded_walls else -wall),
+        x1=ox + w_int - (corner_radius if rounded_walls else -wall), y_face=oy + l_int,
+        thickness=wall, height=h_back, z_floor=z_floor, cap_ends=not rounded_walls,
     )
+    if rounded_walls:
+        corner_specs = (
+            (ox + corner_radius, oy + corner_radius, np.pi, 1.5 * np.pi),
+            (ox + w_int - corner_radius, oy + corner_radius, 1.5 * np.pi, 2 * np.pi),
+            (ox + w_int - corner_radius, oy + l_int - corner_radius, 0, 0.5 * np.pi),
+            (ox + corner_radius, oy + l_int - corner_radius, 0.5 * np.pi, np.pi),
+        )
+        for cx, cy, angle0, angle1 in corner_specs:
+            add_rounded_corner_wall(
+                verts, faces, cx=cx, cy=cy, angle0=angle0, angle1=angle1,
+                inner_radius=corner_radius, thickness=wall, oy=oy, length=l_int,
+                h_front=h_front, h_back=h_back, z_floor=z_floor,
+            )
 
     def local_y(y: float) -> float:
         return y - oy
@@ -522,6 +594,27 @@ def build_mesh(
 
 
 def write_binary_stl(path: Path, verts: list, faces: list, header_text: str = "Entryway storage box") -> None:
+    # Merge overlapping closed solids into one watertight body. Bambu Studio
+    # can repair overlapping shells, but exporting a clean union is safer and
+    # makes automated geometry checks deterministic.
+    try:
+        import trimesh
+
+        mesh = trimesh.Trimesh(vertices=np.asarray(verts), faces=np.asarray(faces), process=True)
+        mesh.merge_vertices()
+        parts = list(mesh.split(only_watertight=False))
+        for part in parts:
+            trimesh.repair.fix_normals(part, multibody=False)
+        if parts and all(part.is_volume for part in parts):
+            united = trimesh.boolean.union(parts, engine="manifold")
+            if united is not None and united.is_volume:
+                verts = united.vertices.tolist()
+                faces = united.faces.tolist()
+    except (ImportError, ValueError):
+        # Keep the dependency-light raw export available for development.
+        # The committed production STL is always checked by check_entryway_fit.py.
+        pass
+
     triangles = []
     for i0, i1, i2 in faces:
         v0, v1, v2 = np.array(verts[i0]), np.array(verts[i1]), np.array(verts[i2])
@@ -634,7 +727,7 @@ def main() -> None:
         "--layout",
         choices=("modular", "compact"),
         default="compact",
-        help="compact = 200×210 mm per hand sketch; modular = gapped wider tray",
+        help="compact = corrected 200×228 mm sketch layout; modular = gapped wider tray",
     )
     parser.add_argument(
         "--preset",
