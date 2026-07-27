@@ -18,7 +18,7 @@ def main() -> None:
     ax.set_aspect("equal")
     ax.axis("off")
     ax.set_title(
-        "Arch Wave exterior — rounded, wavy top rim, fine vertical flutes",
+        "Organic Wave exterior — asymmetric front/back rims + fine vertical flutes",
         fontsize=15, fontweight="bold", pad=14,
     )
 
@@ -29,13 +29,21 @@ def main() -> None:
     )
     ax.add_patch(body)
 
-    # Three smooth arches are added only above the existing front rim.
+    def bump(t, start, end, amplitude):
+        u = np.clip((t - start) / (end - start), 0, 1)
+        active = (t > start) & (t < end)
+        return np.where(active, amplitude * np.sin(np.pi * u), 0.0)
+
+    # Near/front rim: one large wave shifted toward the right.
     x = np.linspace(12, 194.4, 300)
-    span = (194.4 - 12) / 3
-    phase = ((x - 12) % span) / span
-    wave = 88 + 4.5 * np.sin(np.pi * phase)
-    ax.fill_between(x, 87.5, wave, color="#d8c7ad", zorder=2)
-    ax.plot(x, wave, color="#5e5448", linewidth=2.3, zorder=3)
+    t = (x - 12) / (194.4 - 12)
+    front_wave = 88 + bump(t, 0.28, 0.94, 4.8)
+    ax.fill_between(x, 87.5, front_wave, color="#d8c7ad", zorder=2)
+    ax.plot(x, front_wave, color="#5e5448", linewidth=2.3, zorder=4)
+
+    # Far/back rim: two smaller unequal waves, visible as a second layer.
+    back_wave = 80 + bump(t, 0.05, 0.38, 2.7) + bump(t, 0.52, 0.86, 3.4)
+    ax.plot(x, back_wave, color="#84745f", linewidth=2.0, zorder=3)
 
     # Exterior vertical flutes.
     for xpos in np.arange(18, 195, 12):
@@ -44,10 +52,16 @@ def main() -> None:
 
     ax.plot([10, 196.4], [8, 8], color="#aa987f", linewidth=1.4, alpha=0.8)
     ax.annotate(
-        "3 soft round arches\nTOP RIM ONLY (+4.5 mm)",
-        xy=(103.2, 92.4), xytext=(103.2, 106),
+        "FRONT RIM: one large wave\nshifted toward one side (+4.8 mm)",
+        xy=(145, 92.2), xytext=(122, 106),
         ha="center", va="center", fontsize=10, fontweight="bold", color="#554b40",
         arrowprops=dict(arrowstyle="->", color="#776a59", lw=1.5),
+    )
+    ax.annotate(
+        "BACK RIM: two smaller waves\nunequal size + irregular spacing",
+        xy=(61, 82.5), xytext=(15, 101),
+        ha="left", va="center", fontsize=9, color="#554b40",
+        arrowprops=dict(arrowstyle="->", color="#776a59", lw=1.4),
     )
     ax.annotate(
         "Fine vertical flutes\n1.6 mm wide / 1.2 mm relief",

@@ -41,10 +41,10 @@ STYLES: dict[str, StyleInfo] = {
     ),
     "arch_wave": StyleInfo(
         "arch_wave",
-        "Arch Wave",
-        "圆拱波浪细条纹",
-        "Rounded body, three soft arches at the opening, and fine vertical exterior flutes.",
-        "圆角 + 上沿圆拱波浪 + 外壁竖细条纹",
+        "Organic Arch Wave",
+        "不规则圆拱波浪细条纹",
+        "Rounded body, asymmetric front/back opening waves, and fine vertical exterior flutes.",
+        "圆角 + 前后错位不规则波浪 + 外壁竖细条纹",
     ),
     "chamfer": StyleInfo(
         "chamfer",
@@ -384,7 +384,7 @@ def apply_arch_wave(
     flute_depth: float = 1.2,
     arch_height: float = 4.5,
 ) -> None:
-    """Exterior-only flutes plus three smooth arches along front/back rims."""
+    """Exterior-only flutes plus asymmetric organic front/back rim waves."""
     gen = _gen()
     add_box, rim_height = gen.add_box, gen.rim_height
 
@@ -417,29 +417,39 @@ def apply_arch_wave(
             outer_w + flute_depth, y + half, z_high,
         )
 
-    # Three broad round arches form a gentle wave only at the top opening.
-    # The wall body remains straight, preserving strength and usable volume.
+    # Two deliberately different layers at the opening:
+    # - front rim: one broad wave shifted toward the right
+    # - rear rim: two shorter waves with unequal size and spacing
+    # This reads as an organic, asymmetric pair of curves from the front.
     x_start = 12.0
     x_end = outer_w - 12.0
-    arch_width = (x_end - x_start) / 3.0
-    segments_per_arch = 18
-    for arch_index in range(3):
-        base_x = x_start + arch_index * arch_width
-        for segment in range(segments_per_arch):
-            u0 = segment / segments_per_arch
-            u1 = (segment + 1) / segments_per_arch
-            mid = (u0 + u1) / 2.0
-            height = arch_height * math.sin(math.pi * mid)
-            xa = base_x + u0 * arch_width - 0.12
-            xb = base_x + u1 * arch_width + 0.12
-            add_box(
-                verts, faces, xa, -0.5, z_floor + h_front - 0.5,
-                xb, oy + 0.5, z_floor + h_front + height,
-            )
-            add_box(
-                verts, faces, xa, oy + l_int - 0.5, z_floor + h_back - 0.5,
-                xb, outer_l + 0.5, z_floor + h_back + height,
-            )
+    segments = 72
+
+    def bump(t: float, start: float, end: float, amplitude: float) -> float:
+        if t <= start or t >= end:
+            return 0.0
+        u = (t - start) / (end - start)
+        return amplitude * math.sin(math.pi * u)
+
+    for segment in range(segments):
+        t0 = segment / segments
+        t1 = (segment + 1) / segments
+        mid = (t0 + t1) / 2.0
+        front_height = bump(mid, 0.28, 0.94, arch_height + 0.3)
+        back_height = (
+            bump(mid, 0.05, 0.38, 2.7)
+            + bump(mid, 0.52, 0.86, 3.4)
+        )
+        xa = x_start + t0 * (x_end - x_start) - 0.12
+        xb = x_start + t1 * (x_end - x_start) + 0.12
+        add_box(
+            verts, faces, xa, -0.5, z_floor + h_front - 0.5,
+            xb, oy + 0.5, z_floor + h_front + front_height,
+        )
+        add_box(
+            verts, faces, xa, oy + l_int - 0.5, z_floor + h_back - 0.5,
+            xb, outer_l + 0.5, z_floor + h_back + back_height,
+        )
 
 
 def apply_style(

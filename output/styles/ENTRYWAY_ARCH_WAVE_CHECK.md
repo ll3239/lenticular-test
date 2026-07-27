@@ -1,6 +1,6 @@
 # Entryway organizer fit check
 
-- STL measured extents: **206.4 × 234.4 × 98.483 mm**
+- STL measured extents: **206.4 × 234.4 × 97.399 mm**
 - With 5 mm brim: **216.4 × 244.4 mm**
 - Mesh integrity: **PASS** (watertight, consistent winding, single volume)
 

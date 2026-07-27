@@ -18,10 +18,10 @@
     },
     {
       "id": "arch_wave",
-      "name_en": "Arch Wave",
-      "name_zh": "圆拱波浪细条纹",
-      "description": "Rounded body, three soft arches at the opening, and fine vertical exterior flutes.",
-      "look": "圆角 + 上沿圆拱波浪 + 外壁竖细条纹",
+      "name_en": "Organic Arch Wave",
+      "name_zh": "不规则圆拱波浪细条纹",
+      "description": "Rounded body, asymmetric front/back opening waves, and fine vertical exterior flutes.",
+      "look": "圆角 + 前后错位不规则波浪 + 外壁竖细条纹",
       "stl": "output/styles/entryway_box_arch_wave.stl"
     },
     {
