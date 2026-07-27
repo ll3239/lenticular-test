@@ -17,6 +17,14 @@
       "stl": "output/styles/entryway_box_rounded.stl"
     },
     {
+      "id": "arch_wave",
+      "name_en": "Arch Wave",
+      "name_zh": "圆拱波浪细条纹",
+      "description": "Rounded body, three soft arches at the opening, and fine vertical exterior flutes.",
+      "look": "圆角 + 上沿圆拱波浪 + 外壁竖细条纹",
+      "stl": "output/styles/entryway_box_arch_wave.stl"
+    },
+    {
       "id": "chamfer",
       "name_en": "Chamfer",
       "name_zh": "倒角线框",

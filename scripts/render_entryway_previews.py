@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import math
 import struct
 from pathlib import Path
 
@@ -26,6 +27,7 @@ plt.rcParams["axes.unicode_minus"] = False
 STYLES = [
     ("minimal", "极简直角", "#c8cdd8"),
     ("rounded", "圆角柔和", "#d4c4b0"),
+    ("arch_wave", "圆拱波浪细条纹", "#d7c6ae"),
     ("chamfer", "倒角线框", "#b8c8d8"),
     ("tiered", "阶梯分层", "#c0b8a8"),
     ("wells", "精油定位环", "#b8d0c0"),
@@ -87,14 +89,16 @@ def render_single_views(mesh: trimesh.Trimesh, out_dir: Path, name: str, label_z
 
 
 def render_comparison_grid(stl_dir: Path, out_path: Path) -> None:
-    fig = plt.figure(figsize=(14, 9), dpi=150)
+    cols = 3
+    rows = math.ceil(len(STYLES) / cols)
+    fig = plt.figure(figsize=(14, 4.5 * rows), dpi=150)
     fig.patch.set_facecolor("#12141a")
-    fig.suptitle("门口收纳盒 · 6 款外观对比", fontsize=16, color="#e8eaef", y=0.98, fontweight="bold")
+    fig.suptitle(f"门口收纳盒 · {len(STYLES)} 款外观对比", fontsize=16, color="#e8eaef", y=0.98, fontweight="bold")
 
     for i, (sid, label_zh, color) in enumerate(STYLES):
         stl = stl_dir / f"entryway_box_{sid}.stl"
         mesh = load_stl(stl)
-        ax = fig.add_subplot(2, 3, i + 1, projection="3d")
+        ax = fig.add_subplot(rows, cols, i + 1, projection="3d")
         draw_mesh(ax, mesh, color)
         setup_ax(ax, 26, -52, f"{label_zh}\n({sid})")
         ax.set_xlabel("")
@@ -108,13 +112,15 @@ def render_comparison_grid(stl_dir: Path, out_path: Path) -> None:
 
 
 def render_topdown_grid(stl_dir: Path, out_path: Path) -> None:
-    fig = plt.figure(figsize=(14, 8), dpi=150)
+    cols = 3
+    rows = math.ceil(len(STYLES) / cols)
+    fig = plt.figure(figsize=(14, 4 * rows), dpi=150)
     fig.patch.set_facecolor("#12141a")
     fig.suptitle("俯视图对比 · 分格布局相同", fontsize=15, color="#e8eaef", y=0.98)
 
     for i, (sid, label_zh, color) in enumerate(STYLES):
         mesh = load_stl(stl_dir / f"entryway_box_{sid}.stl")
-        ax = fig.add_subplot(2, 3, i + 1, projection="3d")
+        ax = fig.add_subplot(rows, cols, i + 1, projection="3d")
         draw_mesh(ax, mesh, color)
         setup_ax(ax, 90, -90, label_zh)
 
@@ -126,7 +132,9 @@ def render_topdown_grid(stl_dir: Path, out_path: Path) -> None:
 
 def render_side_slope(stl_dir: Path, out_path: Path) -> None:
     """Side profile comparison — shows letters end higher."""
-    fig, axes = plt.subplots(2, 3, figsize=(14, 7), dpi=150)
+    cols = 3
+    rows = math.ceil(len(STYLES) / cols)
+    fig, axes = plt.subplots(rows, cols, figsize=(14, 3.5 * rows), dpi=150)
     fig.patch.set_facecolor("#12141a")
     fig.suptitle("侧面坡度对比 · 信件端（右）最高", fontsize=15, color="#e8eaef")
 
@@ -149,6 +157,8 @@ def render_side_slope(stl_dir: Path, out_path: Path) -> None:
         ax_flat.tick_params(colors="#666", labelsize=7)
         for sp in ax_flat.spines.values():
             sp.set_color("#333")
+    for ax_flat in axes.flat[len(STYLES):]:
+        ax_flat.axis("off")
 
     fig.tight_layout(rect=[0, 0, 1, 0.93])
     fig.savefig(out_path, facecolor=fig.get_facecolor(), bbox_inches="tight")

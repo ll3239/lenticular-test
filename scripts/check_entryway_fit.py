@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import struct
 from pathlib import Path
@@ -43,11 +44,18 @@ def result(name: str, actual, required, passed: bool, note: str) -> dict:
 
 
 def main() -> None:
-    spec = json.loads(SPEC.read_text(encoding="utf-8"))
-    extents = binary_stl_extents(STL)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--stl", type=Path, default=STL)
+    parser.add_argument("--spec", type=Path, default=SPEC)
+    parser.add_argument("--report-json", type=Path, default=REPORT_JSON)
+    parser.add_argument("--report-md", type=Path, default=REPORT_MD)
+    args = parser.parse_args()
+
+    spec = json.loads(args.spec.read_text(encoding="utf-8"))
+    extents = binary_stl_extents(args.stl)
     import trimesh
 
-    mesh = trimesh.load(STL, force="mesh", process=True)
+    mesh = trimesh.load(args.stl, force="mesh", process=True)
     mesh_integrity = {
         "watertight": bool(mesh.is_watertight),
         "winding_consistent": bool(mesh.is_winding_consistent),
@@ -122,7 +130,7 @@ def main() -> None:
         ]
 
     report = {
-        "stl": str(STL),
+        "stl": str(args.stl),
         "stl_extents_mm": extents,
         "mesh_integrity": mesh_integrity,
         "expected_outer_mm": spec["outer_mm"],
@@ -133,7 +141,8 @@ def main() -> None:
         "p1s_fit_pass": printers[0]["pass"],
         "mesh_integrity_pass": all(mesh_integrity.values()),
     }
-    REPORT_JSON.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+    args.report_json.parent.mkdir(parents=True, exist_ok=True)
+    args.report_json.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
 
     status = lambda passed: "PASS" if passed else "FAIL"
     lines = [
@@ -163,9 +172,10 @@ def main() -> None:
         "> Cards are stored upright. Power banks are stored upright and protrude above the rim; the slot supports most of their height.",
         "",
     ]
-    REPORT_MD.write_text("\n".join(lines), encoding="utf-8")
-    print(f"Wrote {REPORT_JSON}")
-    print(f"Wrote {REPORT_MD}")
+    args.report_md.parent.mkdir(parents=True, exist_ok=True)
+    args.report_md.write_text("\n".join(lines), encoding="utf-8")
+    print(f"Wrote {args.report_json}")
+    print(f"Wrote {args.report_md}")
     if not report["all_item_checks_pass"] or not report["p1s_fit_pass"] or not report["mesh_integrity_pass"]:
         raise SystemExit("Fit validation failed")
 

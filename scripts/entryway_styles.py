@@ -39,6 +39,13 @@ STYLES: dict[str, StyleInfo] = {
         "True 10 mm rounded outer walls and a 12 mm rounded base.",
         "圆角外壁、圆角底，边缘更温柔",
     ),
+    "arch_wave": StyleInfo(
+        "arch_wave",
+        "Arch Wave",
+        "圆拱波浪细条纹",
+        "Rounded body, three soft arches at the opening, and fine vertical exterior flutes.",
+        "圆角 + 上沿圆拱波浪 + 外壁竖细条纹",
+    ),
     "chamfer": StyleInfo(
         "chamfer",
         "Chamfer",
@@ -360,6 +367,81 @@ def apply_soft_rim_cap(
         )
 
 
+def apply_arch_wave(
+    verts: list,
+    faces: list,
+    *,
+    ox: float,
+    oy: float,
+    w_int: float,
+    l_int: float,
+    wall: float,
+    z_floor: float,
+    h_front: float,
+    h_back: float,
+    flute_spacing: float = 12.0,
+    flute_width: float = 1.6,
+    flute_depth: float = 1.2,
+    arch_height: float = 4.5,
+) -> None:
+    """Exterior-only flutes plus three smooth arches along front/back rims."""
+    gen = _gen()
+    add_box, rim_height = gen.add_box, gen.rim_height
+
+    outer_w = w_int + 2 * wall
+    outer_l = l_int + 2 * wall
+    half = flute_width / 2
+    z_low = z_floor + 6.0
+
+    # Fine vertical flutes on all four exterior faces. Each overlaps the wall
+    # by 0.4 mm for a reliable boolean union and never enters a compartment.
+    for x in np.arange(18.0, outer_w - 17.0, flute_spacing):
+        add_box(
+            verts, faces, x - half, -flute_depth, z_low,
+            x + half, 0.4, z_floor + h_front - 7.0,
+        )
+        add_box(
+            verts, faces, x - half, outer_l - 0.4, z_low,
+            x + half, outer_l + flute_depth, z_floor + h_back - 7.0,
+        )
+
+    for y in np.arange(18.0, outer_l - 17.0, flute_spacing):
+        y_local = np.clip(y - oy, 0.0, l_int)
+        z_high = z_floor + rim_height(y_local, h_front, h_back, l_int) - 7.0
+        add_box(
+            verts, faces, -flute_depth, y - half, z_low,
+            0.4, y + half, z_high,
+        )
+        add_box(
+            verts, faces, outer_w - 0.4, y - half, z_low,
+            outer_w + flute_depth, y + half, z_high,
+        )
+
+    # Three broad round arches form a gentle wave only at the top opening.
+    # The wall body remains straight, preserving strength and usable volume.
+    x_start = 12.0
+    x_end = outer_w - 12.0
+    arch_width = (x_end - x_start) / 3.0
+    segments_per_arch = 18
+    for arch_index in range(3):
+        base_x = x_start + arch_index * arch_width
+        for segment in range(segments_per_arch):
+            u0 = segment / segments_per_arch
+            u1 = (segment + 1) / segments_per_arch
+            mid = (u0 + u1) / 2.0
+            height = arch_height * math.sin(math.pi * mid)
+            xa = base_x + u0 * arch_width - 0.12
+            xb = base_x + u1 * arch_width + 0.12
+            add_box(
+                verts, faces, xa, -0.5, z_floor + h_front - 0.5,
+                xb, oy + 0.5, z_floor + h_front + height,
+            )
+            add_box(
+                verts, faces, xa, oy + l_int - 0.5, z_floor + h_back - 0.5,
+                xb, outer_l + 0.5, z_floor + h_back + height,
+            )
+
+
 def apply_style(
     style: str,
     verts: list,
@@ -383,6 +465,12 @@ def apply_style(
     if style == "rounded":
         # Rounded base and true quarter-annulus corner walls are constructed
         # directly by build_mesh so they preserve the usable compartment area.
+        return
+    if style == "arch_wave":
+        apply_arch_wave(
+            verts, faces, ox=ox, oy=oy, w_int=w_int, l_int=l_int, wall=wall,
+            z_floor=z_floor, h_front=h_front, h_back=h_back,
+        )
         return
     if style == "chamfer":
         apply_rim_chamfer(

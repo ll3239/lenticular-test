@@ -1,6 +1,6 @@
 {
-  "style": "rounded",
-  "layout": "classic",
+  "style": "arch_wave",
+  "layout": "compact",
   "layout_presets": null,
   "style_variants": [
     {
