@@ -2,10 +2,10 @@ name: Deploy 3D preview (GitHub Pages)
 
 on:
   push:
-    branches: [main]
+    branches: [main, cursor/entryway-storage-box-597e]
     paths:
       - 'viewer/**'
-      - 'output/styles/**'
+      - 'output/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
