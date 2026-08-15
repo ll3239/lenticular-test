@@ -378,7 +378,9 @@ def add_front_lip(
     """Support-free retaining lip continuing vertically from the front wall."""
     y0 = y_front - wall
     y1 = y_front
-    z0 = rim_z
+    # A 0.2 mm vertical overlap keeps the lip and wall in one boolean body
+    # without creating any inward horizontal cantilever.
+    z0 = rim_z - 0.2
     z1 = rim_z + lip_h
     add_box(verts, faces, x0, y0, z0, x1, y1, z1)
 
