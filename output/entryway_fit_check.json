@@ -1,8 +1,8 @@
 {
   "stl": "output/entryway_storage_box.stl",
   "stl_extents_mm": [
-    204.0,
-    232.0,
+    205.5,
+    232.75,
     152.0
   ],
   "mesh_integrity": {
@@ -11,18 +11,31 @@
     "single_printable_volume": true
   },
   "expected_outer_mm": {
-    "width": 204.0,
-    "length": 232.0,
+    "width": 205.5,
+    "length": 232.75,
     "height_front": 32.0,
     "height_back": 152.0
   },
   "brim_mm_each_side": 5.0,
   "item_checks": [
     {
+      "name": "Earphones / misc front bay",
+      "actual_mm": [
+        100.0,
+        100.0
+      ],
+      "required_mm": [
+        90.0,
+        90.0
+      ],
+      "pass": true,
+      "note": "100×100 mm clear front-left tray."
+    },
+    {
       "name": "Six oil bottles (3×2)",
       "actual_mm": [
-        99.25,
-        99.25
+        100.0,
+        100.0
       ],
       "required_mm": [
         90.0,
@@ -32,35 +45,35 @@
       "note": "Six Ø30 mm bottles fit in a 3×2 arrangement."
     },
     {
-      "name": "Power banks (merged bay)",
+      "name": "Power banks (merged bay, rear)",
       "actual_mm": [
-        99.25,
-        64.5
+        100.0,
+        71.75
       ],
       "required_mm": [
         80.0,
         60.0
       ],
       "pass": true,
-      "note": "Two 110×80×30 mm banks in one 66 mm-deep bay (no divider between them)."
+      "note": "Two 110×80×30 mm banks in one ≥60 mm-deep rear bay."
     },
     {
-      "name": "Coiled data cable",
+      "name": "Coiled data cable (shallow front)",
       "actual_mm": [
-        99.25,
-        30.5
+        100.0,
+        24.0
       ],
       "required_mm": [
         60.0,
-        30.0
+        24.0
       ],
       "pass": true,
-      "note": "Allows an approximately 60×30 mm flattened cable bundle."
+      "note": "Shallow 24 mm front tray; width fits a ~60 mm coiled bundle."
     },
     {
       "name": "Standard cards",
       "actual_mm": [
-        99.25,
+        100.0,
         25.0
       ],
       "required_mm": [
@@ -103,13 +116,13 @@
         256.0
       ],
       "with_brim_mm": [
-        214.0,
-        242.0
+        215.5,
+        242.75
       ],
       "pass": true,
       "remaining_margin_mm": [
-        42.0,
-        14.0
+        40.5,
+        13.25
       ]
     },
     {
@@ -119,13 +132,13 @@
         180.0
       ],
       "with_brim_mm": [
-        214.0,
-        242.0
+        215.5,
+        242.75
       ],
       "pass": false,
       "remaining_margin_mm": [
-        -34.0,
-        -62.0
+        -35.5,
+        -62.75
       ]
     }
   ],

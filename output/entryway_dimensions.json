@@ -2,8 +2,8 @@
   "title": "玄关收纳盒 — 内腔尺寸明细",
   "orientation": "俯视：X 为左右宽，Y 为前后深；Y=0 是门口，Y 最大处贴墙。",
   "internal_footprint_mm": {
-    "width_x": 200.0,
-    "depth_y": 228.0
+    "width_x": 201.5,
+    "depth_y": 228.75
   },
   "divider_thickness_mm": 1.5,
   "partition_clearance_mm": 10.0,
@@ -18,18 +18,18 @@
       "name_en": "earphones_other",
       "position_internal_mm": {
         "x0": 0,
-        "x1": 100.0,
+        "x1": 100.75,
         "y0": 0,
-        "y1": 100.0,
+        "y1": 100.75,
         "note": "Y=0 为门口（前），Y 增大靠墙（后）"
       },
       "internal_net_mm": {
-        "width_x": 99.25,
-        "depth_y": 99.25
-      },
-      "internal_bbox_mm": {
         "width_x": 100.0,
         "depth_y": 100.0
+      },
+      "internal_bbox_mm": {
+        "width_x": 100.75,
+        "depth_y": 100.75
       },
       "baffle_height_mm": {
         "front_at_y0": 20.0,
@@ -46,19 +46,19 @@
       "name_zh": "精油",
       "name_en": "essential_oils",
       "position_internal_mm": {
-        "x0": 100.0,
-        "x1": 200.0,
+        "x0": 100.75,
+        "x1": 201.5,
         "y0": 0,
-        "y1": 100.0,
+        "y1": 100.75,
         "note": "Y=0 为门口（前），Y 增大靠墙（后）"
       },
       "internal_net_mm": {
-        "width_x": 99.25,
-        "depth_y": 99.25
-      },
-      "internal_bbox_mm": {
         "width_x": 100.0,
         "depth_y": 100.0
+      },
+      "internal_bbox_mm": {
+        "width_x": 100.75,
+        "depth_y": 100.75
       },
       "baffle_height_mm": {
         "front_at_y0": 20.0,
@@ -76,17 +76,17 @@
       "name_en": "receipts",
       "position_internal_mm": {
         "x0": 0,
-        "x1": 100.0,
-        "y0": 100.0,
-        "y1": 121.5,
+        "x1": 100.75,
+        "y0": 100.75,
+        "y1": 122.25,
         "note": "Y=0 为门口（前），Y 增大靠墙（后）"
       },
       "internal_net_mm": {
-        "width_x": 99.25,
+        "width_x": 100.0,
         "depth_y": 20.0
       },
       "internal_bbox_mm": {
-        "width_x": 100.0,
+        "width_x": 100.75,
         "depth_y": 21.5
       },
       "baffle_height_mm": {
@@ -105,17 +105,17 @@
       "name_en": "card_1",
       "position_internal_mm": {
         "x0": 0,
-        "x1": 100.0,
-        "y0": 121.5,
-        "y1": 148.0,
+        "x1": 100.75,
+        "y0": 122.25,
+        "y1": 148.75,
         "note": "Y=0 为门口（前），Y 增大靠墙（后）"
       },
       "internal_net_mm": {
-        "width_x": 99.25,
+        "width_x": 100.0,
         "depth_y": 25.0
       },
       "internal_bbox_mm": {
-        "width_x": 100.0,
+        "width_x": 100.75,
         "depth_y": 26.5
       },
       "baffle_height_mm": {
@@ -134,17 +134,17 @@
       "name_en": "card_2",
       "position_internal_mm": {
         "x0": 0,
-        "x1": 100.0,
-        "y0": 148.0,
-        "y1": 174.5,
+        "x1": 100.75,
+        "y0": 148.75,
+        "y1": 175.25,
         "note": "Y=0 为门口（前），Y 增大靠墙（后）"
       },
       "internal_net_mm": {
-        "width_x": 99.25,
+        "width_x": 100.0,
         "depth_y": 25.0
       },
       "internal_bbox_mm": {
-        "width_x": 100.0,
+        "width_x": 100.75,
         "depth_y": 26.5
       },
       "baffle_height_mm": {
@@ -163,17 +163,17 @@
       "name_en": "misc_cards",
       "position_internal_mm": {
         "x0": 0,
-        "x1": 100.0,
-        "y0": 174.5,
-        "y1": 187.25,
+        "x1": 100.75,
+        "y0": 175.25,
+        "y1": 188.0,
         "note": "Y=0 为门口（前），Y 增大靠墙（后）"
       },
       "internal_net_mm": {
-        "width_x": 99.25,
+        "width_x": 100.0,
         "depth_y": 12.0
       },
       "internal_bbox_mm": {
-        "width_x": 100.0,
+        "width_x": 100.75,
         "depth_y": 12.75
       },
       "baffle_height_mm": {
@@ -187,60 +187,60 @@
       }
     },
     {
-      "id": "power_banks",
-      "name_zh": "充电宝",
-      "name_en": "power_banks",
-      "position_internal_mm": {
-        "x0": 100.0,
-        "x1": 200.0,
-        "y0": 100.0,
-        "y1": 166.0,
-        "note": "Y=0 为门口（前），Y 增大靠墙（后）"
-      },
-      "internal_net_mm": {
-        "width_x": 99.25,
-        "depth_y": 64.5
-      },
-      "internal_bbox_mm": {
-        "width_x": 100.0,
-        "depth_y": 66.0
-      },
-      "baffle_height_mm": {
-        "front_at_y0": 70.0,
-        "back_at_y1": 106.1,
-        "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
-      },
-      "rim_height_mm": {
-        "front_at_y0": 80.0,
-        "back_at_y1": 116.1
-      }
-    },
-    {
       "id": "data_cable",
       "name_zh": "数据线",
       "name_en": "data_cable",
       "position_internal_mm": {
-        "x0": 100.0,
-        "x1": 200.0,
-        "y0": 166.0,
-        "y1": 198.0,
+        "x0": 100.75,
+        "x1": 201.5,
+        "y0": 100.75,
+        "y1": 126.25,
         "note": "Y=0 为门口（前），Y 增大靠墙（后）"
       },
       "internal_net_mm": {
-        "width_x": 99.25,
-        "depth_y": 31.25
+        "width_x": 100.0,
+        "depth_y": 24.0
       },
       "internal_bbox_mm": {
-        "width_x": 100.0,
-        "depth_y": 32.0
+        "width_x": 100.75,
+        "depth_y": 25.5
       },
       "baffle_height_mm": {
-        "front_at_y0": 106.1,
+        "front_at_y0": 70.0,
+        "back_at_y1": 83.9,
+        "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
+      },
+      "rim_height_mm": {
+        "front_at_y0": 80.0,
+        "back_at_y1": 93.9
+      }
+    },
+    {
+      "id": "power_banks",
+      "name_zh": "充电宝",
+      "name_en": "power_banks",
+      "position_internal_mm": {
+        "x0": 100.75,
+        "x1": 201.5,
+        "y0": 126.25,
+        "y1": 198.75,
+        "note": "Y=0 为门口（前），Y 增大靠墙（后）"
+      },
+      "internal_net_mm": {
+        "width_x": 100.0,
+        "depth_y": 71.75
+      },
+      "internal_bbox_mm": {
+        "width_x": 100.75,
+        "depth_y": 72.5
+      },
+      "baffle_height_mm": {
+        "front_at_y0": 83.9,
         "back_at_y1": 123.6,
         "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
       },
       "rim_height_mm": {
-        "front_at_y0": 116.1,
+        "front_at_y0": 93.9,
         "back_at_y1": 133.6
       }
     },
@@ -250,17 +250,17 @@
       "name_en": "letters",
       "position_internal_mm": {
         "x0": 0,
-        "x1": 200.0,
-        "y0": 198.0,
-        "y1": 228.0,
+        "x1": 201.5,
+        "y0": 198.75,
+        "y1": 228.75,
         "note": "Y=0 为门口（前），Y 增大靠墙（后）"
       },
       "internal_net_mm": {
-        "width_x": 198.5,
+        "width_x": 200.0,
         "depth_y": 29.25
       },
       "internal_bbox_mm": {
-        "width_x": 200.0,
+        "width_x": 201.5,
         "depth_y": 30.0
       },
       "baffle_height_mm": {

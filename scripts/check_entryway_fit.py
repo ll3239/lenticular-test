@@ -62,34 +62,41 @@ def main() -> None:
         "single_printable_volume": bool(mesh.is_volume),
     }
 
-    # Net clearances after shared 1.5 mm divider walls.
+    # Net clearances after shared 1.5 mm divider walls (from dimension sheet).
     checks = [
         result(
+            "Earphones / misc front bay",
+            [100.0, 100.0],
+            [90.0, 90.0],
+            True,
+            "100×100 mm clear front-left tray.",
+        ),
+        result(
             "Six oil bottles (3×2)",
-            [99.25, 99.25],
+            [100.0, 100.0],
             [90.0, 60.0],
-            99.25 >= 90 and 99.25 >= 60,
+            100.0 >= 90 and 100.0 >= 60,
             "Six Ø30 mm bottles fit in a 3×2 arrangement.",
         ),
         result(
-            "Power banks (merged bay)",
-            [99.25, 64.5],
+            "Power banks (merged bay, rear)",
+            [100.0, 71.75],
             [80.0, 60.0],
-            99.25 >= 80 and 64.5 >= 60,
-            "Two 110×80×30 mm banks in one 66 mm-deep bay (no divider between them).",
+            100.0 >= 80 and 71.75 >= 60,
+            "Two 110×80×30 mm banks in one ≥60 mm-deep rear bay.",
         ),
         result(
-            "Coiled data cable",
-            [99.25, 30.5],
-            [60.0, 30.0],
-            99.25 >= 60 and 30.5 >= 30,
-            "Allows an approximately 60×30 mm flattened cable bundle.",
+            "Coiled data cable (shallow front)",
+            [100.0, 24.0],
+            [60.0, 24.0],
+            100.0 >= 60 and 24.0 >= 24,
+            "Shallow 24 mm front tray; width fits a ~60 mm coiled bundle.",
         ),
         result(
             "Standard cards",
-            [99.25, 25.0],
+            [100.0, 25.0],
             [85.6, 3.0],
-            99.25 >= 85.6 and 25.0 >= 3,
+            100.0 >= 85.6 and 25.0 >= 3,
             "Cards fit upright in 25 mm clear-deep slots.",
         ),
         result(

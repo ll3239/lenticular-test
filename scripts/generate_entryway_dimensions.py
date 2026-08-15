@@ -89,7 +89,7 @@ def compartment_dividers_y_for_cell(c: Compartment, layout: Layout) -> tuple[flo
             ym0 + layout.left_receipts_span + 2 * layout.left_card_span,
         ])
     elif spans_right and not spans_left:
-        edges.append(ym0 + layout.right_power_banks_d)
+        edges.append(ym0 + layout.right_cable_span)
 
     return tuple(sorted(set(edges)))
 
@@ -204,11 +204,11 @@ def write_markdown(report: dict, path: Path) -> None:
             "  ┌──────────100──────────┬──────────100──────────┐",
             "  │      耳机/杂物         │        精油           │ 100",
             "  ├──────────100──────────┼──────────100──────────┤",
-            "  │ 收据│卡1│卡2│散卡  │ gutter │ 充电宝 │ 数据线   │  98",
+            "  │ 收据│卡1│卡2│散卡  │ gutter │ 数据线 │ 充电宝   │  98",
             "  ├───────────────────────┴───────────────────────┤",
-            "  │                    信件 (200 宽)                 │  30",
-            "  └─────────────────────────────────────────────────┘  Y=228 墙",
-            "  X=0                                              X=200",
+            "  │                    信件 (201.5 宽)               │  30",
+            "  └─────────────────────────────────────────────────┘  Y=229 墙",
+            "  X=0                                            X=201.5",
             "```",
             "",
             "完整 SVG 尺寸图：`output/entryway_dimensions.svg`",

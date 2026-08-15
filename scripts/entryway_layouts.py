@@ -13,7 +13,8 @@ MID = 98.0
 LEFT_RECEIPTS_SPAN = 21.5
 LEFT_CARD_SPAN = 26.5
 LEFT_MISC_SPAN = 12.75
-RIGHT_PB_SPAN = 66.0
+RIGHT_CABLE_SPAN = 25.5  # 24 mm clear + 1.5 mm divider (shallow front bay)
+RIGHT_PB_SPAN = 72.5  # remainder of 98 mm mid row (≥60 mm clear)
 LETTERS = 30.0
 
 
@@ -57,7 +58,7 @@ def _core_grid(x0: float, y0: float) -> tuple[Compartment, ...]:
     y_r1 = ym + LEFT_RECEIPTS_SPAN
     y_c1 = y_r1 + LEFT_CARD_SPAN
     y_c2 = y_c1 + LEFT_CARD_SPAN
-    y_pb = ym + RIGHT_PB_SPAN
+    y_cable1 = ym + RIGHT_CABLE_SPAN
     return (
         Compartment("earphones_other", xl, xl + COL, y0, y0 + FRONT, 48),
         Compartment("essential_oils", xr, xr + COL, y0, y0 + FRONT, 82),
@@ -65,8 +66,8 @@ def _core_grid(x0: float, y0: float) -> tuple[Compartment, ...]:
         Compartment("card_1", xl, xl + COL, y_r1, y_c1, 12),
         Compartment("card_2", xl, xl + COL, y_c1, y_c2, 12),
         Compartment("misc_cards", xl, xl + COL, y_c2, y_c2 + LEFT_MISC_SPAN, 28),
-        Compartment("power_banks", xr, xr + COL, ym, y_pb, 112),
-        Compartment("data_cable", xr, xr + COL, y_pb, ym + MID, 32),
+        Compartment("data_cable", xr, xr + COL, ym, y_cable1, 32),
+        Compartment("power_banks", xr, xr + COL, y_cable1, ym + MID, 112),
     )
 
 
@@ -79,8 +80,8 @@ def _row_four_compartments() -> tuple[Compartment, ...]:
         Compartment("card_1", 2 * COL, 3 * COL, 21.5, 48.0, 12),
         Compartment("card_2", 2 * COL, 3 * COL, 48.0, 74.5, 12),
         Compartment("misc_cards", 2 * COL, 3 * COL, 74.5, 74.5 + LEFT_MISC_SPAN, 28),
-        Compartment("power_banks", 3 * COL, 4 * COL, 0, RIGHT_PB_SPAN, 112),
-        Compartment("data_cable", 3 * COL, 4 * COL, RIGHT_PB_SPAN, MID, 32),
+        Compartment("data_cable", 3 * COL, 4 * COL, 0, RIGHT_CABLE_SPAN, 32),
+        Compartment("power_banks", 3 * COL, 4 * COL, RIGHT_CABLE_SPAN, MID, 112),
         Compartment("letters", 0, 4 * COL, FRONT, FRONT + LETTERS, 25),
     )
 
@@ -102,7 +103,7 @@ LAYOUT_PRESETS: dict[str, LayoutPreset] = {
         id="classic",
         name_zh="经典紧凑",
         name_en="Classic",
-        tagline="200×228 原图布局 · 槽位留公差 · P1S 一次打印",
+        tagline="201.5×228.75 原图布局 · 100×100 前排 · P1S 一次打印",
         style="rounded",
         layout=Layout(gutter=0, margin_x=0, margin_y=0),
     ),

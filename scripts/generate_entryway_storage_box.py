@@ -9,7 +9,7 @@ Modular layout — same cell sizes (100×100, 100×80, …) with gutters between
   ┌─ margin ─┬──100──┬ gutter ┬──100──┬─ margin ─┐
   │ earphones│       │        │  oils  │          │  100
   ├──────────┴───────┤        ├────────┴──────────┤
-  │ receipts/cards…  │ gutter │ power banks + cable │   98
+  │ receipts/cards…  │ gutter │ cable (front) + power banks (back) │   98
   ├──────────────────┴────────┴───────────────────┤
   │              letters (full width)              │   30
   └────────────────────────────────────────────────┘
@@ -41,18 +41,27 @@ class Compartment:
 class Layout:
     """Compartment grid with gutters — cells keep original sketch sizes."""
 
-    col_w: float = 100.0
+    col_clear_w: float = 100.0  # internal clear width per front/mid column
     gutter: float = 10.0
     margin_x: float = 21.0  # wider side margins → 横长方形 (宽 > 深)
     margin_y: float = 4.0
-    front_h: float = 100.0
+    front_clear_d: float = 100.0  # internal clear depth — earphones / oils row
     # 98 mm mid — left clear depths: receipts 20, cards 25+25, misc 12
     mid_h: float = 98.0
     letters_h: float = 30.0
     left_receipts_clear: float = 20.0
     left_card_clear: float = 25.0
     left_misc_clear: float = 12.0
-    right_cable_d: float = 32.0
+    right_cable_clear: float = 24.0  # shallow front bay (front of right mid column)
+    right_power_banks_clear_min: float = 60.0
+
+    @property
+    def col_w(self) -> float:
+        return self.col_clear_w + DIVIDER / 2
+
+    @property
+    def front_h(self) -> float:
+        return self.front_clear_d + DIVIDER / 2
 
     @property
     def left_receipts_span(self) -> float:
@@ -68,8 +77,12 @@ class Layout:
         return self.left_misc_clear + DIVIDER / 2
 
     @property
-    def right_power_banks_d(self) -> float:
-        return self.mid_h - self.right_cable_d
+    def right_cable_span(self) -> float:
+        return self.right_cable_clear + DIVIDER
+
+    @property
+    def right_power_banks_span(self) -> float:
+        return self.mid_h - self.right_cable_span
 
     @property
     def w_int(self) -> float:
@@ -143,7 +156,7 @@ class Layout:
         y_c1 = y_r1 + self.left_card_span
         y_c2 = y_c1 + self.left_card_span
         y_misc1 = y_c2 + self.left_misc_span
-        y_pb1 = ym0 + self.right_power_banks_d
+        y_cable1 = ym0 + self.right_cable_span
         return (
             Compartment("earphones_other", xl0, xl1, yf0, yf1, 48),
             Compartment("essential_oils", xr0, xr1, yf0, yf1, 82),
@@ -151,13 +164,13 @@ class Layout:
             Compartment("card_1", xl0, xl1, y_r1, y_c1, 80),
             Compartment("card_2", xl0, xl1, y_c1, y_c2, 80),
             Compartment("misc_cards", xl0, xl1, y_c2, y_misc1, 28),
-            Compartment("power_banks", xr0, xr1, ym0, y_pb1, 112),
-            Compartment("data_cable", xr0, xr1, y_pb1, ym1, 32),
+            Compartment("data_cable", xr0, xr1, ym0, y_cable1, 32),
+            Compartment("power_banks", xr0, xr1, y_cable1, ym1, 112),
             Compartment("letters", 0, self.w_int, yl0, yl1, 148),
         )
 
 
-LAYOUT_COMPACT = Layout(gutter=0, margin_x=0, margin_y=0)  # corrected 200×228
+LAYOUT_COMPACT = Layout(gutter=0, margin_x=0, margin_y=0)  # corrected 201.5×228.75 internal
 LAYOUT_MODULAR = Layout()
 
 
@@ -598,7 +611,7 @@ def _add_dividers_mail_spine(
             y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
             z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
-    y_cable = ym0 + (80.0 - 32.0)  # mail_spine mid = 80 mm
+    y_cable = ym0 + layout_ref.right_cable_span
     x0, x1 = _inset_partition_x(ox, xr0, xr1, w_int)
     add_sloped_horizontal_partition(
         verts, faces, x0=x0, x1=x1,
@@ -677,7 +690,7 @@ def _add_dividers_grid(
             y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
             z_floor=z_floor, top_z_at_y=left_partition_top_z,
         )
-    y_cable = ym0 + layout.right_power_banks_d
+    y_cable = ym0 + layout.right_cable_span
     x0, x1 = _inset_partition_x(ox, xr0, xr1, w_int)
     add_sloped_horizontal_partition(
         verts, faces, x0=x0, x1=x1,
