@@ -2,8 +2,8 @@
   "stl": "output/entryway_storage_box.stl",
   "stl_extents_mm": [
     204.0,
-    235.0,
-    157.79800415039062
+    232.0,
+    152.0
   ],
   "mesh_integrity": {
     "watertight": true,
@@ -117,12 +117,12 @@
       ],
       "with_brim_mm": [
         214.0,
-        245.0
+        242.0
       ],
       "pass": true,
       "remaining_margin_mm": [
         42.0,
-        11.0
+        14.0
       ]
     },
     {
@@ -133,12 +133,12 @@
       ],
       "with_brim_mm": [
         214.0,
-        245.0
+        242.0
       ],
       "pass": false,
       "remaining_margin_mm": [
         -34.0,
-        -65.0
+        -62.0
       ]
     }
   ],

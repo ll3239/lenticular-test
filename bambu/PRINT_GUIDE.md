@@ -78,13 +78,6 @@ If your printer profile differs (e.g. only A1 mini), change **Printer** to your 
 | Filament | ~180–220 g |
 | Nozzle | **0.4 mm** standard (see 0.2 mm note below) |
 
-### Arch-wave exterior variant
-
-- File: `output/styles/entryway_box_arch_wave.stl`
-- Measured size: **206.4 × 234.4 × 97.4 mm**
-- With 5 mm brim: **216.4 × 244.4 mm**
-- Fits P1/P1S/X1/A1 256 mm bed (tight-axis total margin: **11.6 mm**)
-- Supports: **Off** — asymmetric waves are vertical top-rim extensions and the flutes are printable wall relief
 
 ## 0.2 mm nozzle (optional)
 

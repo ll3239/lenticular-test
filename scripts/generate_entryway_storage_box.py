@@ -593,9 +593,9 @@ def build_mesh(
     outer_w = w_int + 2 * wall
     outer_l = l_int + 2 * wall
 
-    rounded_walls = style in ("rounded", "arch_wave")
+    rounded_walls = style == "rounded"
     corner_radius = 10.0
-    if style in ("rounded", "arch_wave", "accent"):
+    if style in ("rounded", "accent"):
         from entryway_styles import apply_rounded_base
 
         corner_r = corner_radius + wall if rounded_walls else 8.0

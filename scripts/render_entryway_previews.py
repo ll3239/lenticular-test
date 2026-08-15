@@ -27,7 +27,6 @@ plt.rcParams["axes.unicode_minus"] = False
 STYLES = [
     ("minimal", "极简直角", "#c8cdd8"),
     ("rounded", "圆角柔和", "#d4c4b0"),
-    ("arch_wave", "不规则波浪细条纹", "#d7c6ae"),
     ("chamfer", "倒角线框", "#b8c8d8"),
     ("tiered", "阶梯分层", "#c0b8a8"),
     ("wells", "精油定位环", "#b8d0c0"),

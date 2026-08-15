@@ -12,17 +12,9 @@
       "id": "rounded",
       "name_en": "Rounded",
       "name_zh": "圆角柔和",
-      "description": "True 10 mm rounded walls plus soft asymmetric organic rim waves.",
-      "look": "圆角 + 更大不对称上沿波浪",
+      "description": "True 10 mm rounded outer walls and a 12 mm rounded base.",
+      "look": "圆角外壁、圆角底，边缘更温柔",
       "stl": "output/styles/entryway_box_rounded.stl"
-    },
-    {
-      "id": "arch_wave",
-      "name_en": "Organic Arch Wave",
-      "name_zh": "不规则圆拱波浪细条纹",
-      "description": "Rounded body, bold asymmetric front/back waves, and fine vertical exterior flutes.",
-      "look": "圆角 + 更大错位波浪 + 外壁竖细条纹",
-      "stl": "output/styles/entryway_box_arch_wave.stl"
     },
     {
       "id": "chamfer",

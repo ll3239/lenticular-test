@@ -83,7 +83,7 @@
   <header>
     <div>
       <h1>门口收纳盒 · 外观对比</h1>
-      <p id="subtitle">默认：不规则波浪细条纹 — 拖动旋转 · 滚轮缩放</p>
+      <p id="subtitle">默认：圆角柔和 — 拖动旋转 · 滚轮缩放</p>
     </div>
     <button id="reset">重置视角</button>
   </header>
@@ -109,8 +109,7 @@
     import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 
     const STYLES = [
-      { id: 'arch_wave', name: 'Organic Wave', zh: '不规则波浪细条纹', look: '更大错位三波 + 竖细条纹', color: 0xd7c6ae },
-      { id: 'rounded', name: 'Rounded', zh: '圆角柔和', look: '圆角 + 柔和不对称波浪', color: 0xd4c4b0 },
+      { id: 'rounded', name: 'Rounded', zh: '圆角柔和', look: '圆角外壁、干净梯形坡度', color: 0xd4c4b0 },
       { id: 'minimal', name: 'Minimal', zh: '极简直角', look: '直角、干净、偏北欧', color: 0xc8cdd8 },
       { id: 'chamfer', name: 'Chamfer', zh: '倒角线框', look: '顶部斜切、设计师感', color: 0xb8c8d8 },
       { id: 'tiered', name: 'Tiered', zh: '阶梯分层', look: '外壁分段台阶', color: 0xc0b8a8 },
@@ -164,7 +163,7 @@
     const styleList = document.getElementById('style-list');
 
     const RAW_BASE = 'https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/output/styles';
-    const CACHE_BUST = 'sloped-parts';
+    const CACHE_BUST = 'rounded-only';
 
     function stlUrls(styleId) {
       const file = `entryway_box_${styleId}.stl?v=${CACHE_BUST}`;
