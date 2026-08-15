@@ -134,6 +134,7 @@ DIVIDER = 1.5
 BOTTOM = 2.0
 LIP = 5.0
 PARTITION_CLEARANCE = 10.0  # keep internal dividers ~1 cm below exterior rim
+WALL_INSET = 0.05  # keep sloped partitions off side walls for clean boolean union
 
 DEFAULT_LAYOUT = LAYOUT_COMPACT
 W_INT = DEFAULT_LAYOUT.w_int
@@ -311,6 +312,17 @@ def add_rounded_corner_wall(
         add_quad(verts, faces, ot0, ot1, it1, it0)
         add_quad(verts, faces, ii0, ii1, oi1, oi0)
 
+def _inset_partition_x(ox: float, x_local0: float, x_local1: float, w_int: float) -> tuple[float, float]:
+    """Pull partition faces slightly off side walls so boolean union stays watertight."""
+    x0 = ox + x_local0
+    x1 = ox + x_local1
+    if x_local0 <= 0:
+        x0 += WALL_INSET
+    if x_local1 >= w_int:
+        x1 -= WALL_INSET
+    return x0, x1
+
+
 def add_front_lip(
     verts: list,
     faces: list,
@@ -442,13 +454,13 @@ def _add_dividers_row_four(
     divider: float,
     z_floor: float,
     top_z_at_y,
-    slot_h,
 ) -> None:
     """One row of four 100 mm bays + letters band at back (y=100–130)."""
     row_y1 = 100.0
     y_part = oy + row_y1
+    x0, x1 = _inset_partition_x(ox, 0.0, 400.0, 400.0)
     add_sloped_horizontal_partition(
-        verts, faces, x0=ox, x1=ox + 400.0, y0=y_part - divider / 2, y1=y_part + divider / 2,
+        verts, faces, x0=x0, x1=x1, y0=y_part - divider / 2, y1=y_part + divider / 2,
         z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
     for x_div in (100.0, 200.0, 300.0):
@@ -456,15 +468,19 @@ def _add_dividers_row_four(
             verts, faces, y0=oy, y1=oy + row_y1, x_center=ox + x_div,
             thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
-    for y_edge, depth in ((20, 22), (40, 12), (60, 12)):
-        add_horizontal_divider(
-            verts, faces, x0=ox + 200.0, x1=ox + 300.0, y_center=oy + y_edge,
-            thickness=divider, divider_height=slot_h(oy + y_edge, depth), z_floor=z_floor,
+    for y_edge in (20, 40, 60):
+        x0, x1 = _inset_partition_x(ox, 200.0, 300.0, 400.0)
+        add_sloped_horizontal_partition(
+            verts, faces, x0=x0, x1=x1,
+            y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
+            z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
-    for y_edge, depth in ((30, 112), (60, 112), (80, 32)):
-        add_horizontal_divider(
-            verts, faces, x0=ox + 300.0, x1=ox + 400.0, y_center=oy + y_edge,
-            thickness=divider, divider_height=slot_h(oy + y_edge, depth), z_floor=z_floor,
+    for y_edge in (30, 60, 80):
+        x0, x1 = _inset_partition_x(ox, 300.0, 400.0, 400.0)
+        add_sloped_horizontal_partition(
+            verts, faces, x0=x0, x1=x1,
+            y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
+            z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
 
 
@@ -477,7 +493,7 @@ def _add_dividers_mail_spine(
     divider: float,
     z_floor: float,
     top_z_at_y,
-    slot_h,
+    w_int: float,
 ) -> None:
     """Core 200×180 grid + full-height letters spine at x=200–230."""
     xl0, xl1, xr0, xr1 = 0.0, 100.0, 100.0, 200.0
@@ -485,8 +501,9 @@ def _add_dividers_mail_spine(
     spine_x = 200.0
 
     for y_part in (oy + yf1, oy + ym1):
+        x0, x1 = _inset_partition_x(ox, 0.0, spine_x, w_int)
         add_sloped_horizontal_partition(
-            verts, faces, x0=ox, x1=ox + spine_x,
+            verts, faces, x0=x0, x1=x1,
             y0=y_part - divider / 2, y1=y_part + divider / 2,
             z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
@@ -506,15 +523,19 @@ def _add_dividers_mail_spine(
         verts, faces, y0=oy + ym0, y1=oy + ym1, x_center=ox + spine_x,
         thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
-    for y_edge, depth in ((ym0 + 24, 22), (ym0 + 46, 12), (ym0 + 68, 12)):
-        add_horizontal_divider(
-            verts, faces, x0=ox + xl0, x1=ox + xl1, y_center=oy + y_edge,
-            thickness=divider, divider_height=slot_h(oy + y_edge, depth), z_floor=z_floor,
+    for y_edge in (ym0 + 24, ym0 + 46, ym0 + 68):
+        x0, x1 = _inset_partition_x(ox, xl0, xl1, w_int)
+        add_sloped_horizontal_partition(
+            verts, faces, x0=x0, x1=x1,
+            y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
+            z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
-    for y_edge, depth in ((ym0 + 33, 112), (ym0 + 66, 112), (ym1, 32)):
-        add_horizontal_divider(
-            verts, faces, x0=ox + xr0, x1=ox + xr1, y_center=oy + y_edge,
-            thickness=divider, divider_height=slot_h(oy + y_edge, depth), z_floor=z_floor,
+    for y_edge in (ym0 + 33, ym0 + 66, ym1):
+        x0, x1 = _inset_partition_x(ox, xr0, xr1, w_int)
+        add_sloped_horizontal_partition(
+            verts, faces, x0=x0, x1=x1,
+            y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
+            z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
 
 
@@ -529,7 +550,6 @@ def _add_dividers_grid(
     divider: float,
     z_floor: float,
     top_z_at_y,
-    slot_h,
     letters_at_back: bool,
 ) -> None:
     xl0, xl1 = layout.x_left0, layout.x_left1
@@ -540,16 +560,18 @@ def _add_dividers_grid(
     gx1 = xr1
 
     y_front_mid = oy + yf1 + layout.gutter / 2
+    x0, x1 = _inset_partition_x(ox, 0.0, w_int if letters_at_back else gx1, w_int)
     add_sloped_horizontal_partition(
         verts, faces,
-        x0=ox, x1=ox + (w_int if letters_at_back else gx1),
+        x0=x0, x1=x1,
         y0=y_front_mid - divider / 2, y1=y_front_mid + divider / 2,
         z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
     if letters_at_back:
         y_mid_letters = oy + ym1 + layout.gutter / 2
+        x0, x1 = _inset_partition_x(ox, 0.0, w_int, w_int)
         add_sloped_horizontal_partition(
-            verts, faces, x0=ox, x1=ox + w_int,
+            verts, faces, x0=x0, x1=x1,
             y0=y_mid_letters - divider / 2, y1=y_mid_letters + divider / 2,
             z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
@@ -558,15 +580,19 @@ def _add_dividers_grid(
         verts, faces, y0=oy + yf0, y1=oy + ym1, x_center=ox + x_col_div,
         thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
-    for y_edge, depth in ((ym0 + 20, 22), (ym0 + 40, 12), (ym0 + 60, 12)):
-        add_horizontal_divider(
-            verts, faces, x0=ox + xl0, x1=ox + xl1, y_center=oy + y_edge,
-            thickness=divider, divider_height=slot_h(oy + y_edge, depth), z_floor=z_floor,
+    for y_edge in (ym0 + 20, ym0 + 40, ym0 + 60):
+        x0, x1 = _inset_partition_x(ox, xl0, xl1, w_int)
+        add_sloped_horizontal_partition(
+            verts, faces, x0=x0, x1=x1,
+            y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
+            z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
-    for y_edge, depth in ((ym0 + 30, 112), (ym0 + 60, 112), (ym1, 32)):
-        add_horizontal_divider(
-            verts, faces, x0=ox + xr0, x1=ox + xr1, y_center=oy + y_edge,
-            thickness=divider, divider_height=slot_h(oy + y_edge, depth), z_floor=z_floor,
+    for y_edge in (ym0 + 30, ym0 + 60, ym1):
+        x0, x1 = _inset_partition_x(ox, xr0, xr1, w_int)
+        add_sloped_horizontal_partition(
+            verts, faces, x0=x0, x1=x1,
+            y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
+            z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
 
 
@@ -651,9 +677,6 @@ def build_mesh(
         rim = rim_height(local_y(y_abs), h_front, h_back, l_int, layout)
         return z_floor + max(1.0, rim - PARTITION_CLEARANCE)
 
-    def slot_h(y_abs: float, target: float) -> float:
-        return min(target, partition_top_z(y_abs) - z_floor)
-
     # Front retaining lip (full internal width)
     front_rim_z = z_floor + rim_height(0.0, h_front, h_back, l_int, layout)
     add_front_lip(
@@ -665,17 +688,17 @@ def build_mesh(
     if preset_id == "mail_spine":
         _add_dividers_mail_spine(
             verts, faces, ox=ox, oy=oy, divider=divider, z_floor=z_floor,
-            top_z_at_y=partition_top_z, slot_h=slot_h,
+            top_z_at_y=partition_top_z, w_int=w_int,
         )
     elif preset_id == "row_four":
         _add_dividers_row_four(
             verts, faces, ox=ox, oy=oy, divider=divider, z_floor=z_floor,
-            top_z_at_y=partition_top_z, slot_h=slot_h,
+            top_z_at_y=partition_top_z,
         )
     else:
         _add_dividers_grid(
             verts, faces, ox=ox, oy=oy, layout=layout, w_int=w_int, divider=divider,
-            z_floor=z_floor, top_z_at_y=partition_top_z, slot_h=slot_h, letters_at_back=True,
+            z_floor=z_floor, top_z_at_y=partition_top_z, letters_at_back=True,
         )
 
     if style != "minimal":
@@ -714,7 +737,8 @@ def write_binary_stl(path: Path, verts: list, faces: list, header_text: str = "E
         parts = list(mesh.split(only_watertight=False))
         for part in parts:
             trimesh.repair.fix_normals(part, multibody=False)
-        if parts and all(part.is_volume for part in parts):
+        parts = [part for part in parts if len(part.faces) >= 4 and part.is_volume]
+        if parts:
             united = trimesh.boolean.union(parts, engine="manifold")
             if united is not None and united.is_volume:
                 verts = united.vertices.tolist()
