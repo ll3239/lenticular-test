@@ -12,6 +12,9 @@ sys.path.insert(0, str(Path(__file__).parent))
 from generate_entryway_dimensions import build_report
 from generate_entryway_storage_box import LAYOUT_COMPACT
 
+plt.rcParams["font.sans-serif"] = ["WenQuanYi Micro Hei", "Droid Sans Fallback", "DejaVu Sans"]
+plt.rcParams["axes.unicode_minus"] = False
+
 COLORS = {
     "earphones_other": "#c8d8e8",
     "essential_oils": "#b8dcc8",

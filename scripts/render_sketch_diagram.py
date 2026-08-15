@@ -19,7 +19,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from generate_entryway_dimensions import build_report
 from generate_entryway_storage_box import LAYOUT_COMPACT
 
-plt.rcParams["font.sans-serif"] = ["Noto Sans CJK SC", "DejaVu Sans"]
+plt.rcParams["font.sans-serif"] = ["WenQuanYi Micro Hei", "Droid Sans Fallback", "DejaVu Sans"]
 plt.rcParams["axes.unicode_minus"] = False
 
 LABELS = {
