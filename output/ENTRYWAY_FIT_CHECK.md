@@ -23,4 +23,4 @@
 | Bambu P1/P1S/X1/A1 | 256 × 256 mm | 214 × 245 mm | 42 × 11 mm | PASS |
 | Bambu A1 mini | 180 × 180 mm | 214 × 245 mm | -34 × -65 mm | FAIL |
 
-> Internal partition walls stay ~10 mm below the local exterior rim and never rise above it along their span.
+> Partition tops follow the same sloped/trapezoid profile as the exterior rim, kept ~10 mm lower.

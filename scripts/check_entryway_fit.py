@@ -176,7 +176,7 @@ def main() -> None:
         lines.append(f"| {printer['printer']} | {bed} mm | {footprint} mm | {margin} mm | {status(printer['pass'])} |")
     lines += [
         "",
-        "> Internal partition walls stay ~10 mm below the local exterior rim and never rise above it along their span.",
+        "> Partition tops follow the same sloped/trapezoid profile as the exterior rim, kept ~10 mm lower.",
         "",
     ]
     args.report_md.parent.mkdir(parents=True, exist_ok=True)

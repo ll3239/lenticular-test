@@ -81,7 +81,7 @@
   "slope": {
     "front_rim_mm": 30.0,
     "back_rim_mm": 150.0,
-    "note": "Zoned slope: ~30 mm front tray, steep rise through mid band, flat ~150 mm letters bay matching exterior back wall."
+    "note": "Zoned slope; partition tops follow the same trapezoid rim as exterior, ~10 mm lower."
   },
   "front_lip_mm": 5.0,
   "item_assumptions": {

@@ -365,6 +365,74 @@ def add_vertical_divider(
     add_box(verts, faces, x0, y0, z_floor, x1, y1, z_floor + divider_height)
 
 
+def add_sloped_vertical_divider(
+    verts: list,
+    faces: list,
+    *,
+    y0: float,
+    y1: float,
+    x_center: float,
+    thickness: float,
+    z_floor: float,
+    top_z_at_y,
+) -> None:
+    """Vertical partition with sloped top edge matching exterior rim along Y."""
+    if y1 < y0:
+        y0, y1 = y1, y0
+    x0 = x_center - thickness / 2
+    x1 = x_center + thickness / 2
+    z_y0 = top_z_at_y(y0)
+    z_y1 = top_z_at_y(y1)
+    blf = (x0, y0, z_floor)
+    brf = (x1, y0, z_floor)
+    brb = (x1, y1, z_floor)
+    blb = (x0, y1, z_floor)
+    tlf = (x0, y0, z_y0)
+    trf = (x1, y0, z_y0)
+    trb = (x1, y1, z_y1)
+    tlb = (x0, y1, z_y1)
+    add_quad(verts, faces, blf, brf, brb, blb)
+    add_quad(verts, faces, tlf, trf, trb, tlb)
+    add_quad(verts, faces, blf, brf, trf, tlf)
+    add_quad(verts, faces, brb, blb, tlb, trb)
+    add_quad(verts, faces, blf, blb, tlb, tlf)
+    add_quad(verts, faces, brf, brb, trb, trf)
+
+
+def add_sloped_horizontal_partition(
+    verts: list,
+    faces: list,
+    *,
+    x0: float,
+    x1: float,
+    y0: float,
+    y1: float,
+    z_floor: float,
+    top_z_at_y,
+) -> None:
+    """Full-width partition with sloped top edge when rim changes along Y thickness."""
+    if y1 < y0:
+        y0, y1 = y1, y0
+    if x1 < x0:
+        x0, x1 = x1, x0
+    z_y0 = top_z_at_y(y0)
+    z_y1 = top_z_at_y(y1)
+    blf = (x0, y0, z_floor)
+    brf = (x1, y0, z_floor)
+    brb = (x1, y1, z_floor)
+    blb = (x0, y1, z_floor)
+    tlf = (x0, y0, z_y0)
+    trf = (x1, y0, z_y0)
+    trb = (x1, y1, z_y1)
+    tlb = (x0, y1, z_y1)
+    add_quad(verts, faces, blf, brf, brb, blb)
+    add_quad(verts, faces, tlf, trf, trb, tlb)
+    add_quad(verts, faces, blf, brf, trf, tlf)
+    add_quad(verts, faces, brb, blb, tlb, trb)
+    add_quad(verts, faces, blf, blb, tlb, tlf)
+    add_quad(verts, faces, brf, brb, trb, trf)
+
+
 def _add_dividers_row_four(
     verts: list,
     faces: list,
@@ -373,20 +441,20 @@ def _add_dividers_row_four(
     oy: float,
     divider: float,
     z_floor: float,
-    partition_h,
-    partition_h_span,
+    top_z_at_y,
     slot_h,
 ) -> None:
     """One row of four 100 mm bays + letters band at back (y=100–130)."""
     row_y1 = 100.0
-    add_horizontal_divider(
-        verts, faces, x0=ox, x1=ox + 400.0, y_center=oy + row_y1,
-        thickness=divider, divider_height=partition_h(oy + row_y1), z_floor=z_floor,
+    y_part = oy + row_y1
+    add_sloped_horizontal_partition(
+        verts, faces, x0=ox, x1=ox + 400.0, y0=y_part - divider / 2, y1=y_part + divider / 2,
+        z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
     for x_div in (100.0, 200.0, 300.0):
-        add_vertical_divider(
+        add_sloped_vertical_divider(
             verts, faces, y0=oy, y1=oy + row_y1, x_center=ox + x_div,
-            thickness=divider, divider_height=partition_h_span(oy, oy + row_y1), z_floor=z_floor,
+            thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
     for y_edge, depth in ((20, 22), (40, 12), (60, 12)):
         add_horizontal_divider(
@@ -408,8 +476,7 @@ def _add_dividers_mail_spine(
     oy: float,
     divider: float,
     z_floor: float,
-    partition_h,
-    partition_h_span,
+    top_z_at_y,
     slot_h,
 ) -> None:
     """Core 200×180 grid + full-height letters spine at x=200–230."""
@@ -417,29 +484,27 @@ def _add_dividers_mail_spine(
     yf1, ym0, ym1 = 100.0, 100.0, 180.0
     spine_x = 200.0
 
-    add_horizontal_divider(
-        verts, faces, x0=ox, x1=ox + spine_x, y_center=oy + yf1,
-        thickness=divider, divider_height=partition_h(oy + yf1), z_floor=z_floor,
-    )
-    add_horizontal_divider(
-        verts, faces, x0=ox, x1=ox + spine_x, y_center=oy + ym1,
-        thickness=divider, divider_height=partition_h(oy + ym1), z_floor=z_floor,
-    )
-    add_vertical_divider(
+    for y_part in (oy + yf1, oy + ym1):
+        add_sloped_horizontal_partition(
+            verts, faces, x0=ox, x1=ox + spine_x,
+            y0=y_part - divider / 2, y1=y_part + divider / 2,
+            z_floor=z_floor, top_z_at_y=top_z_at_y,
+        )
+    add_sloped_vertical_divider(
         verts, faces, y0=oy, y1=oy + yf1, x_center=ox + 100.0,
-        thickness=divider, divider_height=partition_h_span(oy, oy + yf1), z_floor=z_floor,
+        thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
-    add_vertical_divider(
+    add_sloped_vertical_divider(
         verts, faces, y0=oy + ym0, y1=oy + ym1, x_center=ox + 100.0,
-        thickness=divider, divider_height=partition_h_span(oy + ym0, oy + ym1), z_floor=z_floor,
+        thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
-    add_vertical_divider(
+    add_sloped_vertical_divider(
         verts, faces, y0=oy, y1=oy + yf1, x_center=ox + spine_x,
-        thickness=divider, divider_height=partition_h_span(oy, oy + yf1), z_floor=z_floor,
+        thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
-    add_vertical_divider(
+    add_sloped_vertical_divider(
         verts, faces, y0=oy + ym0, y1=oy + ym1, x_center=ox + spine_x,
-        thickness=divider, divider_height=partition_h_span(oy + ym0, oy + ym1), z_floor=z_floor,
+        thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
     for y_edge, depth in ((ym0 + 24, 22), (ym0 + 46, 12), (ym0 + 68, 12)):
         add_horizontal_divider(
@@ -463,8 +528,7 @@ def _add_dividers_grid(
     w_int: float,
     divider: float,
     z_floor: float,
-    partition_h,
-    partition_h_span,
+    top_z_at_y,
     slot_h,
     letters_at_back: bool,
 ) -> None:
@@ -475,24 +539,24 @@ def _add_dividers_grid(
     x_col_div = (layout.x_left1 + layout.x_right0) / 2
     gx1 = xr1
 
-    add_horizontal_divider(
-        verts, faces, x0=ox, x1=ox + (w_int if letters_at_back else gx1),
-        y_center=oy + yf1 + layout.gutter / 2,
-        thickness=divider, divider_height=partition_h(oy + yf1), z_floor=z_floor,
+    y_front_mid = oy + yf1 + layout.gutter / 2
+    add_sloped_horizontal_partition(
+        verts, faces,
+        x0=ox, x1=ox + (w_int if letters_at_back else gx1),
+        y0=y_front_mid - divider / 2, y1=y_front_mid + divider / 2,
+        z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
     if letters_at_back:
-        add_horizontal_divider(
+        y_mid_letters = oy + ym1 + layout.gutter / 2
+        add_sloped_horizontal_partition(
             verts, faces, x0=ox, x1=ox + w_int,
-            y_center=oy + ym1 + layout.gutter / 2,
-            thickness=divider, divider_height=partition_h(oy + layout.y_letters0), z_floor=z_floor,
+            y0=y_mid_letters - divider / 2, y1=y_mid_letters + divider / 2,
+            z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
-    add_vertical_divider(
-        verts, faces, y0=oy + yf0, y1=oy + yf1, x_center=ox + x_col_div,
-        thickness=divider, divider_height=partition_h_span(oy + yf0, oy + yf1), z_floor=z_floor,
-    )
-    add_vertical_divider(
-        verts, faces, y0=oy + ym0, y1=oy + ym1, x_center=ox + x_col_div,
-        thickness=divider, divider_height=partition_h_span(oy + ym0, oy + ym1), z_floor=z_floor,
+    # One continuous sloped center wall through front + mid (matches exterior slope).
+    add_sloped_vertical_divider(
+        verts, faces, y0=oy + yf0, y1=oy + ym1, x_center=ox + x_col_div,
+        thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
     for y_edge, depth in ((ym0 + 20, 22), (ym0 + 40, 12), (ym0 + 60, 12)):
         add_horizontal_divider(
@@ -583,21 +647,12 @@ def build_mesh(
     def local_y(y: float) -> float:
         return y - oy
 
-    def partition_h(y_abs: float) -> float:
+    def partition_top_z(y_abs: float) -> float:
         rim = rim_height(local_y(y_abs), h_front, h_back, l_int, layout)
-        return max(1.0, rim - PARTITION_CLEARANCE)
-
-    def partition_h_span(y0_abs: float, y1_abs: float) -> float:
-        y0l, y1l = local_y(y0_abs), local_y(y1_abs)
-        if y1l < y0l:
-            y0l, y1l = y1l, y0l
-        steps = max(3, int((y1l - y0l) / 15.0) + 1)
-        samples = np.linspace(y0l, y1l, steps)
-        rim_min = min(rim_height(y, h_front, h_back, l_int, layout) for y in samples)
-        return max(1.0, rim_min - PARTITION_CLEARANCE)
+        return z_floor + max(1.0, rim - PARTITION_CLEARANCE)
 
     def slot_h(y_abs: float, target: float) -> float:
-        return min(target, partition_h(y_abs))
+        return min(target, partition_top_z(y_abs) - z_floor)
 
     # Front retaining lip (full internal width)
     front_rim_z = z_floor + rim_height(0.0, h_front, h_back, l_int, layout)
@@ -610,18 +665,17 @@ def build_mesh(
     if preset_id == "mail_spine":
         _add_dividers_mail_spine(
             verts, faces, ox=ox, oy=oy, divider=divider, z_floor=z_floor,
-            partition_h=partition_h, partition_h_span=partition_h_span, slot_h=slot_h,
+            top_z_at_y=partition_top_z, slot_h=slot_h,
         )
     elif preset_id == "row_four":
         _add_dividers_row_four(
             verts, faces, ox=ox, oy=oy, divider=divider, z_floor=z_floor,
-            partition_h=partition_h, partition_h_span=partition_h_span, slot_h=slot_h,
+            top_z_at_y=partition_top_z, slot_h=slot_h,
         )
     else:
         _add_dividers_grid(
             verts, faces, ox=ox, oy=oy, layout=layout, w_int=w_int, divider=divider,
-            z_floor=z_floor, partition_h=partition_h, partition_h_span=partition_h_span,
-            slot_h=slot_h, letters_at_back=True,
+            z_floor=z_floor, top_z_at_y=partition_top_z, slot_h=slot_h, letters_at_back=True,
         )
 
     if style != "minimal":
@@ -921,7 +975,7 @@ def main() -> None:
         "slope": {
             "front_rim_mm": args.h_front,
             "back_rim_mm": args.h_back,
-            "note": "Zoned slope; internal dividers capped ~10 mm below local exterior rim.",
+            "note": "Zoned slope; partition tops follow the same trapezoid rim as exterior, ~10 mm lower.",
         },
         "front_lip_mm": args.lip,
         "item_assumptions": {
