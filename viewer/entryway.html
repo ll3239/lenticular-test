@@ -164,13 +164,14 @@
     const styleList = document.getElementById('style-list');
 
     const RAW_BASE = 'https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/output/styles';
+    const LOCAL_PREVIEW = location.hostname === 'localhost'
+      || location.hostname === '127.0.0.1'
+      || /^\d+\.\d+\.\d+\.\d+$/.test(location.hostname);
 
     function loadStyle(style) {
       const localUrl = `../output/styles/entryway_box_${style.id}.stl`;
       const remoteUrl = `${RAW_BASE}/entryway_box_${style.id}.stl`;
-      const url = location.protocol === 'file:' || location.hostname.includes('github')
-        ? remoteUrl
-        : localUrl;
+      const url = LOCAL_PREVIEW ? localUrl : remoteUrl;
       loader.load(url, (geo) => {
         geo.computeVertexNormals();
         geo.center();

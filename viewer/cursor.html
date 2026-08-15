@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>门口收纳盒 · Cursor 预览</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+      background: #0f1117; color: #e8eaef; height: 100vh; display: flex; flex-direction: column;
+    }
+    header {
+      padding: 12px 16px; border-bottom: 1px solid #2a3040;
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between;
+    }
+    header h1 { font-size: 15px; }
+    header p { font-size: 12px; color: #8b92a3; margin-top: 4px; }
+    .links { display: flex; gap: 8px; flex-wrap: wrap; }
+    a.btn {
+      background: #3d6dd4; color: #fff; text-decoration: none;
+      padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600;
+    }
+    a.btn.secondary { background: #2a3348; }
+    iframe { flex: 1; border: 0; width: 100%; min-height: 0; background: #1a1d24; }
+    .note {
+      padding: 10px 16px; font-size: 12px; color: #9aa3b5; border-top: 1px solid #2a3040;
+      line-height: 1.5;
+    }
+    code { color: #8cf; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>门口收纳盒 · Cursor 内置浏览器预览</h1>
+      <p>不依赖 localhost 端口转发，直接从 GitHub 加载 3D 模型</p>
+    </div>
+    <div class="links">
+      <a class="btn" href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/viewer/entryway.html" target="_blank" rel="noopener">全屏 3D</a>
+      <a class="btn secondary" href="preview.html">图片预览</a>
+    </div>
+  </header>
+  <iframe
+    title="门口收纳盒 3D"
+    src="https://htmlpreview.github.io/?https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/viewer/entryway.html"
+    allow="fullscreen"
+  ></iframe>
+  <div class="note">
+    若 iframe 空白，点上方「全屏 3D」。本地端口预览（需 Cursor 转发 8766）：
+    <code>http://localhost:8766/viewer/entryway.html</code>
+  </div>
+</body>
+</html>
