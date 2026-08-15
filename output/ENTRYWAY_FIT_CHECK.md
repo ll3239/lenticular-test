@@ -1,7 +1,7 @@
 # Entryway organizer fit check
 
-- STL measured extents: **204 × 232 × 152 mm**
-- With 5 mm brim: **214 × 242 mm**
+- STL measured extents: **204 × 235 × 157.798 mm**
+- With 5 mm brim: **214 × 245 mm**
 - Mesh integrity: **PASS** (watertight, consistent winding, single volume)
 
 ## Item clearances
@@ -20,7 +20,7 @@
 
 | Printer | Bed | With brim | Remaining margin | Result |
 |---|---:|---:|---:|:---:|
-| Bambu P1/P1S/X1/A1 | 256 × 256 mm | 214 × 242 mm | 42 × 14 mm | PASS |
-| Bambu A1 mini | 180 × 180 mm | 214 × 242 mm | -34 × -62 mm | FAIL |
+| Bambu P1/P1S/X1/A1 | 256 × 256 mm | 214 × 245 mm | 42 × 11 mm | PASS |
+| Bambu A1 mini | 180 × 180 mm | 214 × 245 mm | -34 × -65 mm | FAIL |
 
 > Front rim is ~30 mm; tall front items (e.g. 80 mm oil bottles) may protrude. Power banks in the mid band may also stand slightly above the local rim.

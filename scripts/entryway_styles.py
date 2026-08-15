@@ -36,15 +36,15 @@ STYLES: dict[str, StyleInfo] = {
         "rounded",
         "Rounded",
         "圆角柔和",
-        "True 10 mm rounded outer walls and a 12 mm rounded base.",
-        "圆角外壁、圆角底，边缘更温柔",
+        "True 10 mm rounded walls plus soft asymmetric organic rim waves.",
+        "圆角 + 更大不对称上沿波浪",
     ),
     "arch_wave": StyleInfo(
         "arch_wave",
         "Organic Arch Wave",
         "不规则圆拱波浪细条纹",
-        "Rounded body, asymmetric front/back opening waves, and fine vertical exterior flutes.",
-        "圆角 + 前后错位不规则波浪 + 外壁竖细条纹",
+        "Rounded body, bold asymmetric front/back waves, and fine vertical exterior flutes.",
+        "圆角 + 更大错位波浪 + 外壁竖细条纹",
     ),
     "chamfer": StyleInfo(
         "chamfer",
@@ -131,6 +131,101 @@ def apply_rounded_base(
         (outer_w - r, outer_l - r),
     ):
         add_cylinder_z(verts, faces, cx, cy, 0, bottom, r, segments=12)
+
+
+# (start_t, end_t, amplitude_mm, peak_position 0..1) — peak off-center => asymmetric hump
+WAVE_PROFILES: dict[str, dict[str, tuple[tuple[float, float, float, float], ...]]] = {
+    "rounded": {
+        "front": (
+            (0.12, 0.64, 6.8, 0.34),
+            (0.56, 0.90, 3.4, 0.63),
+            (0.02, 0.16, 2.0, 0.28),
+        ),
+        "back": (
+            (0.03, 0.29, 4.5, 0.37),
+            (0.38, 0.59, 3.2, 0.54),
+            (0.66, 0.96, 5.8, 0.71),
+        ),
+    },
+    "arch_wave": {
+        "front": (
+            (0.08, 0.66, 11.0, 0.32),
+            (0.50, 0.90, 5.5, 0.61),
+            (0.01, 0.17, 2.8, 0.24),
+        ),
+        "back": (
+            (0.01, 0.30, 7.0, 0.35),
+            (0.34, 0.57, 5.0, 0.49),
+            (0.62, 0.98, 9.2, 0.74),
+        ),
+    },
+}
+
+
+def organic_bump(
+    t: float,
+    start: float,
+    end: float,
+    amplitude: float,
+    peak: float = 0.45,
+    rise_power: float = 1.12,
+    fall_power: float = 0.82,
+) -> float:
+    """Single asymmetric hump: peak shifted along the span, unequal rise/fall."""
+    if t <= start or t >= end:
+        return 0.0
+    u = (t - start) / (end - start)
+    peak = min(max(peak, 0.12), 0.88)
+    if u <= peak:
+        v = u / peak
+        return amplitude * (math.sin(0.5 * math.pi * v) ** rise_power)
+    v = (u - peak) / (1.0 - peak)
+    return amplitude * (math.cos(0.5 * math.pi * v) ** fall_power)
+
+
+def wave_height(t: float, layers: tuple[tuple[float, float, float, float], ...]) -> float:
+    return sum(organic_bump(t, *layer) for layer in layers)
+
+
+def apply_organic_rim_waves(
+    verts: list,
+    faces: list,
+    *,
+    ox: float,
+    oy: float,
+    w_int: float,
+    l_int: float,
+    z_floor: float,
+    h_front: float,
+    h_back: float,
+    profile: str = "arch_wave",
+    segments: int = 96,
+) -> None:
+    """Exterior-only asymmetric rim waves along front and back openings."""
+    gen = _gen()
+    add_box = gen.add_box
+
+    outer_w = w_int + 2 * gen.WALL
+    layers = WAVE_PROFILES[profile]
+    x_start = 12.0
+    x_end = outer_w - 12.0
+
+    for segment in range(segments):
+        t0 = segment / segments
+        t1 = (segment + 1) / segments
+        mid = (t0 + t1) / 2.0
+        front_height = wave_height(mid, layers["front"])
+        back_height = wave_height(mid, layers["back"])
+        xa = x_start + t0 * (x_end - x_start) - 0.12
+        xb = x_start + t1 * (x_end - x_start) + 0.12
+        add_box(
+            verts, faces, xa, -0.5, z_floor + h_front - 0.5,
+            xb, oy + 0.5, z_floor + h_front + front_height,
+        )
+        add_box(
+            verts, faces, xa, oy + l_int - 0.5, z_floor + h_back - 0.5,
+            xb, oy + l_int + 2 * gen.WALL + 0.5, z_floor + h_back + back_height,
+        )
 
 
 def apply_rim_chamfer(
@@ -383,9 +478,8 @@ def apply_arch_wave(
     flute_spacing: float = 12.0,
     flute_width: float = 1.6,
     flute_depth: float = 1.2,
-    arch_height: float = 4.5,
 ) -> None:
-    """Exterior-only flutes plus asymmetric organic front/back rim waves."""
+    """Exterior-only flutes plus bold asymmetric front/back rim waves."""
     gen = _gen()
     add_box, rim_height = gen.add_box, gen.rim_height
 
@@ -394,8 +488,6 @@ def apply_arch_wave(
     half = flute_width / 2
     z_low = z_floor + 6.0
 
-    # Fine vertical flutes on all four exterior faces. Each overlaps the wall
-    # by 0.4 mm for a reliable boolean union and never enters a compartment.
     for x in np.arange(18.0, outer_w - 17.0, flute_spacing):
         add_box(
             verts, faces, x - half, -flute_depth, z_low,
@@ -418,39 +510,12 @@ def apply_arch_wave(
             outer_w + flute_depth, y + half, z_high,
         )
 
-    # Two deliberately different layers at the opening:
-    # - front rim: one broad wave shifted toward the right
-    # - rear rim: two shorter waves with unequal size and spacing
-    # This reads as an organic, asymmetric pair of curves from the front.
-    x_start = 12.0
-    x_end = outer_w - 12.0
-    segments = 72
-
-    def bump(t: float, start: float, end: float, amplitude: float) -> float:
-        if t <= start or t >= end:
-            return 0.0
-        u = (t - start) / (end - start)
-        return amplitude * math.sin(math.pi * u)
-
-    for segment in range(segments):
-        t0 = segment / segments
-        t1 = (segment + 1) / segments
-        mid = (t0 + t1) / 2.0
-        front_height = bump(mid, 0.28, 0.94, arch_height + 0.3)
-        back_height = (
-            bump(mid, 0.05, 0.38, 2.7)
-            + bump(mid, 0.52, 0.86, 3.4)
-        )
-        xa = x_start + t0 * (x_end - x_start) - 0.12
-        xb = x_start + t1 * (x_end - x_start) + 0.12
-        add_box(
-            verts, faces, xa, -0.5, z_floor + h_front - 0.5,
-            xb, oy + 0.5, z_floor + h_front + front_height,
-        )
-        add_box(
-            verts, faces, xa, oy + l_int - 0.5, z_floor + h_back - 0.5,
-            xb, outer_l + 0.5, z_floor + h_back + back_height,
-        )
+    apply_organic_rim_waves(
+        verts, faces,
+        ox=ox, oy=oy, w_int=w_int, l_int=l_int,
+        z_floor=z_floor, h_front=h_front, h_back=h_back,
+        profile="arch_wave",
+    )
 
 
 def apply_style(
@@ -474,8 +539,12 @@ def apply_style(
     if style == "minimal":
         return
     if style == "rounded":
-        # Rounded base and true quarter-annulus corner walls are constructed
-        # directly by build_mesh so they preserve the usable compartment area.
+        apply_organic_rim_waves(
+            verts, faces,
+            ox=ox, oy=oy, w_int=w_int, l_int=l_int,
+            z_floor=z_floor, h_front=h_front, h_back=h_back,
+            profile="rounded",
+        )
         return
     if style == "arch_wave":
         apply_arch_wave(
