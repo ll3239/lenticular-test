@@ -74,9 +74,8 @@ def compartment_dividers_y_for_cell(c: Compartment, layout: Layout) -> tuple[flo
     y_letters_zone = layout.y_mid1 + layout.gutter / 2
     if c.y0 <= y_front_zone <= c.y1:
         edges.append(y_front_zone)
-    if c.name == "letters" or (c.x0 <= xl0 and c.x1 >= xr1):
-        if c.y0 <= y_letters_zone <= c.y1:
-            edges.append(y_letters_zone)
+    if c.y0 <= y_letters_zone <= c.y1:
+        edges.append(y_letters_zone)
 
     spans_left = c.x0 < xl1 and c.x1 > xl0
     spans_right = c.x0 < xr1 and c.x1 > xr0
@@ -160,8 +159,8 @@ def write_markdown(report: dict, path: Path) -> None:
         "",
         report["orientation"],
         "",
-        f"- 内腔总 footprint：**{report['internal_footprint_mm']['width_x']:.0f} × "
-        f"{report['internal_footprint_mm']['depth_y']:.0f} mm**（宽 × 深）",
+        f"- 内腔总 footprint：**{report['internal_footprint_mm']['width_x']:.2f} × "
+        f"{report['internal_footprint_mm']['depth_y']:.2f} mm**（宽 × 深）",
         f"- 挡板厚度：{report['divider_thickness_mm']:.1f} mm；挡板顶比外沿低 "
         f"{report['partition_clearance_mm']:.0f} mm",
         f"- 外沿高度：门口 Y=0 处 {report['slope_rim_mm']['front_y0']:.0f} mm → "
@@ -200,7 +199,7 @@ def write_markdown(report: dict, path: Path) -> None:
             "  ┌──────────100──────────┬──────────100──────────┐",
             "  │      耳机/杂物         │ 收据│卡1│卡2│散卡      │ 100",
             "  ├──────────100──────────┼──────────100──────────┤",
-            "  │        精油           │ gutter │ 数据线 │ 充电宝   │  98",
+            "  │        精油           │ 数据线（前）/充电宝（后） │  98",
             "  ├───────────────────────┴───────────────────────┤",
             "  │                    信件 (201.5 宽)               │  30",
             "  └─────────────────────────────────────────────────┘  Y=229 墙",
@@ -344,7 +343,7 @@ def write_html(report: dict, path: Path) -> None:
   <h1>门口收纳盒 · 内腔尺寸验证</h1>
   <p class="sub">
     内腔 footprint <strong>{fp['width_x']:.1f} × {fp['depth_y']:.1f} mm</strong>；
-    左中层 <strong>精油 100×97 mm</strong>；右前排 <strong>收据/卡片/散卡</strong>；
+    左中层 <strong>精油 100×96.5 mm</strong>；右前排 <strong>收据/卡片/散卡</strong>；
     右中层为 <strong>数据线（前 24 mm）</strong> + <strong>充电宝（后 ≥60 mm）</strong>。
   </p>
   <div class="nav">

@@ -4,11 +4,12 @@ Square cube where each face encodes a different photo as **connected vertical li
 
 ## Entryway storage box (sloped organizer)
 
-Hand-sketched layout: letters / keys / cards / receipts / power banks / cables / earphones + oils.
+Sloped organizer for letters, receipts, card wallets, power banks, cables,
+earphones, and six essential-oil bottles.
 
 ```bash
 python3 scripts/generate_entryway_storage_box.py
-# -> output/entryway_storage_box.stl  (~204 x 214 mm footprint, fits Bambu bed)
+# -> output/entryway_storage_box.stl (205.5 x 232.75 mm, fits P1S)
 
 # All 6 visual style variants:
 python3 scripts/generate_entryway_storage_box.py --all-styles
@@ -47,7 +48,10 @@ Key images: `output/previews/compare_all_iso.png` · `compare_all_top.png` · `c
 | `wells` | 精油定位环 | 6 个圆形瓶位环 |
 | `accent` | 双槽装饰 | 圆角 + 侧面装饰槽 |
 
-Open the STL in **Bambu Studio** (File → Import), place flat on the bed, slice, and send to the printer.
+Open the STL in **Bambu Studio** (File → Import), place the bottom flat on
+the bed, keep **supports off**, add a 5 mm PETG brim (3 mm PLA), slice, and
+send to the printer. Expect roughly **440–500 g** and **9–14 hours**; use the
+slicer's estimate for your filament/profile.
 
 **Print presets (optimized):** import `bambu/entryway_box_process_petg.json` + `bambu/entryway_box_filament_petg.json` (or PLA pair). Full guide: [`bambu/PRINT_GUIDE.md`](bambu/PRINT_GUIDE.md).
 

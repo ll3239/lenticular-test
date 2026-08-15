@@ -9,13 +9,14 @@ import struct
 from pathlib import Path
 
 import numpy as np
+from generate_entryway_dimensions import build_report
+from generate_entryway_storage_box import LAYOUT_COMPACT
 
 STL = Path("output/entryway_storage_box.stl")
 SPEC = Path("output/entryway_storage_box_spec.json")
 REPORT_JSON = Path("output/entryway_fit_check.json")
 REPORT_MD = Path("output/ENTRYWAY_FIT_CHECK.md")
 
-DIVIDER = 1.5
 BRIM = 5.0
 
 
@@ -61,57 +62,84 @@ def main() -> None:
         "winding_consistent": bool(mesh.is_winding_consistent),
         "single_printable_volume": bool(mesh.is_volume),
     }
+    unsupported_mask = (mesh.face_normals[:, 2] < -0.99) & (mesh.triangles_center[:, 2] > 2.5)
+    unsupported_horizontal_area = round(float(mesh.area_faces[unsupported_mask].sum()), 3)
+    support_free_pass = unsupported_horizontal_area < 1.0
+    solid_volume_cm3 = round(float(mesh.volume) / 1000.0, 1)
+    material_estimates_g = {
+        "PETG": round(solid_volume_cm3 * 1.27),
+        "PLA": round(solid_volume_cm3 * 1.24),
+    }
 
-    # Net clearances after shared 1.5 mm divider walls (from dimension sheet).
+    dimensions = build_report(LAYOUT_COMPACT)
+    by_id = {c["id"]: c for c in dimensions["compartments"]}
+
+    def clearance(compartment_id: str) -> list[float]:
+        net = by_id[compartment_id]["internal_net_mm"]
+        return [net["width_x"], net["depth_y"]]
+
+    oil = clearance("essential_oils")
+    power = clearance("power_banks")
+    cable = clearance("data_cable")
+    card = clearance("card_1")
+    receipt = clearance("receipts")
+    letters = clearance("letters")
     checks = [
         result(
             "Earphones / misc front bay",
-            [100.0, 100.0],
+            clearance("earphones_other"),
             [90.0, 90.0],
-            True,
+            min(clearance("earphones_other")) >= 90.0,
             "100×100 mm clear front-left tray.",
         ),
         result(
             "Six oil bottles (3×2)",
-            [100.0, 97.25],
+            oil,
             [90.0, 60.0],
-            100.0 >= 90 and 97.25 >= 60,
-            "Six Ø30 mm bottles in left mid bay (~98 mm deep).",
+            oil[0] >= 90 and oil[1] >= 60,
+            "Six Ø30×80 mm bottles fit 3×2 in the left mid bay.",
         ),
         result(
             "Power banks (merged bay, rear)",
-            [100.0, 71.75],
+            power,
             [80.0, 60.0],
-            100.0 >= 80 and 71.75 >= 60,
+            power[0] >= 80 and power[1] >= 60,
             "Two 110×80×30 mm banks in one ≥60 mm-deep rear bay.",
         ),
         result(
             "Coiled data cable (shallow front)",
-            [100.0, 24.0],
+            cable,
             [60.0, 24.0],
-            100.0 >= 60 and 24.0 >= 24,
+            cable[0] >= 60 and cable[1] >= 24,
             "Shallow 24 mm front tray; width fits a ~60 mm coiled bundle.",
         ),
         result(
-            "Standard cards",
-            [100.0, 25.0],
-            [85.6, 3.0],
-            100.0 >= 85.6 and 25.0 >= 3,
-            "Cards fit upright in 25 mm clear-deep slots.",
+            "Card wallets (each slot)",
+            card,
+            [85.6, 25.0],
+            card[0] >= 85.6 and card[1] >= 25,
+            "Each front-right slot accepts an 85.6 mm-wide wallet up to 25 mm thick.",
+        ),
+        result(
+            "Receipts",
+            receipt,
+            [85.6, 20.0],
+            receipt[0] >= 85.6 and receipt[1] >= 20,
+            "Folded receipts fit the 20 mm-target front slot.",
         ),
         result(
             "Letters at back (footprint)",
-            [200.0, 29.25],
+            letters,
             [180.0, 5.0],
-            200 >= 180 and 29.25 >= 5,
-            "Mail slot width and depth at the rear band.",
+            letters[0] >= 180 and letters[1] >= 5,
+            "Fits mail up to 200 mm wide; not unfolded A4/C5 (210–229 mm wide).",
         ),
         result(
-            "Letters standing height",
-            [round(spec["slope"]["back_rim_mm"], 1)],
-            [150.0],
-            spec["slope"]["back_rim_mm"] >= 148.0,
-            "Rear rim rises to ~150 mm so 15 cm envelopes can stand upright.",
+            "Letters retaining baffle",
+            [by_id["letters"]["baffle_height_mm"]["back_at_y1"]],
+            [140.0],
+            by_id["letters"]["baffle_height_mm"]["back_at_y1"] >= 140.0,
+            "A 150 mm-tall envelope protrudes ~10 mm above the 140 mm internal baffle.",
         ),
     ]
 
@@ -140,6 +168,10 @@ def main() -> None:
         "stl": str(args.stl),
         "stl_extents_mm": extents,
         "mesh_integrity": mesh_integrity,
+        "unsupported_horizontal_area_above_base_mm2": unsupported_horizontal_area,
+        "support_free_pass": support_free_pass,
+        "solid_model_volume_cm3": solid_volume_cm3,
+        "material_estimates_g": material_estimates_g,
         "expected_outer_mm": spec["outer_mm"],
         "brim_mm_each_side": BRIM,
         "item_checks": checks,
@@ -158,6 +190,10 @@ def main() -> None:
         f"- STL measured extents: **{extents[0]:g} × {extents[1]:g} × {extents[2]:g} mm**",
         f"- With {BRIM:g} mm brim: **{extents[0] + 2 * BRIM:g} × {extents[1] + 2 * BRIM:g} mm**",
         f"- Mesh integrity: **{status(all(mesh_integrity.values()))}** (watertight, consistent winding, single volume)",
+        f"- Support-free geometry: **{status(support_free_pass)}** "
+        f"({unsupported_horizontal_area:g} mm² horizontal underside above the base)",
+        f"- Solid model volume: **{solid_volume_cm3:g} cm³** "
+        f"(about {material_estimates_g['PETG']} g PETG / {material_estimates_g['PLA']} g PLA before purge)",
         "",
         "## Item clearances",
         "",
@@ -183,7 +219,12 @@ def main() -> None:
     args.report_md.write_text("\n".join(lines), encoding="utf-8")
     print(f"Wrote {args.report_json}")
     print(f"Wrote {args.report_md}")
-    if not report["all_item_checks_pass"] or not report["p1s_fit_pass"] or not report["mesh_integrity_pass"]:
+    if (
+        not report["all_item_checks_pass"]
+        or not report["p1s_fit_pass"]
+        or not report["mesh_integrity_pass"]
+        or not report["support_free_pass"]
+    ):
         raise SystemExit("Fit validation failed")
 
 

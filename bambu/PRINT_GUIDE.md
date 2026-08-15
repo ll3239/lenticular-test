@@ -1,6 +1,7 @@
 # Entryway storage box — Bambu Studio print guide
 
-Optimized for a **204 × 232 mm** functional organizer with **1.5 mm dividers** and **2 mm walls**.
+Optimized for a **205.5 × 232.75 × 152 mm** functional organizer with
+**1.5 mm dividers**, **2 mm outer walls**, and a **2 mm base**.
 
 ## Recommended material
 
@@ -22,7 +23,7 @@ Use **matte / opaque** colors (black, grey, beige) — hides scuffs at the entry
 5. Import `output/entryway_storage_box.stl`, place **flat on the bed** (bottom face down)
 6. Slice → print
 
-If your printer profile differs (e.g. only A1 mini), change **Printer** to your machine; process/filament presets still apply.
+The full-size model fits P1/P1S/X1/A1. It **does not fit A1 mini**.
 
 ## Optimized parameters (summary)
 
@@ -34,6 +35,10 @@ If your printer profile differs (e.g. only A1 mini), change **Printer** to your 
 | Supports | **Off** |
 | Brim | **Auto brim 5 mm** (PETG) / **3 mm** (PLA) — reduces corner lift on large footprint |
 | Skirt | 1 loop, 2 mm height |
+
+The front lip is a vertical continuation of the front wall, and all other
+walls grow vertically from the base. There are no horizontal undersides above
+the base, so supports add waste and leave marks without improving the print.
 
 ### Quality & strength
 
@@ -74,23 +79,26 @@ If your printer profile differs (e.g. only A1 mini), change **Printer** to your 
 
 | | Estimate |
 |---|----------|
-| Time | ~3.5–5 h (X1/P1, 0.4 mm nozzle) |
-| Filament | ~180–220 g |
+| Time | **~9–14 h** (P1S, 0.4 mm nozzle; confirm after slicing) |
+| Filament | **~440–500 g** (about 460 g from solid model volume, before purge) |
 | Nozzle | **0.4 mm** standard (see 0.2 mm note below) |
 
+The STL's solid volume is about **365 cm³**. Bambu Studio's sliced estimate is
+authoritative because speed, flow calibration, purge, and filament density vary.
 
 ## 0.2 mm nozzle (optional)
 
-If dividers look weak or gaps appear:
+The 0.4 mm nozzle with Arachne/thin-wall detection should resolve the 1.5 mm
+dividers. Only switch to 0.2 mm if layer preview shows missing divider lines:
 
 - Use **0.2 mm nozzle** + **0.1 mm layers**
 - Wall loops **4**, print speed **−30%**
-- Divider quality improves; print time ~2×
+- Divider quality improves; print time is more than 2×
 
 ## Manual checklist in Bambu Studio
 
-- [ ] Object centered on bed (204 × 232 mm; with a 5 mm brim: about 214 × 242 mm)
-- [ ] Fits **P1/P1S/X1/A1 (256 × 256 mm)** with 14 mm total margin on the tighter axis
+- [ ] Object centered on bed (**205.5 × 232.75 mm**; with a 5 mm brim: **215.5 × 242.75 mm**)
+- [ ] Fits **P1/P1S/X1/A1 (256 × 256 mm)** with **13.25 mm total** margin on the tighter axis
 - [ ] Does **not** fit **A1 mini (180 × 180 mm)**; use a split model for that printer
 - [ ] **Detect thin walls** enabled (Process → Strength → Advanced)
 - [ ] **Precise wall** on (better 1.5 mm dividers)
@@ -106,3 +114,18 @@ If dividers look weak or gaps appear:
 | Dividers stringy / broken | Lower speed 20%; enable thin wall; try 0.2 mm nozzle |
 | Bottom bows | Increase bottom shells to 8; raise infill to 22% |
 | Too tight compartments | Re-generate with `--divider 1.2` (advanced) |
+
+## Verified item envelope
+
+These are design assumptions, not universal product dimensions. Measure unusually
+large items before printing.
+
+| Item | Verified usable space | Assumption |
+|---|---:|---|
+| Earphones / misc | 100 × 100 mm | Up to 90 × 90 mm footprint |
+| Essential oils | 100 × 96.5 mm | Six Ø30 × 80 mm bottles, 3×2 |
+| Receipts | 100 × 20.75 mm | Folded receipts |
+| Card wallet 1 / 2 | 100 × 25 mm each | Up to 85.6 mm wide × 25 mm thick |
+| Data cable | 100 × 24 mm | Shallow coiled cable bundle |
+| Power banks | 100 × 71 mm | Two 110 × 80 × 30 mm units standing on 80 × 30 mm footprints |
+| Letters | 200 × 29.25 mm | Up to 200 mm wide; A4/C5 does not fit unfolded |

@@ -374,13 +374,10 @@ def add_front_lip(
     wall: float,
     lip_h: float,
     rim_z: float,
-    lip_thickness: float = 3.0,
 ) -> None:
-    """Retaining lip on the front edge (inside the box)."""
-    # Overlap the front wall instead of merely touching it; this produces a
-    # robust boolean union and avoids non-manifold coplanar seams.
+    """Support-free retaining lip continuing vertically from the front wall."""
     y0 = y_front - wall
-    y1 = y_front + lip_thickness
+    y1 = y_front
     z0 = rim_z
     z1 = rim_z + lip_h
     add_box(verts, faces, x0, y0, z0, x1, y1, z1)
@@ -761,7 +758,9 @@ def build_mesh(
     front_rim_z = z_floor + rim_height(0.0, h_front, h_back, l_int, layout)
     add_front_lip(
         verts, faces,
-        x0=ox, x1=ox + w_int, y_front=oy,
+        x0=ox + (corner_radius if rounded_walls else 0),
+        x1=ox + w_int - (corner_radius if rounded_walls else 0),
+        y_front=oy,
         wall=wall, lip_h=lip, rim_z=front_rim_z,
     )
 
@@ -907,15 +906,15 @@ def bambu_print_settings() -> dict:
             "pla": {"nozzle_c": 220, "nozzle_first_layer_c": 225, "bed_c": 60, "fan_max_percent": 100},
         },
         "estimates": {
-            "time_hours": "3.5-5",
-            "filament_grams": "180-220",
+            "time_hours": "9-14 (slice result depends on material/profile)",
+            "filament_grams": "440-500",
             "nozzle_mm": 0.4,
         },
         "optional_fine_nozzle": {
             "nozzle_mm": 0.2,
             "layer_height_mm": 0.1,
             "wall_loops": 4,
-            "note": "Use if 1.5 mm dividers look weak; print time roughly doubles.",
+            "note": "Use only if 1.5 mm dividers do not resolve with a 0.4 mm nozzle; print time more than doubles.",
         },
     }
 
@@ -1084,7 +1083,9 @@ def main() -> None:
         "front_lip_mm": args.lip,
         "item_assumptions": {
             "power_bank_mm": "110 x 80 x 30, stored vertically (110 mm tall, 80 x 30 footprint)",
-            "oil_bottle_mm": "height 80, diameter 30, qty 6 in right front bay",
+            "oil_bottle_mm": "height 80, diameter 30, qty 6 in left mid bay",
+            "card_wallet_mm": "up to 85.6 wide x 25 thick; stored upright in front-right slots",
+            "letter_mm": "up to 200 wide; 150 tall may protrude about 10 mm above the internal baffle",
         },
         "compartments_mm": [
             {
