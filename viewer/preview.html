@@ -9,7 +9,23 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
       background: #0f1117; color: #e8eaef; padding: 16px; padding-bottom: 48px;
-      max-width: 560px; margin: 0 auto;
+      max-width: 960px; margin: 0 auto;
+    }
+    #viewer-wrap {
+      position: relative;
+      width: 100%;
+      height: min(72vh, 640px);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #2a3040;
+      background: #1a1d24;
+      margin: 16px 0 8px;
+    }
+    #viewer-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
     }
     h1 { font-size: 20px; margin-bottom: 6px; }
     h2 { font-size: 15px; margin: 28px 0 10px; color: #c8d0e0; }
@@ -37,11 +53,17 @@
   </style>
 </head>
 <body>
-  <h1>门口收纳盒 · 预览图</h1>
-  <p>内径 200×228 mm · 圆角修正版 · P1S 可一次打印</p>
+  <h1>门口收纳盒 · 3D 预览</h1>
+  <p>默认显示：不规则波浪细条纹。拖动旋转，滚轮缩放。右侧可切换其他外观。</p>
 
-  <a class="btn" href="https://github.com/ll3239/lenticular-test/raw/cursor/entryway-storage-box-597e/output/entryway_storage_box.stl">
-    下载打印文件 STL
+  <div id="viewer-wrap">
+    <iframe src="entryway.html" title="门口收纳盒 3D 模型" allow="fullscreen"></iframe>
+  </div>
+  <div class="cap">交互 3D · 默认 Organic Wave · 右侧点选其他款</div>
+
+  <a class="btn" href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/viewer/entryway.html">全屏打开 3D 预览</a>
+  <a class="btn btn2" href="https://github.com/ll3239/lenticular-test/raw/cursor/entryway-storage-box-597e/output/styles/entryway_box_arch_wave.stl">
+    下载不规则波浪版 STL
   </a>
 
   <h2>① 最终尺寸检查（推荐先看）</h2>
