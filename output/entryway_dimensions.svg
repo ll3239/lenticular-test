@@ -27,11 +27,11 @@
 <rect class="cell" x="80.0" y="395.9" width="260.0" height="68.9"/>
 <text x="210.0" y="416.4" text-anchor="middle" class="label">卡片1</text>
 <text x="210.0" y="432.4" text-anchor="middle" class="dim">宽 99.2 × 深 25.0</text>
-<text x="210.0" y="446.4" text-anchor="middle" class="dim">前 82 / 后 96</text>
+<text x="210.0" y="446.4" text-anchor="middle" class="dim">前 80 / 后 80</text>
 <rect class="cell" x="80.0" y="464.8" width="260.0" height="68.9"/>
 <text x="210.0" y="485.2" text-anchor="middle" class="label">卡片2</text>
 <text x="210.0" y="501.2" text-anchor="middle" class="dim">宽 99.2 × 深 25.0</text>
-<text x="210.0" y="515.2" text-anchor="middle" class="dim">前 96 / 后 111</text>
+<text x="210.0" y="515.2" text-anchor="middle" class="dim">前 80 / 后 80</text>
 <rect class="cell" x="80.0" y="533.7" width="260.0" height="33.1"/>
 <text x="210.0" y="536.3" text-anchor="middle" class="label">散卡片</text>
 <text x="210.0" y="552.3" text-anchor="middle" class="dim">宽 99.2 × 深 12.0</text>

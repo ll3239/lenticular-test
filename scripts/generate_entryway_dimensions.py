@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 
 from generate_entryway_storage_box import (
+    CARD_SLOT_INTERNAL_H,
     DIVIDER,
     H_BACK,
     H_FRONT,
@@ -93,10 +94,13 @@ def compartment_dividers_y_for_cell(c: Compartment, layout: Layout) -> tuple[flo
     return tuple(sorted(set(edges)))
 
 
-def baffle_height(y: float, layout: Layout) -> float:
+def baffle_height(y: float, layout: Layout, compartment_id: str = "") -> float:
     """Internal usable height at local Y (floor → partition top, ~10 mm below rim)."""
     rim = rim_height(y, H_FRONT, H_BACK, layout.l_int, layout)
-    return round(rim - PARTITION_CLEARANCE, 1)
+    h = rim - PARTITION_CLEARANCE
+    if compartment_id in ("card_1", "card_2"):
+        h = min(h, CARD_SLOT_INTERNAL_H)
+    return round(h, 1)
 
 
 def compartment_dims(c: Compartment, layout: Layout) -> dict:
@@ -106,8 +110,8 @@ def compartment_dims(c: Compartment, layout: Layout) -> dict:
     width_net = net_internal_span(c.x0, c.x1, full_size=layout.w_int, divider_edges=x_edges)
     depth_net = net_internal_span(c.y0, c.y1, full_size=layout.l_int, divider_edges=y_edges)
 
-    front_h = baffle_height(c.y0, layout)
-    back_h = baffle_height(c.y1, layout)
+    front_h = baffle_height(c.y0, layout, c.name)
+    back_h = baffle_height(c.y1, layout, c.name)
 
     return {
         "id": c.name,
@@ -190,7 +194,7 @@ def write_markdown(report: dict, path: Path) -> None:
             "- **净宽 / 净深**：内腔可用尺寸（已扣除挡板占用的 1.5 mm）。",
             "- **前挡板高**：该格 *门口侧*（Y 较小）的内腔可用高度。",
             "- **后挡板高**：该格 *墙侧*（Y 较大）的内腔可用高度。",
-            "- 中间区各格前后高度不同，是因为外壁与挡板随 Y 方向梯形升高。",
+            "- 卡片1/2 挡板高度限制在 **80 mm** 内腔（适配约 8 cm 卡包），比后方斜面更低、更好拿。",
             "- **信件区**同样延续坡度：前侧（Y≈198）低于后侧（Y=228 贴墙处 150 mm 外沿）。",
             "",
             "## 俯视分区示意",

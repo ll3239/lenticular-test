@@ -45,8 +45,8 @@ def verify_report(report: dict, layout=LAYOUT_COMPACT) -> list[str]:
 
         w_exp = net_internal_span(x0, x1, full_size=layout.w_int, divider_edges=x_edges)
         d_exp = net_internal_span(y0, y1, full_size=layout.l_int, divider_edges=y_edges)
-        front_exp = baffle_height(y0, layout)
-        back_exp = baffle_height(y1, layout)
+        front_exp = baffle_height(y0, layout, cell["id"])
+        back_exp = baffle_height(y1, layout, cell["id"])
 
         net = cell["internal_net_mm"]
         bh = cell["baffle_height_mm"]
