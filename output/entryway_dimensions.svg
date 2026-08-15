@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="873" viewBox="0 0 680 873">
+<style>
+  .title { font: bold 20px sans-serif; fill: #111; }
+  .subtitle { font: 13px sans-serif; fill: #444; }
+  .cell { fill: #f7f3ee; stroke: #8b6914; stroke-width: 1.5; }
+  .label { font: bold 13px sans-serif; fill: #222; }
+  .dim { font: 11px sans-serif; fill: #333; }
+  .axis { font: 12px sans-serif; fill: #666; }
+  .arrow { stroke: #666; stroke-width: 1; marker-end: url(#arr); }
+</style>
+<defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#666"/></marker></defs>
+<text x="340" y="32" text-anchor="middle" class="title">内腔尺寸图（单位 mm）</text>
+<text x="340" y="52" text-anchor="middle" class="subtitle">Y=0 门口 → Y=228 墙；数字为净宽×净深，下方为前挡板高/后挡板高</text>
+<rect class="cell" x="80.0" y="80.0" width="260.0" height="260.0"/>
+<text x="210.0" y="196.0" text-anchor="middle" class="label">耳机/杂物</text>
+<text x="210.0" y="212.0" text-anchor="middle" class="dim">宽 99.2 × 深 99.2</text>
+<text x="210.0" y="226.0" text-anchor="middle" class="dim">前 20 / 后 70</text>
+<rect class="cell" x="340.0" y="80.0" width="260.0" height="260.0"/>
+<text x="470.0" y="196.0" text-anchor="middle" class="label">精油</text>
+<text x="470.0" y="212.0" text-anchor="middle" class="dim">宽 99.2 × 深 99.2</text>
+<text x="470.0" y="226.0" text-anchor="middle" class="dim">前 20 / 后 70</text>
+<rect class="cell" x="80.0" y="340.0" width="260.0" height="62.4"/>
+<text x="210.0" y="357.2" text-anchor="middle" class="label">钥匙</text>
+<text x="210.0" y="373.2" text-anchor="middle" class="dim">宽 99.2 × 深 21.8</text>
+<text x="210.0" y="387.2" text-anchor="middle" class="dim">前 70 / 后 87</text>
+<rect class="cell" x="80.0" y="402.4" width="260.0" height="57.2"/>
+<text x="210.0" y="417.0" text-anchor="middle" class="label">卡片1</text>
+<text x="210.0" y="433.0" text-anchor="middle" class="dim">宽 99.2 × 深 19.0</text>
+<text x="210.0" y="447.0" text-anchor="middle" class="dim">前 87 / 后 103</text>
+<rect class="cell" x="80.0" y="459.6" width="260.0" height="57.2"/>
+<text x="210.0" y="474.2" text-anchor="middle" class="label">卡片2</text>
+<text x="210.0" y="490.2" text-anchor="middle" class="dim">宽 99.2 × 深 19.0</text>
+<text x="210.0" y="504.2" text-anchor="middle" class="dim">前 103 / 后 119</text>
+<rect class="cell" x="80.0" y="516.8" width="260.0" height="78.0"/>
+<text x="210.0" y="541.8" text-anchor="middle" class="label">收据</text>
+<text x="210.0" y="557.8" text-anchor="middle" class="dim">宽 99.2 × 深 28.5</text>
+<text x="210.0" y="571.8" text-anchor="middle" class="dim">前 119 / 后 140</text>
+<rect class="cell" x="340.0" y="340.0" width="260.0" height="85.8"/>
+<text x="470.0" y="368.9" text-anchor="middle" class="label">充电宝1</text>
+<text x="470.0" y="384.9" text-anchor="middle" class="dim">宽 99.2 × 深 29.2</text>
+<text x="470.0" y="398.9" text-anchor="middle" class="dim">前 70 / 后 94</text>
+<rect class="cell" x="340.0" y="425.8" width="260.0" height="85.8"/>
+<text x="470.0" y="454.7" text-anchor="middle" class="label">充电宝2</text>
+<text x="470.0" y="470.7" text-anchor="middle" class="dim">宽 99.2 × 深 28.5</text>
+<text x="470.0" y="484.7" text-anchor="middle" class="dim">前 94 / 后 117</text>
+<rect class="cell" x="340.0" y="511.6" width="260.0" height="83.2"/>
+<text x="470.0" y="539.2" text-anchor="middle" class="label">数据线</text>
+<text x="470.0" y="555.2" text-anchor="middle" class="dim">宽 99.2 × 深 30.5</text>
+<text x="470.0" y="569.2" text-anchor="middle" class="dim">前 117 / 后 140</text>
+<rect class="cell" x="80.0" y="594.8" width="520.0" height="78.0"/>
+<text x="340.0" y="619.8" text-anchor="middle" class="label">信件</text>
+<text x="340.0" y="635.8" text-anchor="middle" class="dim">宽 198.5 × 深 28.5</text>
+<text x="340.0" y="649.8" text-anchor="middle" class="dim">前 140 / 后 140</text>
+<rect fill="none" stroke="#333" stroke-width="2" x="80.0" y="80.0" width="520.0" height="592.8"/>
+<text x="340.0" y="708.8" text-anchor="middle" class="axis">宽 X = 200 mm</text>
+<text x="24" y="376.4" class="axis" transform="rotate(-90 24 376.4)">深 Y = 228 mm</text>
+<text x="340.0" y="59.2" text-anchor="middle" class="axis">门口 Y=0</text>
+<text x="340.0" y="719.6" text-anchor="middle" class="axis">墙 Y=228</text>
+</svg>

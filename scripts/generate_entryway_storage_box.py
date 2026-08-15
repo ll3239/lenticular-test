@@ -1031,6 +1031,17 @@ def main() -> None:
         f"Outer: {spec['outer_mm']['width']:.0f} x {spec['outer_mm']['length']:.0f} mm, "
         f"height front {spec['outer_mm']['height_front']:.0f} mm -> back {spec['outer_mm']['height_back']:.0f} mm"
     )
+    from generate_entryway_dimensions import build_report, write_markdown, write_svg
+
+    dim_report = build_report(layout if layout else LAYOUT_COMPACT)
+    dim_json = Path("output/entryway_dimensions.json")
+    dim_md = Path("output/ENTRYWAY_DIMENSIONS.md")
+    dim_svg = Path("output/entryway_dimensions.svg")
+    with open(dim_json, "w", encoding="utf-8") as f:
+        json.dump(dim_report, f, indent=2, ensure_ascii=False)
+    write_markdown(dim_report, dim_md)
+    write_svg(dim_report, dim_svg)
+    print(f"Wrote {dim_md} (internal dimension sheet)")
     if args.all_styles:
         print("Preview: python3 -m http.server 8766  →  http://localhost:8766/viewer/entryway.html")
 

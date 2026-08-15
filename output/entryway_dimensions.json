@@ -1,0 +1,306 @@
+{
+  "title": "玄关收纳盒 — 内腔尺寸明细",
+  "orientation": "俯视：X 为左右宽，Y 为前后深；Y=0 是门口，Y 最大处贴墙。",
+  "internal_footprint_mm": {
+    "width_x": 200.0,
+    "depth_y": 228.0
+  },
+  "divider_thickness_mm": 1.5,
+  "partition_clearance_mm": 10.0,
+  "slope_rim_mm": {
+    "front_y0": 30.0,
+    "back_y_max": 150.0
+  },
+  "compartments": [
+    {
+      "id": "earphones_other",
+      "name_zh": "耳机/杂物",
+      "name_en": "earphones_other",
+      "position_internal_mm": {
+        "x0": 0,
+        "x1": 100.0,
+        "y0": 0,
+        "y1": 100.0,
+        "note": "Y=0 为门口（前），Y 增大靠墙（后）"
+      },
+      "internal_net_mm": {
+        "width_x": 99.25,
+        "depth_y": 99.25
+      },
+      "internal_bbox_mm": {
+        "width_x": 100.0,
+        "depth_y": 100.0
+      },
+      "baffle_height_mm": {
+        "front_at_y0": 20.0,
+        "back_at_y1": 70.0,
+        "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
+      },
+      "rim_height_mm": {
+        "front_at_y0": 30.0,
+        "back_at_y1": 80.0
+      }
+    },
+    {
+      "id": "essential_oils",
+      "name_zh": "精油",
+      "name_en": "essential_oils",
+      "position_internal_mm": {
+        "x0": 100.0,
+        "x1": 200.0,
+        "y0": 0,
+        "y1": 100.0,
+        "note": "Y=0 为门口（前），Y 增大靠墙（后）"
+      },
+      "internal_net_mm": {
+        "width_x": 99.25,
+        "depth_y": 99.25
+      },
+      "internal_bbox_mm": {
+        "width_x": 100.0,
+        "depth_y": 100.0
+      },
+      "baffle_height_mm": {
+        "front_at_y0": 20.0,
+        "back_at_y1": 70.0,
+        "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
+      },
+      "rim_height_mm": {
+        "front_at_y0": 30.0,
+        "back_at_y1": 80.0
+      }
+    },
+    {
+      "id": "keys",
+      "name_zh": "钥匙",
+      "name_en": "keys",
+      "position_internal_mm": {
+        "x0": 0,
+        "x1": 100.0,
+        "y0": 100.0,
+        "y1": 124.0,
+        "note": "Y=0 为门口（前），Y 增大靠墙（后）"
+      },
+      "internal_net_mm": {
+        "width_x": 99.25,
+        "depth_y": 21.75
+      },
+      "internal_bbox_mm": {
+        "width_x": 100.0,
+        "depth_y": 24.0
+      },
+      "baffle_height_mm": {
+        "front_at_y0": 70.0,
+        "back_at_y1": 87.1,
+        "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
+      },
+      "rim_height_mm": {
+        "front_at_y0": 80.0,
+        "back_at_y1": 97.1
+      }
+    },
+    {
+      "id": "card_1",
+      "name_zh": "卡片1",
+      "name_en": "card_1",
+      "position_internal_mm": {
+        "x0": 0,
+        "x1": 100.0,
+        "y0": 124.0,
+        "y1": 146.0,
+        "note": "Y=0 为门口（前），Y 增大靠墙（后）"
+      },
+      "internal_net_mm": {
+        "width_x": 99.25,
+        "depth_y": 19.0
+      },
+      "internal_bbox_mm": {
+        "width_x": 100.0,
+        "depth_y": 22.0
+      },
+      "baffle_height_mm": {
+        "front_at_y0": 87.1,
+        "back_at_y1": 102.9,
+        "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
+      },
+      "rim_height_mm": {
+        "front_at_y0": 97.1,
+        "back_at_y1": 112.9
+      }
+    },
+    {
+      "id": "card_2",
+      "name_zh": "卡片2",
+      "name_en": "card_2",
+      "position_internal_mm": {
+        "x0": 0,
+        "x1": 100.0,
+        "y0": 146.0,
+        "y1": 168.0,
+        "note": "Y=0 为门口（前），Y 增大靠墙（后）"
+      },
+      "internal_net_mm": {
+        "width_x": 99.25,
+        "depth_y": 19.0
+      },
+      "internal_bbox_mm": {
+        "width_x": 100.0,
+        "depth_y": 22.0
+      },
+      "baffle_height_mm": {
+        "front_at_y0": 102.9,
+        "back_at_y1": 118.6,
+        "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
+      },
+      "rim_height_mm": {
+        "front_at_y0": 112.9,
+        "back_at_y1": 128.6
+      }
+    },
+    {
+      "id": "receipts",
+      "name_zh": "收据",
+      "name_en": "receipts",
+      "position_internal_mm": {
+        "x0": 0,
+        "x1": 100.0,
+        "y0": 168.0,
+        "y1": 198.0,
+        "note": "Y=0 为门口（前），Y 增大靠墙（后）"
+      },
+      "internal_net_mm": {
+        "width_x": 99.25,
+        "depth_y": 28.5
+      },
+      "internal_bbox_mm": {
+        "width_x": 100.0,
+        "depth_y": 30.0
+      },
+      "baffle_height_mm": {
+        "front_at_y0": 118.6,
+        "back_at_y1": 140.0,
+        "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
+      },
+      "rim_height_mm": {
+        "front_at_y0": 128.6,
+        "back_at_y1": 150.0
+      }
+    },
+    {
+      "id": "power_bank_1",
+      "name_zh": "充电宝1",
+      "name_en": "power_bank_1",
+      "position_internal_mm": {
+        "x0": 100.0,
+        "x1": 200.0,
+        "y0": 100.0,
+        "y1": 133.0,
+        "note": "Y=0 为门口（前），Y 增大靠墙（后）"
+      },
+      "internal_net_mm": {
+        "width_x": 99.25,
+        "depth_y": 29.25
+      },
+      "internal_bbox_mm": {
+        "width_x": 100.0,
+        "depth_y": 33.0
+      },
+      "baffle_height_mm": {
+        "front_at_y0": 70.0,
+        "back_at_y1": 93.6,
+        "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
+      },
+      "rim_height_mm": {
+        "front_at_y0": 80.0,
+        "back_at_y1": 103.6
+      }
+    },
+    {
+      "id": "power_bank_2",
+      "name_zh": "充电宝2",
+      "name_en": "power_bank_2",
+      "position_internal_mm": {
+        "x0": 100.0,
+        "x1": 200.0,
+        "y0": 133.0,
+        "y1": 166.0,
+        "note": "Y=0 为门口（前），Y 增大靠墙（后）"
+      },
+      "internal_net_mm": {
+        "width_x": 99.25,
+        "depth_y": 28.5
+      },
+      "internal_bbox_mm": {
+        "width_x": 100.0,
+        "depth_y": 33.0
+      },
+      "baffle_height_mm": {
+        "front_at_y0": 93.6,
+        "back_at_y1": 117.1,
+        "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
+      },
+      "rim_height_mm": {
+        "front_at_y0": 103.6,
+        "back_at_y1": 127.1
+      }
+    },
+    {
+      "id": "data_cable",
+      "name_zh": "数据线",
+      "name_en": "data_cable",
+      "position_internal_mm": {
+        "x0": 100.0,
+        "x1": 200.0,
+        "y0": 166.0,
+        "y1": 198.0,
+        "note": "Y=0 为门口（前），Y 增大靠墙（后）"
+      },
+      "internal_net_mm": {
+        "width_x": 99.25,
+        "depth_y": 30.5
+      },
+      "internal_bbox_mm": {
+        "width_x": 100.0,
+        "depth_y": 32.0
+      },
+      "baffle_height_mm": {
+        "front_at_y0": 117.1,
+        "back_at_y1": 140.0,
+        "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
+      },
+      "rim_height_mm": {
+        "front_at_y0": 127.1,
+        "back_at_y1": 150.0
+      }
+    },
+    {
+      "id": "letters",
+      "name_zh": "信件",
+      "name_en": "letters",
+      "position_internal_mm": {
+        "x0": 0,
+        "x1": 200.0,
+        "y0": 198.0,
+        "y1": 228.0,
+        "note": "Y=0 为门口（前），Y 增大靠墙（后）"
+      },
+      "internal_net_mm": {
+        "width_x": 198.5,
+        "depth_y": 28.5
+      },
+      "internal_bbox_mm": {
+        "width_x": 200.0,
+        "depth_y": 30.0
+      },
+      "baffle_height_mm": {
+        "front_at_y0": 140.0,
+        "back_at_y1": 140.0,
+        "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
+      },
+      "rim_height_mm": {
+        "front_at_y0": 150.0,
+        "back_at_y1": 150.0
+      }
+    }
+  ]
+}
