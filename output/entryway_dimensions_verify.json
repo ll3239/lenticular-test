@@ -1,16 +1,7 @@
 {
-  "title": "玄关收纳盒 — 内腔尺寸明细",
-  "orientation": "俯视：X 为左右宽，Y 为前后深；Y=0 是门口，Y 最大处贴墙。",
-  "internal_footprint_mm": {
-    "width_x": 200.0,
-    "depth_y": 228.0
-  },
-  "divider_thickness_mm": 1.5,
-  "partition_clearance_mm": 10.0,
-  "slope_rim_mm": {
-    "front_y0": 30.0,
-    "back_y_max": 150.0
-  },
+  "pass": true,
+  "issue_count": 0,
+  "issues": [],
   "compartments": [
     {
       "id": "earphones_other",

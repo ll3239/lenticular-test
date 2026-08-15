@@ -65,18 +65,28 @@ def compartment_dividers_x(layout: Layout) -> tuple[float, ...]:
     return (x_div,)
 
 
-def compartment_dividers_y(layout: Layout) -> tuple[float, ...]:
+def compartment_dividers_y_for_cell(c: Compartment, layout: Layout) -> tuple[float, ...]:
+    """Horizontal divider Y positions that actually cross this cell."""
     ym0, ym1 = layout.y_mid0, layout.y_mid1
-    return (
-        layout.y_front1 + layout.gutter / 2,
-        layout.y_mid1 + layout.gutter / 2,
-        ym0 + 20,
-        ym0 + 40,
-        ym0 + 60,
-        ym0 + 30,
-        ym0 + 60,
-        ym1,
-    )
+    xl0, xl1, xr0, xr1 = layout.x_left0, layout.x_left1, layout.x_right0, layout.x_right1
+    edges: list[float] = []
+
+    y_front_zone = layout.y_front1 + layout.gutter / 2
+    y_letters_zone = layout.y_mid1 + layout.gutter / 2
+    if c.y0 <= y_front_zone <= c.y1:
+        edges.append(y_front_zone)
+    if c.name == "letters" or (c.x0 <= xl0 and c.x1 >= xr1):
+        if c.y0 <= y_letters_zone <= c.y1:
+            edges.append(y_letters_zone)
+
+    spans_left = c.x0 < xl1 and c.x1 > xl0
+    spans_right = c.x0 < xr1 and c.x1 > xr0
+    if spans_left and not spans_right:
+        edges.extend([ym0 + 20, ym0 + 40, ym0 + 60])
+    elif spans_right and not spans_left:
+        edges.extend([ym0 + 30, ym0 + 60, ym1])
+
+    return tuple(sorted(set(edges)))
 
 
 def baffle_height(y: float, layout: Layout) -> float:
@@ -87,7 +97,7 @@ def baffle_height(y: float, layout: Layout) -> float:
 
 def compartment_dims(c: Compartment, layout: Layout) -> dict:
     x_edges = compartment_dividers_x(layout)
-    y_edges = compartment_dividers_y(layout)
+    y_edges = compartment_dividers_y_for_cell(c, layout)
 
     width_net = net_internal_span(c.x0, c.x1, full_size=layout.w_int, divider_edges=x_edges)
     depth_net = net_internal_span(c.y0, c.y1, full_size=layout.l_int, divider_edges=y_edges)
