@@ -9,7 +9,7 @@ earphones, and six essential-oil bottles.
 
 ```bash
 python3 scripts/generate_entryway_storage_box.py
-# -> output/entryway_storage_box.stl (205.5 x 232.75 mm, fits P1S)
+# -> output/entryway_storage_box.stl (206 x 233 mm, fits P1S)
 
 # All 6 visual style variants:
 python3 scripts/generate_entryway_storage_box.py --all-styles
@@ -50,7 +50,7 @@ Key images: `output/previews/compare_all_iso.png` · `compare_all_top.png` · `c
 
 Open the STL in **Bambu Studio** (File → Import), place the bottom flat on
 the bed, keep **supports off**, add a 5 mm PETG brim (3 mm PLA), slice, and
-send to the printer. Expect roughly **440–500 g** and **9–14 hours**; use the
+send to the printer. Expect roughly **470–530 g** and **10–15 hours**; use the
 slicer's estimate for your filament/profile.
 
 **Print presets (optimized):** import `bambu/entryway_box_process_petg.json` + `bambu/entryway_box_filament_petg.json` (or PLA pair). Full guide: [`bambu/PRINT_GUIDE.md`](bambu/PRINT_GUIDE.md).

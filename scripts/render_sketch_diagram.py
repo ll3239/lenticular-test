@@ -24,13 +24,13 @@ plt.rcParams["axes.unicode_minus"] = False
 
 LABELS = {
     "earphones_other": "耳机+其他\n100×100",
-    "essential_oils": "精油×6\n100×96.5",
+    "essential_oils": "精油×6\n100×96",
     "receipts": "收据\n20",
     "card_1": "卡1\n25",
     "card_2": "卡2\n25",
     "misc_cards": "散卡片\n24.75",
     "data_cable": "数据线\n24 浅",
-    "power_banks": "充电宝\n71 深",
+    "power_banks": "充电宝\n70 深",
     "letters": "信件",
 }
 

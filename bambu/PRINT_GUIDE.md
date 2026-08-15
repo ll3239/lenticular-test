@@ -1,7 +1,7 @@
 # Entryway storage box — Bambu Studio print guide
 
-Optimized for a **205.5 × 232.75 × 152 mm** functional organizer with
-**1.5 mm dividers**, **2 mm outer walls**, and a **2 mm base**.
+Optimized for a **206 × 233 × 152 mm** functional organizer with
+**2 mm dividers**, **2 mm outer walls**, and a **2 mm base**.
 
 ## Recommended material
 
@@ -50,7 +50,7 @@ the base, so supports add waste and leave marks without improving the print.
 | Top shells | 5 | 5 | Stiff rim |
 | Bottom shells | **6** | **6** | Large flat base — resists flex when loaded |
 | Infill | **18% gyroid** | **20% gyroid** | Strong multi-direction fill without long print |
-| Thin wall detect | **On** | **On** | Critical for **1.5 mm** dividers |
+| Thin wall detect | **On** | **On** | Keeps the 2 mm dividers consistent |
 
 ### Temperatures
 
@@ -79,17 +79,17 @@ the base, so supports add waste and leave marks without improving the print.
 
 | | Estimate |
 |---|----------|
-| Time | **~9–14 h** (P1S, 0.4 mm nozzle; confirm after slicing) |
-| Filament | **~440–500 g** (about 460 g from solid model volume, before purge) |
+| Time | **~10–15 h** (P1S, 0.4 mm nozzle; confirm after slicing) |
+| Filament | **~470–530 g** (before purge) |
 | Nozzle | **0.4 mm** standard (see 0.2 mm note below) |
 
-The STL's solid volume is about **365 cm³**. Bambu Studio's sliced estimate is
+The STL's solid volume is about **390 cm³**. Bambu Studio's sliced estimate is
 authoritative because speed, flow calibration, purge, and filament density vary.
 
 ## 0.2 mm nozzle (optional)
 
-The 0.4 mm nozzle with Arachne/thin-wall detection should resolve the 1.5 mm
-dividers. Only switch to 0.2 mm if layer preview shows missing divider lines:
+The 2 mm dividers are designed for the standard 0.4 mm nozzle. Only switch to
+0.2 mm for unusually fine surface quality:
 
 - Use **0.2 mm nozzle** + **0.1 mm layers**
 - Wall loops **4**, print speed **−30%**
@@ -97,11 +97,11 @@ dividers. Only switch to 0.2 mm if layer preview shows missing divider lines:
 
 ## Manual checklist in Bambu Studio
 
-- [ ] Object centered on bed (**205.5 × 232.75 mm**; with a 5 mm brim: **215.5 × 242.75 mm**)
-- [ ] Fits **P1/P1S/X1/A1 (256 × 256 mm)** with **13.25 mm total** margin on the tighter axis
+- [ ] Object centered on bed (**206 × 233 mm**; with a 5 mm brim: **216 × 243 mm**)
+- [ ] Fits **P1/P1S/X1/A1 (256 × 256 mm)** with **13 mm total** margin on the tighter axis
 - [ ] Does **not** fit **A1 mini (180 × 180 mm)**; use a split model for that printer
 - [ ] **Detect thin walls** enabled (Process → Strength → Advanced)
-- [ ] **Precise wall** on (better 1.5 mm dividers)
+- [ ] **Precise wall** on
 - [ ] No support material
 - [ ] Brim on for first PETG print of this size
 - [ ] Preview: dividers show as solid lines in layer view
@@ -123,9 +123,9 @@ large items before printing.
 | Item | Verified usable space | Assumption |
 |---|---:|---|
 | Earphones / misc | 100 × 100 mm | Up to 90 × 90 mm footprint |
-| Essential oils | 100 × 96.5 mm | Six Ø30 × 80 mm bottles, 3×2 |
-| Receipts | 100 × 20.75 mm | Folded receipts |
+| Essential oils | 100 × 96 mm | Six Ø30 × 80 mm bottles, 3×2 |
+| Receipts | 100 × 20 mm | Folded receipts |
 | Card wallet 1 / 2 | 100 × 25 mm each | Up to 85.6 mm wide × 25 mm thick |
 | Data cable | 100 × 24 mm | Shallow coiled cable bundle |
-| Power banks | 100 × 71 mm | Two 110 × 80 × 30 mm units standing on 80 × 30 mm footprints |
-| Letters | 200 × 29.25 mm | Up to 200 mm wide; A4/C5 does not fit unfolded |
+| Power banks | 100 × 70 mm | Two 110 × 80 × 30 mm units standing on 80 × 30 mm footprints |
+| Letters | 200 × 29 mm | Up to 200 mm wide; A4/C5 does not fit unfolded |

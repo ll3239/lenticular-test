@@ -65,7 +65,8 @@ class Layout:
 
     @property
     def left_receipts_span(self) -> float:
-        return self.left_receipts_clear + DIVIDER
+        # Front edge is an exterior boundary; only the rear half-divider reduces clear depth.
+        return self.left_receipts_clear + DIVIDER / 2
 
     @property
     def left_card_span(self) -> float:
@@ -166,12 +167,12 @@ class Layout:
         )
 
 
-LAYOUT_COMPACT = Layout(gutter=0, margin_x=0, margin_y=0)  # corrected 201.5×228.75 internal
+LAYOUT_COMPACT = Layout(gutter=0, margin_x=0, margin_y=0)  # 202×229 internal with 2 mm dividers
 LAYOUT_MODULAR = Layout()
 
 
 WALL = 2.0
-DIVIDER = 1.5
+DIVIDER = 2.0
 BOTTOM = 2.0
 LIP = 5.0
 PARTITION_CLEARANCE = 10.0  # keep internal dividers ~1 cm below exterior rim
@@ -540,7 +541,10 @@ def _add_dividers_row_four(
             verts, faces, y0=oy, y1=oy + row_y1, x_center=ox + x_div,
             thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
-    for y_edge in (21.5, 48.0, 74.5):
+    receipts_edge = 20.0 + divider / 2
+    card_1_edge = receipts_edge + 25.0 + divider
+    card_2_edge = card_1_edge + 25.0 + divider
+    for y_edge in (receipts_edge, card_1_edge, card_2_edge):
         x0, x1 = _inset_partition_x(ox, 200.0, 300.0, 400.0)
         add_sloped_horizontal_partition(
             verts, faces, x0=x0, x1=x1,
@@ -550,7 +554,7 @@ def _add_dividers_row_four(
     x0, x1 = _inset_partition_x(ox, 300.0, 400.0, 400.0)
     add_sloped_horizontal_partition(
         verts, faces, x0=x0, x1=x1,
-        y0=oy + 66 - divider / 2, y1=oy + 66 + divider / 2,
+        y0=oy + 24 + divider / 2, y1=oy + 24 + 3 * divider / 2,
         z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
 
@@ -908,15 +912,15 @@ def bambu_print_settings() -> dict:
             "pla": {"nozzle_c": 220, "nozzle_first_layer_c": 225, "bed_c": 60, "fan_max_percent": 100},
         },
         "estimates": {
-            "time_hours": "9-14 (slice result depends on material/profile)",
-            "filament_grams": "440-500",
+            "time_hours": "10-15 (slice result depends on material/profile)",
+            "filament_grams": "470-530",
             "nozzle_mm": 0.4,
         },
         "optional_fine_nozzle": {
             "nozzle_mm": 0.2,
             "layer_height_mm": 0.1,
             "wall_loops": 4,
-            "note": "Use only if 1.5 mm dividers do not resolve with a 0.4 mm nozzle; print time more than doubles.",
+            "note": "Optional only; 2.0 mm dividers are designed for the standard 0.4 mm nozzle.",
         },
     }
 
@@ -941,7 +945,7 @@ def main() -> None:
         "--layout",
         choices=("modular", "compact"),
         default="compact",
-        help="compact = corrected 200×228 mm sketch layout; modular = gapped wider tray",
+        help="compact = 202×229 mm internal P1S layout; modular = gapped wider tray",
     )
     parser.add_argument(
         "--preset",
@@ -993,6 +997,7 @@ def main() -> None:
         layouts_dir.mkdir(parents=True, exist_ok=True)
         for pid, preset in LAYOUT_PRESETS.items():
             _, grid, w_int, l_int, compartments = resolve_preset(pid)
+            p1s_fit = w_int + 2 * args.wall + 10 <= 256 and l_int + 2 * args.wall + 10 <= 256
             verts, faces = build_mesh(
                 w_int=w_int,
                 l_int=l_int,
@@ -1008,7 +1013,11 @@ def main() -> None:
             )
             out = layouts_dir / f"entryway_{pid}.stl"
             write_binary_stl(out, verts, faces, f"Entryway {pid} - Bambu")
-            print(f"Wrote {out} [{pid}/{preset.style}] ({len(faces) * 2} triangles, {w_int:.0f}x{l_int:.0f} mm)")
+            fit_note = "P1S + 5 mm brim: PASS" if p1s_fit else "P1S + 5 mm brim: OVERSIZE"
+            print(
+                f"Wrote {out} [{pid}/{preset.style}] "
+                f"({len(faces) * 2} triangles, {w_int:.0f}x{l_int:.0f} mm; {fit_note})"
+            )
         catalog_path = layouts_dir / "catalog.json"
         with open(catalog_path, "w", encoding="utf-8") as f:
             json.dump({"layouts": preset_catalog(), "viewer": "viewer/gallery.html"}, f, indent=2, ensure_ascii=False)

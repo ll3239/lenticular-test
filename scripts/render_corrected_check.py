@@ -39,9 +39,9 @@ def main() -> None:
     slope = spec.get("slope", {})
     front_rim = slope.get("front_rim_mm", 30)
     back_rim = slope.get("back_rim_mm", 150)
-    outer_text = f"{outer.get('width', 205.5):g} x {outer.get('length', 232.8):g} x {outer.get('height_back', 152):g} mm"
-    brim_w = outer.get("width", 205.5) + 10
-    brim_l = outer.get("length", 232.8) + 10
+    outer_text = f"{outer.get('width', 206):g} x {outer.get('length', 233):g} x {outer.get('height_back', 152):g} mm"
+    brim_w = outer.get("width", 206) + 10
+    brim_l = outer.get("length", 233) + 10
 
     w, d = layout.w_int, layout.l_int
     out = Path("output/previews/corrected_layout_check.png")
@@ -113,10 +113,10 @@ def main() -> None:
         ("Slope (front → back rim)", f"{front_rim:g} mm → {back_rim:g} mm", True),
         ("With 5 mm brim", f"{brim_w:g} x {brim_l:g} mm", True),
         ("P1S build plate", "256 x 256 mm", True),
-        ("Essential oils (left mid)", "100 x 96.5 mm; 6 x Ø30 mm", True),
+        ("Essential oils (left mid)", "100 x 96 mm; 6 x Ø30 mm", True),
         ("Card wallets (front-right)", "100 x 25 mm clear each", True),
         ("Data cable (front bay)", "100 x 24 mm shallow tray", True),
-        ("Power banks (rear bay)", "100 x 71 mm (≥60 mm)", True),
+        ("Power banks (rear bay)", "100 x 70 mm (≥60 mm)", True),
         ("Letters at back", "200 mm max width; 140 mm baffle", True),
         ("STL geometry", "watertight single volume", True),
     ]

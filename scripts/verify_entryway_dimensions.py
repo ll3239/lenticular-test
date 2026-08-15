@@ -19,6 +19,7 @@ from generate_entryway_dimensions import (
 )
 from generate_entryway_storage_box import (
     BOTTOM,
+    DIVIDER,
     H_BACK,
     H_FRONT,
     LAYOUT_COMPACT,
@@ -79,7 +80,7 @@ def verify_mesh(layout=LAYOUT_COMPACT, stl_path: Path | None = None) -> list[str
         l_int=layout.l_int,
         layout=layout,
         wall=WALL,
-        divider=1.5,
+        divider=DIVIDER,
         bottom=BOTTOM,
         lip=5.0,
         h_front=H_FRONT,

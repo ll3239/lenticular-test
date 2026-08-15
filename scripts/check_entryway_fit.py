@@ -84,6 +84,9 @@ def main() -> None:
     card = clearance("card_1")
     receipt = clearance("receipts")
     letters = clearance("letters")
+    oil_baffle = by_id["essential_oils"]["baffle_height_mm"]
+    power_baffle = by_id["power_banks"]["baffle_height_mm"]
+    card_baffle = by_id["card_1"]["baffle_height_mm"]
     checks = [
         result(
             "Earphones / misc front bay",
@@ -100,11 +103,25 @@ def main() -> None:
             "Six Ø30×80 mm bottles fit 3×2 in the left mid bay.",
         ),
         result(
+            "Oil bottle rear retention",
+            [oil_baffle["front_at_y0"], oil_baffle["back_at_y1"]],
+            [70.0, 80.0],
+            oil_baffle["front_at_y0"] >= 70 and oil_baffle["back_at_y1"] >= 80,
+            "Place bottles toward the rear; 80 mm bottles protrude ~10 mm at the low front edge.",
+        ),
+        result(
             "Power banks (merged bay, rear)",
             power,
             [80.0, 60.0],
             power[0] >= 80 and power[1] >= 60,
             "Two 110×80×30 mm banks in one ≥60 mm-deep rear bay.",
+        ),
+        result(
+            "Power-bank rear retention",
+            [power_baffle["back_at_y1"]],
+            [110.0],
+            power_baffle["back_at_y1"] >= 110,
+            "Place both 110 mm-tall banks against the rear baffle.",
         ),
         result(
             "Coiled data cable (shallow front)",
@@ -119,6 +136,13 @@ def main() -> None:
             [85.6, 25.0],
             card[0] >= 85.6 and card[1] >= 25,
             "Each front-right slot accepts an 85.6 mm-wide wallet up to 25 mm thick.",
+        ),
+        result(
+            "Card retrieval exposure",
+            [card_baffle["back_at_y1"]],
+            [40.0, 54.0],
+            40.0 <= card_baffle["back_at_y1"] < 54.0,
+            "A 54 mm-tall standard card remains exposed above the low front-row baffle.",
         ),
         result(
             "Receipts",

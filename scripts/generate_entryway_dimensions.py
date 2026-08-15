@@ -52,7 +52,7 @@ def net_internal_span(
     full_size: float,
     divider_edges: tuple[float, ...] = (),
 ) -> float:
-    """Usable span along one axis after 1.5 mm dividers on internal boundaries."""
+    """Usable span along one axis after divider deductions on internal boundaries."""
     span = a1 - a0
     for edge in divider_edges:
         span -= _divider_deduction(a0, a1, edge, full_size)
@@ -186,7 +186,7 @@ def write_markdown(report: dict, path: Path) -> None:
             "",
             "## 说明",
             "",
-            "- **净宽 / 净深**：内腔可用尺寸（已扣除挡板占用的 1.5 mm）。",
+            f"- **净宽 / 净深**：内腔可用尺寸（已扣除挡板占用的 {DIVIDER:.1f} mm）。",
             "- **前挡板高**：该格 *门口侧*（Y 较小）的内腔可用高度。",
             "- **后挡板高**：该格 *墙侧*（Y 较大）的内腔可用高度。",
             "- 卡片区在右前排（门口低沿），挡板随外沿正常坡度，不再截低。",
@@ -201,9 +201,9 @@ def write_markdown(report: dict, path: Path) -> None:
             "  ├──────────100──────────┼──────────100──────────┤",
             "  │        精油           │ 数据线（前）/充电宝（后） │  98",
             "  ├───────────────────────┴───────────────────────┤",
-            "  │                    信件 (201.5 宽)               │  30",
+            f"  │                    信件 ({report['internal_footprint_mm']['width_x']:.0f} 宽)                 │  30",
             "  └─────────────────────────────────────────────────┘  Y=229 墙",
-            "  X=0                                            X=201.5",
+            f"  X=0                                              X={report['internal_footprint_mm']['width_x']:.0f}",
             "```",
             "",
             "完整 SVG 尺寸图：`output/entryway_dimensions.svg`",
@@ -373,8 +373,8 @@ def write_html(report: dict, path: Path) -> None:
   </table>
 
   <div class="note">
-    数字为扣除 1.5 mm 共用挡板后的净尺寸。挡板顶比外沿低 {report['partition_clearance_mm']:.0f} mm。
-    外廓约 205.5 × 232.8 mm，P1S 256 mm 热床可一次打印。
+    数字为扣除 {report['divider_thickness_mm']:.1f} mm 共用挡板后的净尺寸。挡板顶比外沿低 {report['partition_clearance_mm']:.0f} mm。
+    外廓约 206 × 233 mm，P1S 256 mm 热床可一次打印。
   </div>
 </body>
 </html>
