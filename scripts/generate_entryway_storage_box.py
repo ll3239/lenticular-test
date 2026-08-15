@@ -140,14 +140,32 @@ L_INT = DEFAULT_LAYOUT.l_int
 
 H_FRONT = 30.0   # ~3 cm at entryway lip — low front tray
 H_BACK = 150.0   # ~15 cm at wall / letters end — standing mail
+H_MID_START = 80.0  # rim at front/mid boundary — mid band rises quickly to back
 
 COMPARTMENTS = DEFAULT_LAYOUT.compartments()
 
 
-def rim_height(y: float, h_front: float, h_back: float, length: float) -> float:
-    """Linear rim along Y: low at front (y=0), high at back / letters (y=L)."""
-    t = np.clip(y / length, 0.0, 1.0)
-    return h_front + (h_back - h_front) * t
+def rim_height(
+    y: float,
+    h_front: float,
+    h_back: float,
+    length: float,
+    layout: Layout | None = None,
+) -> float:
+    """Rim along internal Y: low front tray, steep mid rise, flat full-height letters band."""
+    if layout is None:
+        t = np.clip(y / length, 0.0, 1.0)
+        return h_front + (h_back - h_front) * t
+
+    yf1 = layout.y_front1
+    yl0 = layout.y_letters0
+    if y <= yf1:
+        t = y / yf1 if yf1 > 0 else 0.0
+        return h_front + (H_MID_START - h_front) * t
+    if y <= yl0:
+        t = (y - yf1) / (yl0 - yf1) if yl0 > yf1 else 0.0
+        return H_MID_START + (h_back - H_MID_START) * t
+    return h_back
 
 
 def add_triangle(verts: list, faces: list, v0, v1, v2) -> None:
@@ -195,11 +213,12 @@ def add_sloped_side_wall(
     h_back: float,
     length: float,
     z_floor: float,
+    layout: Layout | None = None,
     cap_ends: bool = True,
 ) -> None:
     z0 = z_floor
-    z_at_y0 = z_floor + rim_height(y0 - y_origin, h_front, h_back, length)
-    z_at_y1 = z_floor + rim_height(y1 - y_origin, h_front, h_back, length)
+    z_at_y0 = z_floor + rim_height(y0 - y_origin, h_front, h_back, length, layout)
+    z_at_y1 = z_floor + rim_height(y1 - y_origin, h_front, h_back, length, layout)
     if side == "left":
         x0, x1 = x_face - thickness, x_face
     elif side == "right":
@@ -267,6 +286,7 @@ def add_rounded_corner_wall(
     h_front: float,
     h_back: float,
     z_floor: float,
+    layout: Layout | None = None,
     segments: int = 8,
 ) -> None:
     """Quarter-annulus wall joining shortened straight walls."""
@@ -278,7 +298,7 @@ def add_rounded_corner_wall(
             y = cy + radius * np.sin(angle)
             z = z_floor
             if top:
-                z += rim_height(y - oy, h_front, h_back, length)
+                z += rim_height(y - oy, h_front, h_back, length, layout)
             return (x, y, z)
 
         oi0, oi1 = point(outer_radius, a0, False), point(outer_radius, a1, False)
@@ -352,28 +372,29 @@ def _add_dividers_row_four(
     oy: float,
     divider: float,
     z_floor: float,
-    divider_h,
+    partition_h,
+    slot_h,
 ) -> None:
     """One row of four 100 mm bays + letters band at back (y=100–130)."""
     row_y1 = 100.0
     add_horizontal_divider(
         verts, faces, x0=ox, x1=ox + 400.0, y_center=oy + row_y1,
-        thickness=divider, divider_height=divider_h(oy + row_y1, 25), z_floor=z_floor,
+        thickness=divider, divider_height=partition_h(oy + row_y1), z_floor=z_floor,
     )
     for x_div in (100.0, 200.0, 300.0):
         add_vertical_divider(
             verts, faces, y0=oy, y1=oy + row_y1, x_center=ox + x_div,
-            thickness=divider, divider_height=divider_h(oy + row_y1 / 2, 82), z_floor=z_floor,
+            thickness=divider, divider_height=partition_h(oy + row_y1 / 2), z_floor=z_floor,
         )
     for y_edge, depth in ((20, 22), (40, 12), (60, 12)):
         add_horizontal_divider(
             verts, faces, x0=ox + 200.0, x1=ox + 300.0, y_center=oy + y_edge,
-            thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
+            thickness=divider, divider_height=slot_h(oy + y_edge, depth), z_floor=z_floor,
         )
     for y_edge, depth in ((30, 112), (60, 112), (80, 32)):
         add_horizontal_divider(
             verts, faces, x0=ox + 300.0, x1=ox + 400.0, y_center=oy + y_edge,
-            thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
+            thickness=divider, divider_height=slot_h(oy + y_edge, depth), z_floor=z_floor,
         )
 
 
@@ -385,7 +406,8 @@ def _add_dividers_mail_spine(
     oy: float,
     divider: float,
     z_floor: float,
-    divider_h,
+    partition_h,
+    slot_h,
 ) -> None:
     """Core 200×180 grid + full-height letters spine at x=200–230."""
     xl0, xl1, xr0, xr1 = 0.0, 100.0, 100.0, 200.0
@@ -394,29 +416,33 @@ def _add_dividers_mail_spine(
 
     add_horizontal_divider(
         verts, faces, x0=ox, x1=ox + spine_x, y_center=oy + yf1,
-        thickness=divider, divider_height=divider_h(oy + yf1, 82), z_floor=z_floor,
+        thickness=divider, divider_height=partition_h(oy + yf1), z_floor=z_floor,
     )
     add_horizontal_divider(
         verts, faces, x0=ox, x1=ox + spine_x, y_center=oy + ym1,
-        thickness=divider, divider_height=divider_h(oy + ym1, 25), z_floor=z_floor,
+        thickness=divider, divider_height=partition_h(oy + ym1), z_floor=z_floor,
     )
     add_vertical_divider(
-        verts, faces, y0=oy, y1=oy + ym1, x_center=ox + 100.0,
-        thickness=divider, divider_height=divider_h(oy + 50, 82), z_floor=z_floor,
+        verts, faces, y0=oy, y1=oy + yf1, x_center=ox + 100.0,
+        thickness=divider, divider_height=partition_h(oy + yf1 / 2), z_floor=z_floor,
+    )
+    add_vertical_divider(
+        verts, faces, y0=oy + ym0, y1=oy + ym1, x_center=ox + 100.0,
+        thickness=divider, divider_height=partition_h(oy + (ym0 + ym1) / 2), z_floor=z_floor,
     )
     add_vertical_divider(
         verts, faces, y0=oy, y1=oy + 210.0, x_center=ox + spine_x,
-        thickness=divider, divider_height=divider_h(oy + 105, 210), z_floor=z_floor,
+        thickness=divider, divider_height=partition_h(oy + 105), z_floor=z_floor,
     )
     for y_edge, depth in ((ym0 + 24, 22), (ym0 + 46, 12), (ym0 + 68, 12)):
         add_horizontal_divider(
             verts, faces, x0=ox + xl0, x1=ox + xl1, y_center=oy + y_edge,
-            thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
+            thickness=divider, divider_height=slot_h(oy + y_edge, depth), z_floor=z_floor,
         )
     for y_edge, depth in ((ym0 + 33, 112), (ym0 + 66, 112), (ym1, 32)):
         add_horizontal_divider(
             verts, faces, x0=ox + xr0, x1=ox + xr1, y_center=oy + y_edge,
-            thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
+            thickness=divider, divider_height=slot_h(oy + y_edge, depth), z_floor=z_floor,
         )
 
 
@@ -430,39 +456,45 @@ def _add_dividers_grid(
     w_int: float,
     divider: float,
     z_floor: float,
-    divider_h,
+    partition_h,
+    slot_h,
     letters_at_back: bool,
 ) -> None:
     xl0, xl1 = layout.x_left0, layout.x_left1
     xr0, xr1 = layout.x_right0, layout.x_right1
-    yf1 = layout.y_front1
+    yf0, yf1 = layout.y_front0, layout.y_front1
     ym0, ym1 = layout.y_mid0, layout.y_mid1
     x_col_div = (layout.x_left1 + layout.x_right0) / 2
-    gx1 = xr1  # grid content width for partial shelves
+    gx1 = xr1
 
     add_horizontal_divider(
         verts, faces, x0=ox, x1=ox + (w_int if letters_at_back else gx1),
         y_center=oy + yf1 + layout.gutter / 2,
-        thickness=divider, divider_height=divider_h(oy + yf1, 82), z_floor=z_floor,
+        thickness=divider, divider_height=partition_h(oy + yf1), z_floor=z_floor,
     )
     if letters_at_back:
         add_horizontal_divider(
-            verts, faces, x0=ox, x1=ox + w_int, y_center=oy + ym1 + layout.gutter / 2,
-            thickness=divider, divider_height=divider_h(oy + ym1, 25), z_floor=z_floor,
+            verts, faces, x0=ox, x1=ox + w_int,
+            y_center=oy + ym1 + layout.gutter / 2,
+            thickness=divider, divider_height=partition_h(oy + layout.y_letters0), z_floor=z_floor,
         )
     add_vertical_divider(
-        verts, faces, y0=oy + layout.y_front0, y1=oy + ym1, x_center=ox + x_col_div,
-        thickness=divider, divider_height=divider_h(oy + layout.y_front0 + 50, 82), z_floor=z_floor,
+        verts, faces, y0=oy + yf0, y1=oy + yf1, x_center=ox + x_col_div,
+        thickness=divider, divider_height=partition_h(oy + (yf0 + yf1) / 2), z_floor=z_floor,
+    )
+    add_vertical_divider(
+        verts, faces, y0=oy + ym0, y1=oy + ym1, x_center=ox + x_col_div,
+        thickness=divider, divider_height=partition_h(oy + (ym0 + ym1) / 2), z_floor=z_floor,
     )
     for y_edge, depth in ((ym0 + 20, 22), (ym0 + 40, 12), (ym0 + 60, 12)):
         add_horizontal_divider(
             verts, faces, x0=ox + xl0, x1=ox + xl1, y_center=oy + y_edge,
-            thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
+            thickness=divider, divider_height=slot_h(oy + y_edge, depth), z_floor=z_floor,
         )
     for y_edge, depth in ((ym0 + 30, 112), (ym0 + 60, 112), (ym1, 32)):
         add_horizontal_divider(
             verts, faces, x0=ox + xr0, x1=ox + xr1, y_center=oy + y_edge,
-            thickness=divider, divider_height=divider_h(oy + y_edge, depth), z_floor=z_floor,
+            thickness=divider, divider_height=slot_h(oy + y_edge, depth), z_floor=z_floor,
         )
 
 
@@ -505,14 +537,14 @@ def build_mesh(
         y0=oy + (corner_radius if rounded_walls else -wall),
         y1=oy + l_int - (corner_radius if rounded_walls else -wall), y_origin=oy,
         x_face=ox, thickness=wall, h_front=h_front, h_back=h_back,
-        length=l_int, z_floor=z_floor, cap_ends=not rounded_walls,
+        length=l_int, z_floor=z_floor, layout=layout, cap_ends=not rounded_walls,
     )
     add_sloped_side_wall(
         verts, faces, side="right",
         y0=oy + (corner_radius if rounded_walls else -wall),
         y1=oy + l_int - (corner_radius if rounded_walls else -wall), y_origin=oy,
         x_face=ox + w_int, thickness=wall, h_front=h_front, h_back=h_back,
-        length=l_int, z_floor=z_floor, cap_ends=not rounded_walls,
+        length=l_int, z_floor=z_floor, layout=layout, cap_ends=not rounded_walls,
     )
     add_front_back_wall(
         verts, faces, edge="front",
@@ -537,18 +569,21 @@ def build_mesh(
             add_rounded_corner_wall(
                 verts, faces, cx=cx, cy=cy, angle0=angle0, angle1=angle1,
                 inner_radius=corner_radius, thickness=wall, oy=oy, length=l_int,
-                h_front=h_front, h_back=h_back, z_floor=z_floor,
+                h_front=h_front, h_back=h_back, z_floor=z_floor, layout=layout,
             )
 
     def local_y(y: float) -> float:
         return y - oy
 
-    def divider_h(y_abs: float, depth: float) -> float:
-        rim = rim_height(local_y(y_abs), h_front, h_back, l_int)
-        return min(depth, rim - 1.0)
+    def partition_h(y_abs: float) -> float:
+        rim = rim_height(local_y(y_abs), h_front, h_back, l_int, layout)
+        return max(1.0, rim - 1.0)
+
+    def slot_h(y_abs: float, target: float) -> float:
+        return min(target, partition_h(y_abs))
 
     # Front retaining lip (full internal width)
-    front_rim_z = z_floor + rim_height(0.0, h_front, h_back, l_int)
+    front_rim_z = z_floor + rim_height(0.0, h_front, h_back, l_int, layout)
     add_front_lip(
         verts, faces,
         x0=ox, x1=ox + w_int, y_front=oy,
@@ -557,16 +592,18 @@ def build_mesh(
 
     if preset_id == "mail_spine":
         _add_dividers_mail_spine(
-            verts, faces, ox=ox, oy=oy, divider=divider, z_floor=z_floor, divider_h=divider_h,
+            verts, faces, ox=ox, oy=oy, divider=divider, z_floor=z_floor,
+            partition_h=partition_h, slot_h=slot_h,
         )
     elif preset_id == "row_four":
         _add_dividers_row_four(
-            verts, faces, ox=ox, oy=oy, divider=divider, z_floor=z_floor, divider_h=divider_h,
+            verts, faces, ox=ox, oy=oy, divider=divider, z_floor=z_floor,
+            partition_h=partition_h, slot_h=slot_h,
         )
     else:
         _add_dividers_grid(
             verts, faces, ox=ox, oy=oy, layout=layout, w_int=w_int, divider=divider,
-            z_floor=z_floor, divider_h=divider_h, letters_at_back=True,
+            z_floor=z_floor, partition_h=partition_h, slot_h=slot_h, letters_at_back=True,
         )
 
     if style != "minimal":
@@ -866,7 +903,7 @@ def main() -> None:
         "slope": {
             "front_rim_mm": args.h_front,
             "back_rim_mm": args.h_back,
-            "note": "Side view: gradual slope from ~30 mm front (entryway) to ~150 mm back (letters). Front items may sit above the low rim.",
+            "note": "Zoned slope: ~30 mm front tray, steep rise through mid band, flat ~150 mm letters bay matching exterior back wall.",
         },
         "front_lip_mm": args.lip,
         "item_assumptions": {

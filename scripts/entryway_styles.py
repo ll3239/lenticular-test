@@ -379,6 +379,7 @@ def apply_arch_wave(
     z_floor: float,
     h_front: float,
     h_back: float,
+    layout=None,
     flute_spacing: float = 12.0,
     flute_width: float = 1.6,
     flute_depth: float = 1.2,
@@ -407,7 +408,7 @@ def apply_arch_wave(
 
     for y in np.arange(18.0, outer_l - 17.0, flute_spacing):
         y_local = np.clip(y - oy, 0.0, l_int)
-        z_high = z_floor + rim_height(y_local, h_front, h_back, l_int) - 7.0
+        z_high = z_floor + rim_height(y_local, h_front, h_back, l_int, layout) - 7.0
         add_box(
             verts, faces, -flute_depth, y - half, z_low,
             0.4, y + half, z_high,
@@ -479,7 +480,7 @@ def apply_style(
     if style == "arch_wave":
         apply_arch_wave(
             verts, faces, ox=ox, oy=oy, w_int=w_int, l_int=l_int, wall=wall,
-            z_floor=z_floor, h_front=h_front, h_back=h_back,
+            z_floor=z_floor, h_front=h_front, h_back=h_back, layout=layout,
         )
         return
     if style == "chamfer":

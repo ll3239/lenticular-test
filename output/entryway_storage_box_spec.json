@@ -81,7 +81,7 @@
   "slope": {
     "front_rim_mm": 30.0,
     "back_rim_mm": 150.0,
-    "note": "Side view: gradual slope from ~30 mm front (entryway) to ~150 mm back (letters). Front items may sit above the low rim."
+    "note": "Zoned slope: ~30 mm front tray, steep rise through mid band, flat ~150 mm letters bay matching exterior back wall."
   },
   "front_lip_mm": 5.0,
   "item_assumptions": {
