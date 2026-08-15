@@ -143,14 +143,6 @@ class Layout:
     def y_letters1(self) -> float:
         return self.y_letters0 + self.letters_h
 
-    @property
-    def y_card_zone0(self) -> float:
-        return self.y_front0 + self.left_receipts_span
-
-    @property
-    def y_card_zone1(self) -> float:
-        return self.y_card_zone0 + 2 * self.left_card_span
-
     def compartments(self) -> tuple[Compartment, ...]:
         xl0, xl1, xr0, xr1 = self.x_left0, self.x_left1, self.x_right0, self.x_right1
         yf0, yf1 = self.y_front0, self.y_front1
@@ -183,7 +175,6 @@ DIVIDER = 1.5
 BOTTOM = 2.0
 LIP = 5.0
 PARTITION_CLEARANCE = 10.0  # keep internal dividers ~1 cm below exterior rim
-CARD_SLOT_INTERNAL_H = 80.0  # ~8 cm card wallets — lower slot walls for easier reach
 WALL_INSET = 0.05  # keep sloped partitions off side walls for clean boolean union
 
 DEFAULT_LAYOUT = LAYOUT_COMPACT
@@ -660,39 +651,21 @@ def _add_dividers_grid(
             y0=y_mid_letters - divider / 2, y1=y_mid_letters + divider / 2,
             z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
-    # Center wall: capped ~8 cm in front-right card zone for wallet reach.
-    y_card0 = oy + layout.y_card_zone0
-    y_card1 = oy + layout.y_card_zone1
-    z_card_top = z_floor + CARD_SLOT_INTERNAL_H
+    # Center wall: full sloped height (cards are in low front row — no capped notch).
     add_sloped_vertical_divider(
-        verts, faces, y0=oy + yf0, y1=y_card0, x_center=ox + x_col_div,
-        thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
-    )
-    add_flat_topped_vertical_divider(
-        verts, faces, y0=y_card0, y1=y_card1, x_center=ox + x_col_div,
-        thickness=divider, z_floor=z_floor, z_top=z_card_top,
-    )
-    add_sloped_vertical_divider(
-        verts, faces, y0=y_card1, y1=oy + ym1, x_center=ox + x_col_div,
+        verts, faces, y0=oy + yf0, y1=oy + ym1, x_center=ox + x_col_div,
         thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
     y_r1 = yf0 + layout.left_receipts_span
     y_c1 = y_r1 + layout.left_card_span
     y_c2 = y_c1 + layout.left_card_span
 
-    def stack_partition_top_z(y_abs: float) -> float:
-        top = top_z_at_y(y_abs)
-        ly = y_abs - oy
-        if layout.y_card_zone0 <= ly <= layout.y_card_zone1:
-            return min(top, z_card_top)
-        return top
-
     for y_edge in (y_r1, y_c1, y_c2):
         x0, x1 = _inset_partition_x(ox, xr0, xr1, w_int)
         add_sloped_horizontal_partition(
             verts, faces, x0=x0, x1=x1,
             y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
-            z_floor=z_floor, top_z_at_y=stack_partition_top_z,
+            z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
     y_cable = ym0 + layout.right_cable_span
     x0, x1 = _inset_partition_x(ox, xr0, xr1, w_int)
