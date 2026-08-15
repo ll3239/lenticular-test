@@ -7,9 +7,10 @@ Layout (internal mm, top view). Y=0 is the entryway FRONT (lip here); back = let
 Modular layout — same cell sizes (100×100, 100×80, …) with gutters between blocks:
 
   ┌─ margin ─┬──100──┬ gutter ┬──100──┬─ margin ─┐
-  │ earphones│       │        │  oils  │          │  100
+  │ earphones│       │        │receipts│          │  100
+  │          │       │        │cards…  │          │
   ├──────────┴───────┤        ├────────┴──────────┤
-  │ receipts/cards…  │ gutter │ cable (front) + power banks (back) │   98
+  │ essential oils   │ gutter │ cable + power banks │   98
   ├──────────────────┴────────┴───────────────────┤
   │              letters (full width)              │   30
   └────────────────────────────────────────────────┘
@@ -72,8 +73,8 @@ class Layout:
 
     @property
     def left_misc_span(self) -> float:
-        # Fill left mid column to ym1 — no dead zone before letters band.
-        return self.mid_h - self.left_receipts_span - 2 * self.left_card_span
+        # Receipts/cards stack lives in the front-right column — fill to y_front1.
+        return self.front_h - self.left_receipts_span - 2 * self.left_card_span
 
     @property
     def left_misc_clear(self) -> float:
@@ -144,7 +145,7 @@ class Layout:
 
     @property
     def y_card_zone0(self) -> float:
-        return self.y_mid0 + self.left_receipts_span
+        return self.y_front0 + self.left_receipts_span
 
     @property
     def y_card_zone1(self) -> float:
@@ -155,18 +156,18 @@ class Layout:
         yf0, yf1 = self.y_front0, self.y_front1
         ym0, ym1 = self.y_mid0, self.y_mid1
         yl0, yl1 = self.y_letters0, self.y_letters1
-        y_r1 = ym0 + self.left_receipts_span
+        y_r1 = yf0 + self.left_receipts_span
         y_c1 = y_r1 + self.left_card_span
         y_c2 = y_c1 + self.left_card_span
         y_misc1 = y_c2 + self.left_misc_span
         y_cable1 = ym0 + self.right_cable_span
         return (
             Compartment("earphones_other", xl0, xl1, yf0, yf1, 48),
-            Compartment("essential_oils", xr0, xr1, yf0, yf1, 82),
-            Compartment("receipts", xl0, xl1, ym0, y_r1, 20),
-            Compartment("card_1", xl0, xl1, y_r1, y_c1, 80),
-            Compartment("card_2", xl0, xl1, y_c1, y_c2, 80),
-            Compartment("misc_cards", xl0, xl1, y_c2, y_misc1, 28),
+            Compartment("essential_oils", xl0, xl1, ym0, ym1, 82),
+            Compartment("receipts", xr0, xr1, yf0, y_r1, 20),
+            Compartment("card_1", xr0, xr1, y_r1, y_c1, 80),
+            Compartment("card_2", xr0, xr1, y_c1, y_c2, 80),
+            Compartment("misc_cards", xr0, xr1, y_c2, y_misc1, 28),
             Compartment("data_cable", xr0, xr1, ym0, y_cable1, 32),
             Compartment("power_banks", xr0, xr1, y_cable1, ym1, 112),
             Compartment("letters", 0, self.w_int, yl0, yl1, 148),
@@ -604,11 +605,11 @@ def _add_dividers_mail_spine(
         thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
     layout_ref = LAYOUT_COMPACT
-    y_r1 = ym0 + layout_ref.left_receipts_span
+    y_r1 = layout_ref.y_front0 + layout_ref.left_receipts_span
     y_c1 = y_r1 + layout_ref.left_card_span
     y_c2 = y_c1 + layout_ref.left_card_span
     for y_edge in (y_r1, y_c1, y_c2):
-        x0, x1 = _inset_partition_x(ox, xl0, xl1, w_int)
+        x0, x1 = _inset_partition_x(ox, xr0, xr1, w_int)
         add_sloped_horizontal_partition(
             verts, faces, x0=x0, x1=x1,
             y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
@@ -659,7 +660,7 @@ def _add_dividers_grid(
             y0=y_mid_letters - divider / 2, y1=y_mid_letters + divider / 2,
             z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
-    # Center wall: full height except card zone (left column only), capped ~8 cm for card wallets.
+    # Center wall: capped ~8 cm in front-right card zone for wallet reach.
     y_card0 = oy + layout.y_card_zone0
     y_card1 = oy + layout.y_card_zone1
     z_card_top = z_floor + CARD_SLOT_INTERNAL_H
@@ -675,11 +676,11 @@ def _add_dividers_grid(
         verts, faces, y0=y_card1, y1=oy + ym1, x_center=ox + x_col_div,
         thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
-    y_r1 = ym0 + layout.left_receipts_span
+    y_r1 = yf0 + layout.left_receipts_span
     y_c1 = y_r1 + layout.left_card_span
     y_c2 = y_c1 + layout.left_card_span
 
-    def left_partition_top_z(y_abs: float) -> float:
+    def stack_partition_top_z(y_abs: float) -> float:
         top = top_z_at_y(y_abs)
         ly = y_abs - oy
         if layout.y_card_zone0 <= ly <= layout.y_card_zone1:
@@ -687,11 +688,11 @@ def _add_dividers_grid(
         return top
 
     for y_edge in (y_r1, y_c1, y_c2):
-        x0, x1 = _inset_partition_x(ox, xl0, xl1, w_int)
+        x0, x1 = _inset_partition_x(ox, xr0, xr1, w_int)
         add_sloped_horizontal_partition(
             verts, faces, x0=x0, x1=x1,
             y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
-            z_floor=z_floor, top_z_at_y=left_partition_top_z,
+            z_floor=z_floor, top_z_at_y=stack_partition_top_z,
         )
     y_cable = ym0 + layout.right_cable_span
     x0, x1 = _inset_partition_x(ox, xr0, xr1, w_int)

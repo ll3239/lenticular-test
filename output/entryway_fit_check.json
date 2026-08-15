@@ -35,14 +35,14 @@
       "name": "Six oil bottles (3×2)",
       "actual_mm": [
         100.0,
-        100.0
+        97.25
       ],
       "required_mm": [
         90.0,
         60.0
       ],
       "pass": true,
-      "note": "Six Ø30 mm bottles fit in a 3×2 arrangement."
+      "note": "Six Ø30 mm bottles in left mid bay (~98 mm deep)."
     },
     {
       "name": "Power banks (merged bay, rear)",

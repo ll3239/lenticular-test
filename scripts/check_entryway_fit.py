@@ -73,10 +73,10 @@ def main() -> None:
         ),
         result(
             "Six oil bottles (3×2)",
-            [100.0, 100.0],
+            [100.0, 97.25],
             [90.0, 60.0],
-            100.0 >= 90 and 100.0 >= 60,
-            "Six Ø30 mm bottles fit in a 3×2 arrangement.",
+            100.0 >= 90 and 97.25 >= 60,
+            "Six Ø30 mm bottles in left mid bay (~98 mm deep).",
         ),
         result(
             "Power banks (merged bay, rear)",

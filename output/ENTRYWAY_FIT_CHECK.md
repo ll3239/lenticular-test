@@ -9,7 +9,7 @@
 | Check | Net clearance | Required | Result |
 |---|---:|---:|:---:|
 | Earphones / misc front bay | 100 × 100 mm | 90 × 90 mm | PASS |
-| Six oil bottles (3×2) | 100 × 100 mm | 90 × 60 mm | PASS |
+| Six oil bottles (3×2) | 100 × 97.25 mm | 90 × 60 mm | PASS |
 | Power banks (merged bay, rear) | 100 × 71.75 mm | 80 × 60 mm | PASS |
 | Coiled data cable (shallow front) | 100 × 24 mm | 60 × 24 mm | PASS |
 | Standard cards | 100 × 25 mm | 85.6 × 3 mm | PASS |

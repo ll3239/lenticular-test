@@ -37,28 +37,28 @@
       "name_zh": "精油",
       "name_en": "essential_oils",
       "position_internal_mm": {
-        "x0": 100.75,
-        "x1": 201.5,
-        "y0": 0,
-        "y1": 100.75,
+        "x0": 0,
+        "x1": 100.75,
+        "y0": 100.75,
+        "y1": 198.75,
         "note": "Y=0 为门口（前），Y 增大靠墙（后）"
       },
       "internal_net_mm": {
         "width_x": 100.0,
-        "depth_y": 100.0
+        "depth_y": 97.25
       },
       "internal_bbox_mm": {
         "width_x": 100.75,
-        "depth_y": 100.75
+        "depth_y": 98.0
       },
       "baffle_height_mm": {
-        "front_at_y0": 20.0,
-        "back_at_y1": 70.0,
+        "front_at_y0": 70.0,
+        "back_at_y1": 123.6,
         "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
       },
       "rim_height_mm": {
-        "front_at_y0": 30.0,
-        "back_at_y1": 80.0
+        "front_at_y0": 80.0,
+        "back_at_y1": 133.6
       }
     },
     {
@@ -66,28 +66,28 @@
       "name_zh": "收据",
       "name_en": "receipts",
       "position_internal_mm": {
-        "x0": 0,
-        "x1": 100.75,
-        "y0": 100.75,
-        "y1": 122.25,
+        "x0": 100.75,
+        "x1": 201.5,
+        "y0": 0,
+        "y1": 21.5,
         "note": "Y=0 为门口（前），Y 增大靠墙（后）"
       },
       "internal_net_mm": {
         "width_x": 100.0,
-        "depth_y": 20.0
+        "depth_y": 20.75
       },
       "internal_bbox_mm": {
         "width_x": 100.75,
         "depth_y": 21.5
       },
       "baffle_height_mm": {
-        "front_at_y0": 70.0,
-        "back_at_y1": 81.8,
+        "front_at_y0": 20.0,
+        "back_at_y1": 30.7,
         "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
       },
       "rim_height_mm": {
-        "front_at_y0": 80.0,
-        "back_at_y1": 91.8
+        "front_at_y0": 30.0,
+        "back_at_y1": 40.7
       }
     },
     {
@@ -95,10 +95,10 @@
       "name_zh": "卡片1",
       "name_en": "card_1",
       "position_internal_mm": {
-        "x0": 0,
-        "x1": 100.75,
-        "y0": 122.25,
-        "y1": 148.75,
+        "x0": 100.75,
+        "x1": 201.5,
+        "y0": 21.5,
+        "y1": 48.0,
         "note": "Y=0 为门口（前），Y 增大靠墙（后）"
       },
       "internal_net_mm": {
@@ -110,13 +110,13 @@
         "depth_y": 26.5
       },
       "baffle_height_mm": {
-        "front_at_y0": 80.0,
-        "back_at_y1": 80.0,
+        "front_at_y0": 30.7,
+        "back_at_y1": 43.8,
         "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
       },
       "rim_height_mm": {
-        "front_at_y0": 90.0,
-        "back_at_y1": 90.0
+        "front_at_y0": 40.7,
+        "back_at_y1": 53.8
       }
     },
     {
@@ -124,10 +124,10 @@
       "name_zh": "卡片2",
       "name_en": "card_2",
       "position_internal_mm": {
-        "x0": 0,
-        "x1": 100.75,
-        "y0": 148.75,
-        "y1": 175.25,
+        "x0": 100.75,
+        "x1": 201.5,
+        "y0": 48.0,
+        "y1": 74.5,
         "note": "Y=0 为门口（前），Y 增大靠墙（后）"
       },
       "internal_net_mm": {
@@ -139,13 +139,13 @@
         "depth_y": 26.5
       },
       "baffle_height_mm": {
-        "front_at_y0": 80.0,
-        "back_at_y1": 80.0,
+        "front_at_y0": 43.8,
+        "back_at_y1": 57.0,
         "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
       },
       "rim_height_mm": {
-        "front_at_y0": 90.0,
-        "back_at_y1": 90.0
+        "front_at_y0": 53.8,
+        "back_at_y1": 67.0
       }
     },
     {
@@ -153,28 +153,28 @@
       "name_zh": "散卡片",
       "name_en": "misc_cards",
       "position_internal_mm": {
-        "x0": 0,
-        "x1": 100.75,
-        "y0": 175.25,
-        "y1": 198.75,
+        "x0": 100.75,
+        "x1": 201.5,
+        "y0": 74.5,
+        "y1": 100.75,
         "note": "Y=0 为门口（前），Y 增大靠墙（后）"
       },
       "internal_net_mm": {
         "width_x": 100.0,
-        "depth_y": 22.75
+        "depth_y": 24.75
       },
       "internal_bbox_mm": {
         "width_x": 100.75,
-        "depth_y": 23.5
+        "depth_y": 26.25
       },
       "baffle_height_mm": {
-        "front_at_y0": 110.7,
-        "back_at_y1": 123.6,
+        "front_at_y0": 57.0,
+        "back_at_y1": 70.0,
         "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
       },
       "rim_height_mm": {
-        "front_at_y0": 120.7,
-        "back_at_y1": 133.6
+        "front_at_y0": 67.0,
+        "back_at_y1": 80.0
       }
     },
     {

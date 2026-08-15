@@ -16,26 +16,26 @@
 <text x="211.0" y="197.0" text-anchor="middle" class="label">耳机/杂物</text>
 <text x="211.0" y="213.0" text-anchor="middle" class="dim">宽 100.0 × 深 100.0</text>
 <text x="211.0" y="227.0" text-anchor="middle" class="dim">前 20 / 后 70</text>
-<rect class="cell" x="341.9" y="80.0" width="261.9" height="261.9"/>
-<text x="472.9" y="197.0" text-anchor="middle" class="label">精油</text>
-<text x="472.9" y="213.0" text-anchor="middle" class="dim">宽 100.0 × 深 100.0</text>
-<text x="472.9" y="227.0" text-anchor="middle" class="dim">前 20 / 后 70</text>
-<rect class="cell" x="80.0" y="341.9" width="261.9" height="55.9"/>
-<text x="211.0" y="355.9" text-anchor="middle" class="label">收据</text>
-<text x="211.0" y="371.9" text-anchor="middle" class="dim">宽 100.0 × 深 20.0</text>
-<text x="211.0" y="385.9" text-anchor="middle" class="dim">前 70 / 后 82</text>
-<rect class="cell" x="80.0" y="397.9" width="261.9" height="68.9"/>
-<text x="211.0" y="418.3" text-anchor="middle" class="label">卡片1</text>
-<text x="211.0" y="434.3" text-anchor="middle" class="dim">宽 100.0 × 深 25.0</text>
-<text x="211.0" y="448.3" text-anchor="middle" class="dim">前 80 / 后 80</text>
-<rect class="cell" x="80.0" y="466.8" width="261.9" height="68.9"/>
-<text x="211.0" y="487.2" text-anchor="middle" class="label">卡片2</text>
-<text x="211.0" y="503.2" text-anchor="middle" class="dim">宽 100.0 × 深 25.0</text>
-<text x="211.0" y="517.2" text-anchor="middle" class="dim">前 80 / 后 80</text>
-<rect class="cell" x="80.0" y="535.7" width="261.9" height="61.1"/>
-<text x="211.0" y="552.2" text-anchor="middle" class="label">散卡片</text>
-<text x="211.0" y="568.2" text-anchor="middle" class="dim">宽 100.0 × 深 22.8</text>
-<text x="211.0" y="582.2" text-anchor="middle" class="dim">前 111 / 后 124</text>
+<rect class="cell" x="80.0" y="341.9" width="261.9" height="254.8"/>
+<text x="211.0" y="455.4" text-anchor="middle" class="label">精油</text>
+<text x="211.0" y="471.4" text-anchor="middle" class="dim">宽 100.0 × 深 97.2</text>
+<text x="211.0" y="485.4" text-anchor="middle" class="dim">前 70 / 后 124</text>
+<rect class="cell" x="341.9" y="80.0" width="261.9" height="55.9"/>
+<text x="472.9" y="94.0" text-anchor="middle" class="label">收据</text>
+<text x="472.9" y="110.0" text-anchor="middle" class="dim">宽 100.0 × 深 20.8</text>
+<text x="472.9" y="124.0" text-anchor="middle" class="dim">前 20 / 后 31</text>
+<rect class="cell" x="341.9" y="135.9" width="261.9" height="68.9"/>
+<text x="472.9" y="156.4" text-anchor="middle" class="label">卡片1</text>
+<text x="472.9" y="172.4" text-anchor="middle" class="dim">宽 100.0 × 深 25.0</text>
+<text x="472.9" y="186.4" text-anchor="middle" class="dim">前 31 / 后 44</text>
+<rect class="cell" x="341.9" y="204.8" width="261.9" height="68.9"/>
+<text x="472.9" y="225.3" text-anchor="middle" class="label">卡片2</text>
+<text x="472.9" y="241.3" text-anchor="middle" class="dim">宽 100.0 × 深 25.0</text>
+<text x="472.9" y="255.3" text-anchor="middle" class="dim">前 44 / 后 57</text>
+<rect class="cell" x="341.9" y="273.7" width="261.9" height="68.2"/>
+<text x="472.9" y="293.8" text-anchor="middle" class="label">散卡片</text>
+<text x="472.9" y="309.8" text-anchor="middle" class="dim">宽 100.0 × 深 24.8</text>
+<text x="472.9" y="323.8" text-anchor="middle" class="dim">前 57 / 后 70</text>
 <rect class="cell" x="341.9" y="341.9" width="261.9" height="66.3"/>
 <text x="472.9" y="361.1" text-anchor="middle" class="label">数据线</text>
 <text x="472.9" y="377.1" text-anchor="middle" class="dim">宽 100.0 × 深 24.0</text>

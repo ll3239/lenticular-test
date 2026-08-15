@@ -117,7 +117,7 @@ def verify_item_clearances(report: dict) -> list[str]:
     by_name = {c["name_zh"]: c for c in report["compartments"]}
 
     checks = [
-        ("精油", 90.0, 60.0, "6× Ø30 瓶"),
+        ("精油", 90.0, 60.0, "6× Ø30 瓶，左中层 ~98 mm 深"),
         ("充电宝", 80.0, 60.0, "两枚竖放 80×30 底面"),
         ("数据线", 60.0, 24.0, "浅槽 24 mm 深，宽 60 mm 绕线"),
         ("卡片1", 85.6, 25.0, "竖卡 25 mm 内腔深"),

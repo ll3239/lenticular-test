@@ -10,9 +10,10 @@ from generate_entryway_storage_box import Compartment, Layout
 COL = 100.0
 FRONT = 100.0
 MID = 98.0
+DIVIDER = 1.5
 LEFT_RECEIPTS_SPAN = 21.5
 LEFT_CARD_SPAN = 26.5
-LEFT_MISC_SPAN = MID - LEFT_RECEIPTS_SPAN - 2 * LEFT_CARD_SPAN  # fills mid row (no gap)
+LEFT_MISC_SPAN = FRONT + DIVIDER / 2 - LEFT_RECEIPTS_SPAN - 2 * LEFT_CARD_SPAN  # front-right stack
 RIGHT_CABLE_SPAN = 25.5  # 24 mm clear + 1.5 mm divider (shallow front bay)
 RIGHT_PB_SPAN = 72.5  # remainder of 98 mm mid row (≥60 mm clear)
 LETTERS = 30.0
@@ -55,17 +56,17 @@ def _core_grid(x0: float, y0: float) -> tuple[Compartment, ...]:
     """Corrected 200×228 cell block offset by (x0, y0)."""
     xl, xr = x0, x0 + COL
     ym = y0 + FRONT
-    y_r1 = ym + LEFT_RECEIPTS_SPAN
+    y_r1 = y0 + LEFT_RECEIPTS_SPAN
     y_c1 = y_r1 + LEFT_CARD_SPAN
     y_c2 = y_c1 + LEFT_CARD_SPAN
     y_cable1 = ym + RIGHT_CABLE_SPAN
     return (
         Compartment("earphones_other", xl, xl + COL, y0, y0 + FRONT, 48),
-        Compartment("essential_oils", xr, xr + COL, y0, y0 + FRONT, 82),
-        Compartment("receipts", xl, xl + COL, ym, y_r1, 20),
-        Compartment("card_1", xl, xl + COL, y_r1, y_c1, 12),
-        Compartment("card_2", xl, xl + COL, y_c1, y_c2, 12),
-        Compartment("misc_cards", xl, xl + COL, y_c2, y_c2 + LEFT_MISC_SPAN, 28),
+        Compartment("essential_oils", xl, xl + COL, ym, ym + MID, 82),
+        Compartment("receipts", xr, xr + COL, y0, y_r1, 20),
+        Compartment("card_1", xr, xr + COL, y_r1, y_c1, 12),
+        Compartment("card_2", xr, xr + COL, y_c1, y_c2, 12),
+        Compartment("misc_cards", xr, xr + COL, y_c2, y_c2 + LEFT_MISC_SPAN, 28),
         Compartment("data_cable", xr, xr + COL, ym, y_cable1, 32),
         Compartment("power_banks", xr, xr + COL, y_cable1, ym + MID, 112),
     )
