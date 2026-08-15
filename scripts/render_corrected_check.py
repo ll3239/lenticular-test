@@ -124,9 +124,9 @@ def main() -> None:
     for title, value, passed in rows:
         info.add_patch(
             FancyBboxPatch(
-                (0.03, y - 0.055),
+                (0.03, y - 0.048),
                 0.94,
-                0.075,
+                0.065,
                 boxstyle="round,pad=0.01,rounding_size=0.015",
                 linewidth=1,
                 edgecolor="#c8cec8",
@@ -134,12 +134,12 @@ def main() -> None:
             )
         )
         info.text(0.065, y, "PASS", color="#20733a", fontsize=9, fontweight="bold", va="center")
-        info.text(0.22, y + 0.012, title, color="#222", fontsize=9, fontweight="bold", va="center")
-        info.text(0.22, y - 0.02, value, color="#555", fontsize=8, va="center")
-        y -= 0.098
+        info.text(0.22, y + 0.009, title, color="#222", fontsize=9, fontweight="bold", va="center")
+        info.text(0.22, y - 0.016, value, color="#555", fontsize=8, va="center")
+        y -= 0.085
     info.text(
         0.04,
-        0.045,
+        0.015,
         "Fits Bambu P1/P1S/X1/A1 (256 mm bed).\nDoes NOT fit A1 mini (180 mm bed).",
         fontsize=9,
         color="#333",
