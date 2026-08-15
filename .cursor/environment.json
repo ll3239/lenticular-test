@@ -5,7 +5,7 @@
     {
       "name": "3d-preview",
       "command": "python3 -m http.server 8766 --bind 0.0.0.0",
-      "description": "Local 3D preview on port 8766. Entryway box: /viewer/entryway.html · Lenticular cube: /viewer/index.html · Gallery: /viewer/gallery.html"
+      "description": "Local 3D preview on port 8766. If localhost fails, open viewer/cursor.html in Cursor browser (no port forward needed). Entryway: /viewer/entryway.html · Cursor fallback: /viewer/cursor.html"
     }
   ],
   "ports": [
