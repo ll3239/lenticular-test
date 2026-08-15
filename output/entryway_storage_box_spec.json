@@ -78,7 +78,9 @@
   "front_lip_mm": 5.0,
   "item_assumptions": {
     "power_bank_mm": "110 x 80 x 30, stored vertically (110 mm tall, 80 x 30 footprint)",
-    "oil_bottle_mm": "height 80, diameter 30, qty 6 in right front bay"
+    "oil_bottle_mm": "height 80, diameter 30, qty 6 in left mid bay",
+    "card_wallet_mm": "up to 85.6 wide x 25 thick; stored upright in front-right slots",
+    "letter_mm": "up to 200 wide; 150 tall may protrude about 10 mm above the internal baffle"
   },
   "compartments_mm": [
     {
@@ -222,15 +224,15 @@
       }
     },
     "estimates": {
-      "time_hours": "3.5-5",
-      "filament_grams": "180-220",
+      "time_hours": "9-14 (slice result depends on material/profile)",
+      "filament_grams": "440-500",
       "nozzle_mm": 0.4
     },
     "optional_fine_nozzle": {
       "nozzle_mm": 0.2,
       "layer_height_mm": 0.1,
       "wall_loops": 4,
-      "note": "Use if 1.5 mm dividers look weak; print time roughly doubles."
+      "note": "Use only if 1.5 mm dividers do not resolve with a 0.4 mm nozzle; print time more than doubles."
     }
   }
 }

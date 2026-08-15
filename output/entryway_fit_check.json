@@ -10,6 +10,13 @@
     "winding_consistent": true,
     "single_printable_volume": true
   },
+  "unsupported_horizontal_area_above_base_mm2": 0.0,
+  "support_free_pass": true,
+  "solid_model_volume_cm3": 361.7,
+  "material_estimates_g": {
+    "PETG": 459,
+    "PLA": 449
+  },
   "expected_outer_mm": {
     "width": 205.5,
     "length": 232.75,
@@ -35,20 +42,20 @@
       "name": "Six oil bottles (3×2)",
       "actual_mm": [
         100.0,
-        97.25
+        96.5
       ],
       "required_mm": [
         90.0,
         60.0
       ],
       "pass": true,
-      "note": "Six Ø30 mm bottles in left mid bay (~98 mm deep)."
+      "note": "Six Ø30×80 mm bottles fit 3×2 in the left mid bay."
     },
     {
       "name": "Power banks (merged bay, rear)",
       "actual_mm": [
         100.0,
-        71.75
+        71.0
       ],
       "required_mm": [
         80.0,
@@ -71,17 +78,30 @@
       "note": "Shallow 24 mm front tray; width fits a ~60 mm coiled bundle."
     },
     {
-      "name": "Standard cards",
+      "name": "Card wallets (each slot)",
       "actual_mm": [
         100.0,
         25.0
       ],
       "required_mm": [
         85.6,
-        3.0
+        25.0
       ],
       "pass": true,
-      "note": "Cards fit upright in 25 mm clear-deep slots."
+      "note": "Each front-right slot accepts an 85.6 mm-wide wallet up to 25 mm thick."
+    },
+    {
+      "name": "Receipts",
+      "actual_mm": [
+        100.0,
+        20.75
+      ],
+      "required_mm": [
+        85.6,
+        20.0
+      ],
+      "pass": true,
+      "note": "Folded receipts fit the 20 mm-target front slot."
     },
     {
       "name": "Letters at back (footprint)",
@@ -94,18 +114,18 @@
         5.0
       ],
       "pass": true,
-      "note": "Mail slot width and depth at the rear band."
+      "note": "Fits mail up to 200 mm wide; not unfolded A4/C5 (210–229 mm wide)."
     },
     {
-      "name": "Letters standing height",
+      "name": "Letters retaining baffle",
       "actual_mm": [
-        150.0
+        140.0
       ],
       "required_mm": [
-        150.0
+        140.0
       ],
       "pass": true,
-      "note": "Rear rim rises to ~150 mm so 15 cm envelopes can stand upright."
+      "note": "A 150 mm-tall envelope protrudes ~10 mm above the 140 mm internal baffle."
     }
   ],
   "printer_checks": [

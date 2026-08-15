@@ -54,7 +54,7 @@
       },
       "internal_net_mm": {
         "width_x": 100.0,
-        "depth_y": 97.25
+        "depth_y": 96.5
       },
       "internal_bbox_mm": {
         "width_x": 100.75,
@@ -228,7 +228,7 @@
       },
       "internal_net_mm": {
         "width_x": 100.0,
-        "depth_y": 71.75
+        "depth_y": 71.0
       },
       "internal_bbox_mm": {
         "width_x": 100.75,
