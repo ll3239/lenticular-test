@@ -46,12 +46,11 @@ class Layout:
     margin_x: float = 21.0  # wider side margins → 横长方形 (宽 > 深)
     margin_y: float = 4.0
     front_clear_d: float = 100.0  # internal clear depth — earphones / oils row
-    # 98 mm mid — left clear depths: receipts 20, cards 25+25, misc 12
+    # 98 mm mid — left clear depths: receipts 20, cards 25+25; misc fills remainder
     mid_h: float = 98.0
     letters_h: float = 30.0
     left_receipts_clear: float = 20.0
     left_card_clear: float = 25.0
-    left_misc_clear: float = 12.0
     right_cable_clear: float = 24.0  # shallow front bay (front of right mid column)
     right_power_banks_clear_min: float = 60.0
 
@@ -73,8 +72,12 @@ class Layout:
 
     @property
     def left_misc_span(self) -> float:
-        # Back of misc opens toward letters bulkhead — only front divider eats 0.75 mm.
-        return self.left_misc_clear + DIVIDER / 2
+        # Fill left mid column to ym1 — no dead zone before letters band.
+        return self.mid_h - self.left_receipts_span - 2 * self.left_card_span
+
+    @property
+    def left_misc_clear(self) -> float:
+        return self.left_misc_span - DIVIDER / 2
 
     @property
     def right_cable_span(self) -> float:

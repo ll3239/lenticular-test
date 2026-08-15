@@ -32,10 +32,10 @@
 <text x="211.0" y="487.2" text-anchor="middle" class="label">卡片2</text>
 <text x="211.0" y="503.2" text-anchor="middle" class="dim">宽 100.0 × 深 25.0</text>
 <text x="211.0" y="517.2" text-anchor="middle" class="dim">前 80 / 后 80</text>
-<rect class="cell" x="80.0" y="535.7" width="261.9" height="33.1"/>
-<text x="211.0" y="538.2" text-anchor="middle" class="label">散卡片</text>
-<text x="211.0" y="554.2" text-anchor="middle" class="dim">宽 100.0 × 深 12.0</text>
-<text x="211.0" y="568.2" text-anchor="middle" class="dim">前 111 / 后 118</text>
+<rect class="cell" x="80.0" y="535.7" width="261.9" height="61.1"/>
+<text x="211.0" y="552.2" text-anchor="middle" class="label">散卡片</text>
+<text x="211.0" y="568.2" text-anchor="middle" class="dim">宽 100.0 × 深 22.8</text>
+<text x="211.0" y="582.2" text-anchor="middle" class="dim">前 111 / 后 124</text>
 <rect class="cell" x="341.9" y="341.9" width="261.9" height="66.3"/>
 <text x="472.9" y="361.1" text-anchor="middle" class="label">数据线</text>
 <text x="472.9" y="377.1" text-anchor="middle" class="dim">宽 100.0 × 深 24.0</text>

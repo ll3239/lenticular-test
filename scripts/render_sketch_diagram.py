@@ -28,7 +28,7 @@ LABELS = {
     "receipts": "收据\n20",
     "card_1": "卡1\n25",
     "card_2": "卡2\n25",
-    "misc_cards": "散卡片\n12",
+    "misc_cards": "散卡片\n22",
     "data_cable": "数据线\n24 浅",
     "power_banks": "充电宝\n72 深",
     "letters": "信件",
