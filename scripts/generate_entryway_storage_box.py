@@ -46,14 +46,26 @@ class Layout:
     margin_x: float = 21.0  # wider side margins → 横长方形 (宽 > 深)
     margin_y: float = 4.0
     front_h: float = 100.0
-    # 98 mm gives two 30 mm power banks and a 30 mm cable bundle real
-    # clearance after accounting for the 1.5 mm dividers.
+    # 98 mm mid — left clear depths: receipts 20, cards 25+25, misc 12
     mid_h: float = 98.0
     letters_h: float = 30.0
-    # Left mid band (mm depth from y_mid0): receipts, card×2, misc cards
-    left_receipts_d: float = 20.0
-    left_card_d: float = 25.0
+    left_receipts_clear: float = 20.0
+    left_card_clear: float = 25.0
+    left_misc_clear: float = 12.0
     right_cable_d: float = 32.0
+
+    @property
+    def left_receipts_span(self) -> float:
+        return self.left_receipts_clear + DIVIDER
+
+    @property
+    def left_card_span(self) -> float:
+        return self.left_card_clear + DIVIDER
+
+    @property
+    def left_misc_span(self) -> float:
+        # Back of misc opens toward letters bulkhead — only front divider eats 0.75 mm.
+        return self.left_misc_clear + DIVIDER / 2
 
     @property
     def right_power_banks_d(self) -> float:
@@ -119,9 +131,10 @@ class Layout:
         yf0, yf1 = self.y_front0, self.y_front1
         ym0, ym1 = self.y_mid0, self.y_mid1
         yl0, yl1 = self.y_letters0, self.y_letters1
-        y_r1 = ym0 + self.left_receipts_d
-        y_c1 = y_r1 + self.left_card_d
-        y_c2 = y_c1 + self.left_card_d
+        y_r1 = ym0 + self.left_receipts_span
+        y_c1 = y_r1 + self.left_card_span
+        y_c2 = y_c1 + self.left_card_span
+        y_misc1 = y_c2 + self.left_misc_span
         y_pb1 = ym0 + self.right_power_banks_d
         return (
             Compartment("earphones_other", xl0, xl1, yf0, yf1, 48),
@@ -129,7 +142,7 @@ class Layout:
             Compartment("receipts", xl0, xl1, ym0, y_r1, 20),
             Compartment("card_1", xl0, xl1, y_r1, y_c1, 12),
             Compartment("card_2", xl0, xl1, y_c1, y_c2, 12),
-            Compartment("misc_cards", xl0, xl1, y_c2, ym1, 28),
+            Compartment("misc_cards", xl0, xl1, y_c2, y_misc1, 28),
             Compartment("power_banks", xr0, xr1, ym0, y_pb1, 112),
             Compartment("data_cable", xr0, xr1, y_pb1, ym1, 32),
             Compartment("letters", 0, self.w_int, yl0, yl1, 148),
@@ -479,7 +492,7 @@ def _add_dividers_row_four(
             verts, faces, y0=oy, y1=oy + row_y1, x_center=ox + x_div,
             thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
-    for y_edge in (20, 45, 70):
+    for y_edge in (21.5, 48.0, 74.5):
         x0, x1 = _inset_partition_x(ox, 200.0, 300.0, 400.0)
         add_sloped_horizontal_partition(
             verts, faces, x0=x0, x1=x1,
@@ -533,14 +546,18 @@ def _add_dividers_mail_spine(
         verts, faces, y0=oy + ym0, y1=oy + ym1, x_center=ox + spine_x,
         thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
-    for y_edge in (ym0 + 20, ym0 + 45, ym0 + 70):
+    layout_ref = LAYOUT_COMPACT
+    y_r1 = ym0 + layout_ref.left_receipts_span
+    y_c1 = y_r1 + layout_ref.left_card_span
+    y_c2 = y_c1 + layout_ref.left_card_span
+    for y_edge in (y_r1, y_c1, y_c2):
         x0, x1 = _inset_partition_x(ox, xl0, xl1, w_int)
         add_sloped_horizontal_partition(
             verts, faces, x0=x0, x1=x1,
             y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
             z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
-    y_cable = ym0 + 66
+    y_cable = ym0 + (80.0 - 32.0)  # mail_spine mid = 80 mm
     x0, x1 = _inset_partition_x(ox, xr0, xr1, w_int)
     add_sloped_horizontal_partition(
         verts, faces, x0=x0, x1=x1,
@@ -590,8 +607,10 @@ def _add_dividers_grid(
         verts, faces, y0=oy + yf0, y1=oy + ym1, x_center=ox + x_col_div,
         thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
-    for y_edge in (ym0 + layout.left_receipts_d, ym0 + layout.left_receipts_d + layout.left_card_d,
-                   ym0 + layout.left_receipts_d + 2 * layout.left_card_d):
+    y_r1 = ym0 + layout.left_receipts_span
+    y_c1 = y_r1 + layout.left_card_span
+    y_c2 = y_c1 + layout.left_card_span
+    for y_edge in (y_r1, y_c1, y_c2):
         x0, x1 = _inset_partition_x(ox, xl0, xl1, w_int)
         add_sloped_horizontal_partition(
             verts, faces, x0=x0, x1=x1,

@@ -61,14 +61,14 @@
       "name": "Standard cards",
       "actual_mm": [
         99.25,
-        23.5
+        25.0
       ],
       "required_mm": [
         85.6,
         3.0
       ],
       "pass": true,
-      "note": "Cards fit upright in 25 mm-deep slots; each slot can hold a small stack."
+      "note": "Cards fit upright in 25 mm clear-deep slots."
     },
     {
       "name": "Letters at back (footprint)",

@@ -81,9 +81,12 @@ def compartment_dividers_y_for_cell(c: Compartment, layout: Layout) -> tuple[flo
     spans_left = c.x0 < xl1 and c.x1 > xl0
     spans_right = c.x0 < xr1 and c.x1 > xr0
     if spans_left and not spans_right:
-        edges.extend([ym0 + layout.left_receipts_d,
-                      ym0 + layout.left_receipts_d + layout.left_card_d,
-                      ym0 + layout.left_receipts_d + 2 * layout.left_card_d])
+        ym0 = layout.y_mid0
+        edges.extend([
+            ym0 + layout.left_receipts_span,
+            ym0 + layout.left_receipts_span + layout.left_card_span,
+            ym0 + layout.left_receipts_span + 2 * layout.left_card_span,
+        ])
     elif spans_right and not spans_left:
         edges.append(ym0 + layout.right_power_banks_d)
 
@@ -184,7 +187,7 @@ def write_markdown(report: dict, path: Path) -> None:
             "",
             "## 说明",
             "",
-            "- **净宽 / 净深**：格与格之间的 1.5 mm 挡板各占一半（0.75 mm），已从数值中扣除。",
+            "- **净宽 / 净深**：内腔可用尺寸（已扣除挡板占用的 1.5 mm）。",
             "- **前挡板高**：该格 *门口侧*（Y 较小）的内腔可用高度。",
             "- **后挡板高**：该格 *墙侧*（Y 较大）的内腔可用高度。",
             "- 中间区各格前后高度不同，是因为外壁与挡板随 Y 方向梯形升高。",

@@ -10,6 +10,10 @@ from generate_entryway_storage_box import Compartment, Layout
 COL = 100.0
 FRONT = 100.0
 MID = 98.0
+LEFT_RECEIPTS_SPAN = 21.5
+LEFT_CARD_SPAN = 26.5
+LEFT_MISC_SPAN = 12.75
+RIGHT_PB_SPAN = 66.0
 LETTERS = 30.0
 
 
@@ -50,17 +54,17 @@ def _core_grid(x0: float, y0: float) -> tuple[Compartment, ...]:
     """Corrected 200×228 cell block offset by (x0, y0)."""
     xl, xr = x0, x0 + COL
     ym = y0 + FRONT
-    y_r1 = ym + 20
-    y_c1 = y_r1 + 25
-    y_c2 = y_c1 + 25
-    y_pb = ym + (MID - 32)
+    y_r1 = ym + LEFT_RECEIPTS_SPAN
+    y_c1 = y_r1 + LEFT_CARD_SPAN
+    y_c2 = y_c1 + LEFT_CARD_SPAN
+    y_pb = ym + RIGHT_PB_SPAN
     return (
         Compartment("earphones_other", xl, xl + COL, y0, y0 + FRONT, 48),
         Compartment("essential_oils", xr, xr + COL, y0, y0 + FRONT, 82),
         Compartment("receipts", xl, xl + COL, ym, y_r1, 20),
         Compartment("card_1", xl, xl + COL, y_r1, y_c1, 12),
         Compartment("card_2", xl, xl + COL, y_c1, y_c2, 12),
-        Compartment("misc_cards", xl, xl + COL, y_c2, ym + MID, 28),
+        Compartment("misc_cards", xl, xl + COL, y_c2, y_c2 + LEFT_MISC_SPAN, 28),
         Compartment("power_banks", xr, xr + COL, ym, y_pb, 112),
         Compartment("data_cable", xr, xr + COL, y_pb, ym + MID, 32),
     )
@@ -71,12 +75,12 @@ def _row_four_compartments() -> tuple[Compartment, ...]:
     return (
         Compartment("earphones_other", 0, COL, 0, FRONT, 48),
         Compartment("essential_oils", COL, 2 * COL, 0, FRONT, 82),
-        Compartment("receipts", 2 * COL, 3 * COL, 0, 20, 20),
-        Compartment("card_1", 2 * COL, 3 * COL, 20, 45, 12),
-        Compartment("card_2", 2 * COL, 3 * COL, 45, 70, 12),
-        Compartment("misc_cards", 2 * COL, 3 * COL, 70, MID, 28),
-        Compartment("power_banks", 3 * COL, 4 * COL, 0, 66, 112),
-        Compartment("data_cable", 3 * COL, 4 * COL, 66, MID, 32),
+        Compartment("receipts", 2 * COL, 3 * COL, 0, 21.5, 20),
+        Compartment("card_1", 2 * COL, 3 * COL, 21.5, 48.0, 12),
+        Compartment("card_2", 2 * COL, 3 * COL, 48.0, 74.5, 12),
+        Compartment("misc_cards", 2 * COL, 3 * COL, 74.5, 74.5 + LEFT_MISC_SPAN, 28),
+        Compartment("power_banks", 3 * COL, 4 * COL, 0, RIGHT_PB_SPAN, 112),
+        Compartment("data_cable", 3 * COL, 4 * COL, RIGHT_PB_SPAN, MID, 32),
         Compartment("letters", 0, 4 * COL, FRONT, FRONT + LETTERS, 25),
     )
 

@@ -11,7 +11,7 @@
 | Six oil bottles (3×2) | 99.25 × 99.25 mm | 90 × 60 mm | PASS |
 | Power banks (merged bay) | 99.25 × 64.5 mm | 80 × 60 mm | PASS |
 | Coiled data cable | 99.25 × 30.5 mm | 60 × 30 mm | PASS |
-| Standard cards | 99.25 × 23.5 mm | 85.6 × 3 mm | PASS |
+| Standard cards | 99.25 × 25 mm | 85.6 × 3 mm | PASS |
 | Letters at back (footprint) | 200 × 29.25 mm | 180 × 5 mm | PASS |
 | Letters standing height | 150 mm | 150 mm | PASS |
 

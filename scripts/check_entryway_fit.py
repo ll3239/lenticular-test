@@ -87,10 +87,10 @@ def main() -> None:
         ),
         result(
             "Standard cards",
-            [99.25, 23.5],
+            [99.25, 25.0],
             [85.6, 3.0],
-            99.25 >= 85.6 and 23.5 >= 3,
-            "Cards fit upright in 25 mm-deep slots; each slot can hold a small stack.",
+            99.25 >= 85.6 and 25.0 >= 3,
+            "Cards fit upright in 25 mm clear-deep slots.",
         ),
         result(
             "Letters at back (footprint)",
