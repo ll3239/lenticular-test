@@ -1,8 +1,8 @@
 {
   "stl": "output/entryway_storage_box.stl",
   "stl_extents_mm": [
-    205.5,
-    232.75,
+    206.0,
+    233.0,
     152.0
   ],
   "mesh_integrity": {
@@ -12,14 +12,14 @@
   },
   "unsupported_horizontal_area_above_base_mm2": 0.0,
   "support_free_pass": true,
-  "solid_model_volume_cm3": 361.7,
+  "solid_model_volume_cm3": 399.7,
   "material_estimates_g": {
-    "PETG": 459,
-    "PLA": 449
+    "PETG": 508,
+    "PLA": 496
   },
   "expected_outer_mm": {
-    "width": 205.5,
-    "length": 232.75,
+    "width": 206.0,
+    "length": 233.0,
     "height_front": 32.0,
     "height_back": 152.0
   },
@@ -42,7 +42,7 @@
       "name": "Six oil bottles (3×2)",
       "actual_mm": [
         100.0,
-        96.5
+        96.0
       ],
       "required_mm": [
         90.0,
@@ -52,10 +52,23 @@
       "note": "Six Ø30×80 mm bottles fit 3×2 in the left mid bay."
     },
     {
+      "name": "Oil bottle rear retention",
+      "actual_mm": [
+        70.0,
+        123.6
+      ],
+      "required_mm": [
+        70.0,
+        80.0
+      ],
+      "pass": true,
+      "note": "Place bottles toward the rear; 80 mm bottles protrude ~10 mm at the low front edge."
+    },
+    {
       "name": "Power banks (merged bay, rear)",
       "actual_mm": [
         100.0,
-        71.0
+        70.0
       ],
       "required_mm": [
         80.0,
@@ -63,6 +76,17 @@
       ],
       "pass": true,
       "note": "Two 110×80×30 mm banks in one ≥60 mm-deep rear bay."
+    },
+    {
+      "name": "Power-bank rear retention",
+      "actual_mm": [
+        123.6
+      ],
+      "required_mm": [
+        110.0
+      ],
+      "pass": true,
+      "note": "Place both 110 mm-tall banks against the rear baffle."
     },
     {
       "name": "Coiled data cable (shallow front)",
@@ -91,10 +115,22 @@
       "note": "Each front-right slot accepts an 85.6 mm-wide wallet up to 25 mm thick."
     },
     {
+      "name": "Card retrieval exposure",
+      "actual_mm": [
+        43.8
+      ],
+      "required_mm": [
+        40.0,
+        54.0
+      ],
+      "pass": true,
+      "note": "A 54 mm-tall standard card remains exposed above the low front-row baffle."
+    },
+    {
       "name": "Receipts",
       "actual_mm": [
         100.0,
-        20.75
+        20.0
       ],
       "required_mm": [
         85.6,
@@ -107,7 +143,7 @@
       "name": "Letters at back (footprint)",
       "actual_mm": [
         200.0,
-        29.25
+        29.0
       ],
       "required_mm": [
         180.0,
@@ -136,13 +172,13 @@
         256.0
       ],
       "with_brim_mm": [
-        215.5,
-        242.75
+        216.0,
+        243.0
       ],
       "pass": true,
       "remaining_margin_mm": [
-        40.5,
-        13.25
+        40.0,
+        13.0
       ]
     },
     {
@@ -152,13 +188,13 @@
         180.0
       ],
       "with_brim_mm": [
-        215.5,
-        242.75
+        216.0,
+        243.0
       ],
       "pass": false,
       "remaining_margin_mm": [
-        -35.5,
-        -62.75
+        -36.0,
+        -63.0
       ]
     }
   ],

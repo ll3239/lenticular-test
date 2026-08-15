@@ -54,19 +54,19 @@
   ],
   "orientation": "Y=0 is entryway front (with lip); back = letters.",
   "internal_mm": {
-    "width": 201.5,
-    "length": 228.75
+    "width": 202.0,
+    "length": 229.0
   },
   "layout_mm": {
     "gutter": 0,
     "margin_x": 0,
     "margin_y": 0,
-    "cell_width": 100.75,
+    "cell_width": 101.0,
     "note": "Same cell sizes as original sketch; extra size = gutters + margins."
   },
   "outer_mm": {
-    "width": 205.5,
-    "length": 232.75,
+    "width": 206.0,
+    "length": 233.0,
     "height_front": 32.0,
     "height_back": 152.0
   },
@@ -86,73 +86,73 @@
     {
       "name": "earphones_other",
       "x0": 0,
-      "x1": 100.75,
+      "x1": 101.0,
       "y0": 0,
-      "y1": 100.75,
+      "y1": 101.0,
       "internal_depth": 48
     },
     {
       "name": "essential_oils",
       "x0": 0,
-      "x1": 100.75,
-      "y0": 100.75,
-      "y1": 198.75,
+      "x1": 101.0,
+      "y0": 101.0,
+      "y1": 199.0,
       "internal_depth": 82
     },
     {
       "name": "receipts",
-      "x0": 100.75,
-      "x1": 201.5,
+      "x0": 101.0,
+      "x1": 202.0,
       "y0": 0,
-      "y1": 21.5,
+      "y1": 21.0,
       "internal_depth": 20
     },
     {
       "name": "card_1",
-      "x0": 100.75,
-      "x1": 201.5,
-      "y0": 21.5,
+      "x0": 101.0,
+      "x1": 202.0,
+      "y0": 21.0,
       "y1": 48.0,
       "internal_depth": 80
     },
     {
       "name": "card_2",
-      "x0": 100.75,
-      "x1": 201.5,
+      "x0": 101.0,
+      "x1": 202.0,
       "y0": 48.0,
-      "y1": 74.5,
+      "y1": 75.0,
       "internal_depth": 80
     },
     {
       "name": "misc_cards",
-      "x0": 100.75,
-      "x1": 201.5,
-      "y0": 74.5,
-      "y1": 100.75,
+      "x0": 101.0,
+      "x1": 202.0,
+      "y0": 75.0,
+      "y1": 101.0,
       "internal_depth": 28
     },
     {
       "name": "data_cable",
-      "x0": 100.75,
-      "x1": 201.5,
-      "y0": 100.75,
-      "y1": 126.25,
+      "x0": 101.0,
+      "x1": 202.0,
+      "y0": 101.0,
+      "y1": 127.0,
       "internal_depth": 32
     },
     {
       "name": "power_banks",
-      "x0": 100.75,
-      "x1": 201.5,
-      "y0": 126.25,
-      "y1": 198.75,
+      "x0": 101.0,
+      "x1": 202.0,
+      "y0": 127.0,
+      "y1": 199.0,
       "internal_depth": 112
     },
     {
       "name": "letters",
       "x0": 0,
-      "x1": 201.5,
-      "y0": 198.75,
-      "y1": 228.75,
+      "x1": 202.0,
+      "y0": 199.0,
+      "y1": 229.0,
       "internal_depth": 148
     }
   ],
@@ -224,15 +224,15 @@
       }
     },
     "estimates": {
-      "time_hours": "9-14 (slice result depends on material/profile)",
-      "filament_grams": "440-500",
+      "time_hours": "10-15 (slice result depends on material/profile)",
+      "filament_grams": "470-530",
       "nozzle_mm": 0.4
     },
     "optional_fine_nozzle": {
       "nozzle_mm": 0.2,
       "layer_height_mm": 0.1,
       "wall_loops": 4,
-      "note": "Use only if 1.5 mm dividers do not resolve with a 0.4 mm nozzle; print time more than doubles."
+      "note": "Optional only; 2.0 mm dividers are designed for the standard 0.4 mm nozzle."
     }
   }
 }
