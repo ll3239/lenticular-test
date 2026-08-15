@@ -176,7 +176,7 @@ def main() -> None:
         lines.append(f"| {printer['printer']} | {bed} mm | {footprint} mm | {margin} mm | {status(printer['pass'])} |")
     lines += [
         "",
-        "> Front rim is ~30 mm; tall front items (e.g. 80 mm oil bottles) may protrude. Power banks in the mid band may also stand slightly above the local rim.",
+        "> Internal partition walls stay ~10 mm below the local exterior rim and never rise above it along their span.",
         "",
     ]
     args.report_md.parent.mkdir(parents=True, exist_ok=True)

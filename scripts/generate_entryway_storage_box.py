@@ -133,6 +133,7 @@ WALL = 2.0
 DIVIDER = 1.5
 BOTTOM = 2.0
 LIP = 5.0
+PARTITION_CLEARANCE = 10.0  # keep internal dividers ~1 cm below exterior rim
 
 DEFAULT_LAYOUT = LAYOUT_COMPACT
 W_INT = DEFAULT_LAYOUT.w_int
@@ -373,6 +374,7 @@ def _add_dividers_row_four(
     divider: float,
     z_floor: float,
     partition_h,
+    partition_h_span,
     slot_h,
 ) -> None:
     """One row of four 100 mm bays + letters band at back (y=100–130)."""
@@ -384,7 +386,7 @@ def _add_dividers_row_four(
     for x_div in (100.0, 200.0, 300.0):
         add_vertical_divider(
             verts, faces, y0=oy, y1=oy + row_y1, x_center=ox + x_div,
-            thickness=divider, divider_height=partition_h(oy + row_y1 / 2), z_floor=z_floor,
+            thickness=divider, divider_height=partition_h_span(oy, oy + row_y1), z_floor=z_floor,
         )
     for y_edge, depth in ((20, 22), (40, 12), (60, 12)):
         add_horizontal_divider(
@@ -407,6 +409,7 @@ def _add_dividers_mail_spine(
     divider: float,
     z_floor: float,
     partition_h,
+    partition_h_span,
     slot_h,
 ) -> None:
     """Core 200×180 grid + full-height letters spine at x=200–230."""
@@ -424,15 +427,19 @@ def _add_dividers_mail_spine(
     )
     add_vertical_divider(
         verts, faces, y0=oy, y1=oy + yf1, x_center=ox + 100.0,
-        thickness=divider, divider_height=partition_h(oy + yf1 / 2), z_floor=z_floor,
+        thickness=divider, divider_height=partition_h_span(oy, oy + yf1), z_floor=z_floor,
     )
     add_vertical_divider(
         verts, faces, y0=oy + ym0, y1=oy + ym1, x_center=ox + 100.0,
-        thickness=divider, divider_height=partition_h(oy + (ym0 + ym1) / 2), z_floor=z_floor,
+        thickness=divider, divider_height=partition_h_span(oy + ym0, oy + ym1), z_floor=z_floor,
     )
     add_vertical_divider(
-        verts, faces, y0=oy, y1=oy + 210.0, x_center=ox + spine_x,
-        thickness=divider, divider_height=partition_h(oy + 105), z_floor=z_floor,
+        verts, faces, y0=oy, y1=oy + yf1, x_center=ox + spine_x,
+        thickness=divider, divider_height=partition_h_span(oy, oy + yf1), z_floor=z_floor,
+    )
+    add_vertical_divider(
+        verts, faces, y0=oy + ym0, y1=oy + ym1, x_center=ox + spine_x,
+        thickness=divider, divider_height=partition_h_span(oy + ym0, oy + ym1), z_floor=z_floor,
     )
     for y_edge, depth in ((ym0 + 24, 22), (ym0 + 46, 12), (ym0 + 68, 12)):
         add_horizontal_divider(
@@ -457,6 +464,7 @@ def _add_dividers_grid(
     divider: float,
     z_floor: float,
     partition_h,
+    partition_h_span,
     slot_h,
     letters_at_back: bool,
 ) -> None:
@@ -480,11 +488,11 @@ def _add_dividers_grid(
         )
     add_vertical_divider(
         verts, faces, y0=oy + yf0, y1=oy + yf1, x_center=ox + x_col_div,
-        thickness=divider, divider_height=partition_h(oy + (yf0 + yf1) / 2), z_floor=z_floor,
+        thickness=divider, divider_height=partition_h_span(oy + yf0, oy + yf1), z_floor=z_floor,
     )
     add_vertical_divider(
         verts, faces, y0=oy + ym0, y1=oy + ym1, x_center=ox + x_col_div,
-        thickness=divider, divider_height=partition_h(oy + (ym0 + ym1) / 2), z_floor=z_floor,
+        thickness=divider, divider_height=partition_h_span(oy + ym0, oy + ym1), z_floor=z_floor,
     )
     for y_edge, depth in ((ym0 + 20, 22), (ym0 + 40, 12), (ym0 + 60, 12)):
         add_horizontal_divider(
@@ -577,7 +585,16 @@ def build_mesh(
 
     def partition_h(y_abs: float) -> float:
         rim = rim_height(local_y(y_abs), h_front, h_back, l_int, layout)
-        return max(1.0, rim - 1.0)
+        return max(1.0, rim - PARTITION_CLEARANCE)
+
+    def partition_h_span(y0_abs: float, y1_abs: float) -> float:
+        y0l, y1l = local_y(y0_abs), local_y(y1_abs)
+        if y1l < y0l:
+            y0l, y1l = y1l, y0l
+        steps = max(3, int((y1l - y0l) / 15.0) + 1)
+        samples = np.linspace(y0l, y1l, steps)
+        rim_min = min(rim_height(y, h_front, h_back, l_int, layout) for y in samples)
+        return max(1.0, rim_min - PARTITION_CLEARANCE)
 
     def slot_h(y_abs: float, target: float) -> float:
         return min(target, partition_h(y_abs))
@@ -593,17 +610,18 @@ def build_mesh(
     if preset_id == "mail_spine":
         _add_dividers_mail_spine(
             verts, faces, ox=ox, oy=oy, divider=divider, z_floor=z_floor,
-            partition_h=partition_h, slot_h=slot_h,
+            partition_h=partition_h, partition_h_span=partition_h_span, slot_h=slot_h,
         )
     elif preset_id == "row_four":
         _add_dividers_row_four(
             verts, faces, ox=ox, oy=oy, divider=divider, z_floor=z_floor,
-            partition_h=partition_h, slot_h=slot_h,
+            partition_h=partition_h, partition_h_span=partition_h_span, slot_h=slot_h,
         )
     else:
         _add_dividers_grid(
             verts, faces, ox=ox, oy=oy, layout=layout, w_int=w_int, divider=divider,
-            z_floor=z_floor, partition_h=partition_h, slot_h=slot_h, letters_at_back=True,
+            z_floor=z_floor, partition_h=partition_h, partition_h_span=partition_h_span,
+            slot_h=slot_h, letters_at_back=True,
         )
 
     if style != "minimal":
@@ -903,7 +921,7 @@ def main() -> None:
         "slope": {
             "front_rim_mm": args.h_front,
             "back_rim_mm": args.h_back,
-            "note": "Zoned slope: ~30 mm front tray, steep rise through mid band, flat ~150 mm letters bay matching exterior back wall.",
+            "note": "Zoned slope; internal dividers capped ~10 mm below local exterior rim.",
         },
         "front_lip_mm": args.lip,
         "item_assumptions": {

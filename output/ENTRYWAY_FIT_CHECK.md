@@ -23,4 +23,4 @@
 | Bambu P1/P1S/X1/A1 | 256 × 256 mm | 214 × 245 mm | 42 × 11 mm | PASS |
 | Bambu A1 mini | 180 × 180 mm | 214 × 245 mm | -34 × -65 mm | FAIL |
 
-> Front rim is ~30 mm; tall front items (e.g. 80 mm oil bottles) may protrude. Power banks in the mid band may also stand slightly above the local rim.
+> Internal partition walls stay ~10 mm below the local exterior rim and never rise above it along their span.
