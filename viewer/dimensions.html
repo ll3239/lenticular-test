@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>门口收纳盒 · 内腔尺寸图</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", sans-serif;
+      background: #0f1117; color: #e8eaef; padding: 16px 20px 40px;
+      max-width: 980px; margin: 0 auto;
+    }
+    h1 { font-size: 20px; margin-bottom: 6px; }
+    p.sub { color: #8b92a3; font-size: 14px; line-height: 1.55; margin-bottom: 16px; }
+    a { color: #6b9fff; }
+    .nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+    .nav a {
+      background: #22262f; border: 1px solid #3a4050; border-radius: 8px;
+      padding: 8px 12px; text-decoration: none; font-size: 13px; color: #e8eaef;
+    }
+    .svg-wrap {
+      background: #fff; border-radius: 14px; border: 1px solid #2a3040;
+      padding: 12px; margin-bottom: 20px; overflow-x: auto;
+    }
+    .svg-wrap object { width: 100%; max-width: 684px; display: block; margin: 0 auto; }
+    table {
+      width: 100%; border-collapse: collapse; font-size: 13px;
+      background: #181b22; border: 1px solid #2a3040; border-radius: 12px; overflow: hidden;
+    }
+    th, td { padding: 10px 12px; text-align: right; border-bottom: 1px solid #2a3040; }
+    th:first-child, td:first-child { text-align: left; }
+    th { background: #1e2330; color: #c8d0e0; font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    .note {
+      margin-top: 16px; padding: 14px; background: #181b22;
+      border: 1px solid #2e3340; border-radius: 12px; font-size: 13px; color: #9aa3b5; line-height: 1.55;
+    }
+  </style>
+</head>
+<body>
+  <h1>门口收纳盒 · 内腔尺寸验证</h1>
+  <p class="sub">
+    内腔 footprint <strong>201.5 × 228.8 mm</strong>；
+    前排耳机/精油各 <strong>100×100 mm</strong>；右侧中层为
+    <strong>数据线（前 24 mm 浅槽）</strong> + <strong>充电宝（后 ≥60 mm）</strong>。
+  </p>
+  <div class="nav">
+    <a href="entryway.html">3D 预览</a>
+    <a href="preview.html">综合预览页</a>
+    <a href="gallery.html">截图画廊</a>
+    <a href="../output/entryway_dimensions.svg">下载 SVG</a>
+    <a href="../output/ENTRYWAY_DIMENSIONS.md">Markdown 尺寸表</a>
+  </div>
+
+  <div class="svg-wrap">
+    <object type="image/svg+xml" data="../output/entryway_dimensions.svg" aria-label="内腔尺寸 SVG">
+      <img src="../output/entryway_dimensions.svg" alt="内腔尺寸图" />
+    </object>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>区域</th><th>净宽 mm</th><th>净深 mm</th>
+        <th>前挡板高</th><th>后挡板高</th><th>Y 范围</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>耳机/杂物</td><td>100.00</td><td>100.00</td><td>20.0</td><td>70.0</td><td>0 → 101</td></tr><tr><td>精油</td><td>100.00</td><td>100.00</td><td>20.0</td><td>70.0</td><td>0 → 101</td></tr><tr><td>收据</td><td>100.00</td><td>20.00</td><td>70.0</td><td>81.8</td><td>101 → 122</td></tr><tr><td>卡片1</td><td>100.00</td><td>25.00</td><td>80.0</td><td>80.0</td><td>122 → 149</td></tr><tr><td>卡片2</td><td>100.00</td><td>25.00</td><td>80.0</td><td>80.0</td><td>149 → 175</td></tr><tr><td>散卡片</td><td>100.00</td><td>12.00</td><td>110.7</td><td>117.7</td><td>175 → 188</td></tr><tr><td>数据线</td><td>100.00</td><td>24.00</td><td>70.0</td><td>83.9</td><td>101 → 126</td></tr><tr><td>充电宝</td><td>100.00</td><td>71.75</td><td>83.9</td><td>123.6</td><td>126 → 199</td></tr><tr><td>信件</td><td>200.00</td><td>29.25</td><td>123.6</td><td>140.0</td><td>199 → 229</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    数字为扣除 1.5 mm 共用挡板后的净尺寸。挡板顶比外沿低 10 mm。
+    外廓约 205.5 × 232.8 mm，P1S 256 mm 热床可一次打印。
+  </div>
+</body>
+</html>

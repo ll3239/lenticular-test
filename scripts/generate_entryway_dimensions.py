@@ -248,7 +248,7 @@ def write_svg(report: dict, path: Path) -> None:
         '<path d="M0,0 L6,3 L0,6 Z" fill="#666"/></marker></defs>',
         f'<text x="{svg_w/2:.0f}" y="32" text-anchor="middle" class="title">内腔尺寸图（单位 mm）</text>',
         f'<text x="{svg_w/2:.0f}" y="52" text-anchor="middle" class="subtitle">'
-        "Y=0 门口 → Y=228 墙；数字为净宽×净深，下方为前挡板高/后挡板高</text>",
+        f"Y=0 门口 → Y={h:.1f} 墙；数字为净宽×净深，下方为前挡板高/后挡板高</text>",
     ]
 
     for c in report["compartments"]:
@@ -281,13 +281,111 @@ def write_svg(report: dict, path: Path) -> None:
     )
 
     # Axis labels
-    parts.append(f'<text x="{sx(w/2):.1f}" y="{sy(h) + 36:.1f}" text-anchor="middle" class="axis">宽 X = {w:.0f} mm</text>')
-    parts.append(f'<text x="24" y="{sy(h/2):.1f}" class="axis" transform="rotate(-90 24 {sy(h/2):.1f})">深 Y = {h:.0f} mm</text>')
+    parts.append(f'<text x="{sx(w/2):.1f}" y="{sy(h) + 36:.1f}" text-anchor="middle" class="axis">宽 X = {w:.1f} mm</text>')
+    parts.append(f'<text x="24" y="{sy(h/2):.1f}" class="axis" transform="rotate(-90 24 {sy(h/2):.1f})">深 Y = {h:.1f} mm</text>')
     parts.append(f'<text x="{sx(w/2):.1f}" y="{sy(-8):.1f}" text-anchor="middle" class="axis">门口 Y=0</text>')
-    parts.append(f'<text x="{sx(w/2):.1f}" y="{sy(h+18):.1f}" text-anchor="middle" class="axis">墙 Y={h:.0f}</text>')
+    parts.append(f'<text x="{sx(w/2):.1f}" y="{sy(h+18):.1f}" text-anchor="middle" class="axis">墙 Y={h:.1f}</text>')
 
     parts.append("</svg>")
     path.write_text("\n".join(parts) + "\n", encoding="utf-8")
+
+
+def write_html(report: dict, path: Path) -> None:
+    fp = report["internal_footprint_mm"]
+    rows = []
+    for c in report["compartments"]:
+        net = c["internal_net_mm"]
+        bh = c["baffle_height_mm"]
+        pos = c["position_internal_mm"]
+        rows.append(
+            f"<tr><td>{c['name_zh']}</td>"
+            f"<td>{net['width_x']:.2f}</td><td>{net['depth_y']:.2f}</td>"
+            f"<td>{bh['front_at_y0']:.1f}</td><td>{bh['back_at_y1']:.1f}</td>"
+            f"<td>{pos['y0']:.0f} → {pos['y1']:.0f}</td></tr>"
+        )
+
+    html = f"""<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>门口收纳盒 · 内腔尺寸图</title>
+  <style>
+    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+    body {{
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", sans-serif;
+      background: #0f1117; color: #e8eaef; padding: 16px 20px 40px;
+      max-width: 980px; margin: 0 auto;
+    }}
+    h1 {{ font-size: 20px; margin-bottom: 6px; }}
+    p.sub {{ color: #8b92a3; font-size: 14px; line-height: 1.55; margin-bottom: 16px; }}
+    a {{ color: #6b9fff; }}
+    .nav {{ display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }}
+    .nav a {{
+      background: #22262f; border: 1px solid #3a4050; border-radius: 8px;
+      padding: 8px 12px; text-decoration: none; font-size: 13px; color: #e8eaef;
+    }}
+    .svg-wrap {{
+      background: #fff; border-radius: 14px; border: 1px solid #2a3040;
+      padding: 12px; margin-bottom: 20px; overflow-x: auto;
+    }}
+    .svg-wrap object {{ width: 100%; max-width: 684px; display: block; margin: 0 auto; }}
+    table {{
+      width: 100%; border-collapse: collapse; font-size: 13px;
+      background: #181b22; border: 1px solid #2a3040; border-radius: 12px; overflow: hidden;
+    }}
+    th, td {{ padding: 10px 12px; text-align: right; border-bottom: 1px solid #2a3040; }}
+    th:first-child, td:first-child {{ text-align: left; }}
+    th {{ background: #1e2330; color: #c8d0e0; font-weight: 600; }}
+    tr:last-child td {{ border-bottom: none; }}
+    .note {{
+      margin-top: 16px; padding: 14px; background: #181b22;
+      border: 1px solid #2e3340; border-radius: 12px; font-size: 13px; color: #9aa3b5; line-height: 1.55;
+    }}
+  </style>
+</head>
+<body>
+  <h1>门口收纳盒 · 内腔尺寸验证</h1>
+  <p class="sub">
+    内腔 footprint <strong>{fp['width_x']:.1f} × {fp['depth_y']:.1f} mm</strong>；
+    前排耳机/精油各 <strong>100×100 mm</strong>；右侧中层为
+    <strong>数据线（前 24 mm 浅槽）</strong> + <strong>充电宝（后 ≥60 mm）</strong>。
+  </p>
+  <div class="nav">
+    <a href="entryway.html">3D 预览</a>
+    <a href="preview.html">综合预览页</a>
+    <a href="gallery.html">截图画廊</a>
+    <a href="../output/entryway_dimensions.svg">下载 SVG</a>
+    <a href="../output/ENTRYWAY_DIMENSIONS.md">Markdown 尺寸表</a>
+  </div>
+
+  <div class="svg-wrap">
+    <object type="image/svg+xml" data="../output/entryway_dimensions.svg" aria-label="内腔尺寸 SVG">
+      <img src="../output/entryway_dimensions.svg" alt="内腔尺寸图" />
+    </object>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>区域</th><th>净宽 mm</th><th>净深 mm</th>
+        <th>前挡板高</th><th>后挡板高</th><th>Y 范围</th>
+      </tr>
+    </thead>
+    <tbody>
+      {"".join(rows)}
+    </tbody>
+  </table>
+
+  <div class="note">
+    数字为扣除 1.5 mm 共用挡板后的净尺寸。挡板顶比外沿低 {report['partition_clearance_mm']:.0f} mm。
+    外廓约 205.5 × 232.8 mm，P1S 256 mm 热床可一次打印。
+  </div>
+</body>
+</html>
+"""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(html, encoding="utf-8")
 
 
 def main() -> None:
@@ -295,6 +393,7 @@ def main() -> None:
     parser.add_argument("--json-out", type=Path, default=Path("output/entryway_dimensions.json"))
     parser.add_argument("--md-out", type=Path, default=Path("output/ENTRYWAY_DIMENSIONS.md"))
     parser.add_argument("--svg-out", type=Path, default=Path("output/entryway_dimensions.svg"))
+    parser.add_argument("--html-out", type=Path, default=Path("viewer/dimensions.html"))
     args = parser.parse_args()
 
     report = build_report(LAYOUT_COMPACT)
@@ -303,9 +402,11 @@ def main() -> None:
         json.dump(report, f, indent=2, ensure_ascii=False)
     write_markdown(report, args.md_out)
     write_svg(report, args.svg_out)
+    write_html(report, args.html_out)
     print(f"Wrote {args.json_out}")
     print(f"Wrote {args.md_out}")
     print(f"Wrote {args.svg_out}")
+    print(f"Wrote {args.html_out}")
 
 
 if __name__ == "__main__":

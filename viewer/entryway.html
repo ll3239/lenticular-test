@@ -121,8 +121,12 @@
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x1a1d24);
 
+    const CX = 103;
+    const CY = 116;
+    const CZ = 75;
+
     const camera = new THREE.PerspectiveCamera(45, 1, 1, 3000);
-    camera.position.set(320, 280, 380);
+    camera.position.set(320, 280, 400);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -130,7 +134,7 @@
     container.appendChild(renderer.domElement);
 
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.set(102, 107, 75);
+    controls.target.set(CX, CY, CZ);
     controls.enableDamping = true;
     controls.rotateSpeed = 0.65;
     controls.panSpeed = 0.6;
@@ -138,7 +142,7 @@
 
     const isMobile = matchMedia('(max-width: 768px)').matches;
     if (isMobile) {
-      camera.position.set(360, 320, 420);
+      camera.position.set(360, 320, 440);
       document.getElementById('subtitle').textContent = '下方滑动选款 · 单指旋转 · 双指缩放';
     }
 
@@ -152,7 +156,7 @@
     scene.add(fill);
 
     const grid = new THREE.GridHelper(400, 20, 0x3a4050, 0x252830);
-    grid.position.set(102, 0, 107);
+    grid.position.set(CX, 0, CY);
     scene.add(grid);
 
     const loader = new STLLoader();
@@ -177,7 +181,7 @@
     function applyGeometry(geo, style) {
       geo.computeVertexNormals();
       geo.center();
-      geo.translate(102, 107, 75);
+      geo.translate(CX, CY, CZ);
       if (activeMesh) group.remove(activeMesh);
       const mat = new THREE.MeshStandardMaterial({
         color: style.color,
@@ -222,8 +226,8 @@
     loadStyle(STYLES[0]);
 
     document.getElementById('reset').onclick = () => {
-      camera.position.set(320, 280, 380);
-      controls.target.set(102, 107, 75);
+      camera.position.set(320, 280, 400);
+      controls.target.set(CX, CY, CZ);
       controls.update();
     };
 

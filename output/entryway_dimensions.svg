@@ -11,7 +11,7 @@
 </style>
 <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#666"/></marker></defs>
 <text x="342" y="32" text-anchor="middle" class="title">内腔尺寸图（单位 mm）</text>
-<text x="342" y="52" text-anchor="middle" class="subtitle">Y=0 门口 → Y=228 墙；数字为净宽×净深，下方为前挡板高/后挡板高</text>
+<text x="342" y="52" text-anchor="middle" class="subtitle">Y=0 门口 → Y=228.8 墙；数字为净宽×净深，下方为前挡板高/后挡板高</text>
 <rect class="cell" x="80.0" y="80.0" width="261.9" height="261.9"/>
 <text x="211.0" y="197.0" text-anchor="middle" class="label">耳机/杂物</text>
 <text x="211.0" y="213.0" text-anchor="middle" class="dim">宽 100.0 × 深 100.0</text>
@@ -49,8 +49,8 @@
 <text x="341.9" y="637.8" text-anchor="middle" class="dim">宽 200.0 × 深 29.2</text>
 <text x="341.9" y="651.8" text-anchor="middle" class="dim">前 124 / 后 140</text>
 <rect fill="none" stroke="#333" stroke-width="2" x="80.0" y="80.0" width="523.9" height="594.8"/>
-<text x="341.9" y="710.8" text-anchor="middle" class="axis">宽 X = 202 mm</text>
-<text x="24" y="377.4" class="axis" transform="rotate(-90 24 377.4)">深 Y = 229 mm</text>
+<text x="341.9" y="710.8" text-anchor="middle" class="axis">宽 X = 201.5 mm</text>
+<text x="24" y="377.4" class="axis" transform="rotate(-90 24 377.4)">深 Y = 228.8 mm</text>
 <text x="341.9" y="59.2" text-anchor="middle" class="axis">门口 Y=0</text>
-<text x="341.9" y="721.6" text-anchor="middle" class="axis">墙 Y=229</text>
+<text x="341.9" y="721.6" text-anchor="middle" class="axis">墙 Y=228.8</text>
 </svg>
