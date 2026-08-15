@@ -83,7 +83,7 @@ the base, so supports add waste and leave marks without improving the print.
 | Filament | **~470–530 g** (before purge) |
 | Nozzle | **0.4 mm** standard (see 0.2 mm note below) |
 
-The STL's solid volume is about **390 cm³**. Bambu Studio's sliced estimate is
+The STL's solid volume is about **400 cm³**. Bambu Studio's sliced estimate is
 authoritative because speed, flow calibration, purge, and filament density vary.
 
 ## 0.2 mm nozzle (optional)
