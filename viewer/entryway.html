@@ -164,57 +164,48 @@
     const styleList = document.getElementById('style-list');
 
     const RAW_BASE = 'https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/output/styles';
-    const LOCAL_PREVIEW = location.hostname === 'localhost'
-      || location.hostname === '127.0.0.1'
-      || /^\d+\.\d+\.\d+\.\d+$/.test(location.hostname);
+    const CACHE_BUST = '5ee0cd5';
+
+    function stlUrls(styleId) {
+      const file = `entryway_box_${styleId}.stl?v=${CACHE_BUST}`;
+      return [
+        `/output/styles/${file}`,
+        `../output/styles/${file}`,
+        `${RAW_BASE}/entryway_box_${styleId}.stl`,
+      ];
+    }
+
+    function applyGeometry(geo, style) {
+      geo.computeVertexNormals();
+      geo.center();
+      geo.translate(102, 107, 75);
+      if (activeMesh) group.remove(activeMesh);
+      const mat = new THREE.MeshStandardMaterial({
+        color: style.color,
+        metalness: 0.08,
+        roughness: 0.62,
+        flatShading: false,
+      });
+      activeMesh = new THREE.Mesh(geo, mat);
+      activeMesh.castShadow = true;
+      activeMesh.receiveShadow = true;
+      group.add(activeMesh);
+      document.getElementById('label').innerHTML =
+        `<strong>${style.name}</strong> · ${style.zh}<br><span style="color:#9aa3b5">${style.look}</span>`;
+    }
 
     function loadStyle(style) {
-      const localUrl = `../output/styles/entryway_box_${style.id}.stl`;
-      const remoteUrl = `${RAW_BASE}/entryway_box_${style.id}.stl`;
-      const url = LOCAL_PREVIEW ? localUrl : remoteUrl;
-      loader.load(url, (geo) => {
-        geo.computeVertexNormals();
-        geo.center();
-        geo.translate(102, 107, 75);
-        if (activeMesh) group.remove(activeMesh);
-        const mat = new THREE.MeshStandardMaterial({
-          color: style.color,
-          metalness: 0.08,
-          roughness: 0.62,
-          flatShading: false,
-        });
-        activeMesh = new THREE.Mesh(geo, mat);
-        activeMesh.castShadow = true;
-        activeMesh.receiveShadow = true;
-        group.add(activeMesh);
-        document.getElementById('label').innerHTML =
-          `<strong>${style.name}</strong> · ${style.zh}<br><span style="color:#9aa3b5">${style.look}</span>`;
-      }, undefined, () => {
-        if (url !== remoteUrl) {
-          loader.load(remoteUrl, (geo) => {
-            geo.computeVertexNormals();
-            geo.center();
-            geo.translate(102, 107, 75);
-            if (activeMesh) group.remove(activeMesh);
-            const mat = new THREE.MeshStandardMaterial({
-              color: style.color,
-              metalness: 0.08,
-              roughness: 0.62,
-              flatShading: false,
-            });
-            activeMesh = new THREE.Mesh(geo, mat);
-            activeMesh.castShadow = true;
-            activeMesh.receiveShadow = true;
-            group.add(activeMesh);
-            document.getElementById('label').innerHTML =
-              `<strong>${style.name}</strong> · ${style.zh}<br><span style="color:#9aa3b5">${style.look}</span>`;
-          }, undefined, () => {
-            document.getElementById('label').textContent = `无法加载模型：${remoteUrl}`;
-          });
+      const urls = stlUrls(style.id);
+      document.getElementById('label').textContent = `Loading ${style.name}…`;
+
+      function tryLoad(index) {
+        if (index >= urls.length) {
+          document.getElementById('label').textContent = `无法加载模型：${urls.join(' | ')}`;
           return;
         }
-        document.getElementById('label').textContent = `无法加载模型：${url}`;
-      });
+        loader.load(urls[index], (geo) => applyGeometry(geo, style), undefined, () => tryLoad(index + 1));
+      }
+      tryLoad(0);
     }
 
     STYLES.forEach((s, i) => {
