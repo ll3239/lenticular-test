@@ -100,11 +100,18 @@ def main() -> None:
             "Cards fit upright, not flat; each slot can hold a small stack.",
         ),
         result(
-            "Letters at back",
+            "Letters at back (footprint)",
             [200.0, 29.25],
             [180.0, 5.0],
             200 >= 180 and 29.25 >= 5,
-            "Mail stands upright in the full-width rear slot.",
+            "Mail slot width and depth at the rear band.",
+        ),
+        result(
+            "Letters standing height",
+            [round(spec["slope"]["back_rim_mm"], 1)],
+            [150.0],
+            spec["slope"]["back_rim_mm"] >= 148.0,
+            "Rear rim rises to ~150 mm so 15 cm envelopes can stand upright.",
         ),
     ]
 
@@ -169,7 +176,7 @@ def main() -> None:
         lines.append(f"| {printer['printer']} | {bed} mm | {footprint} mm | {margin} mm | {status(printer['pass'])} |")
     lines += [
         "",
-        "> Cards are stored upright. Power banks are stored upright and protrude above the rim; the slot supports most of their height.",
+        "> Front rim is ~30 mm; tall front items (e.g. 80 mm oil bottles) may protrude. Power banks in the mid band may also stand slightly above the local rim.",
         "",
     ]
     args.report_md.parent.mkdir(parents=True, exist_ok=True)

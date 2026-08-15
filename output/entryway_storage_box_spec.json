@@ -1,6 +1,6 @@
 {
-  "style": "rounded",
-  "layout": "classic",
+  "style": "arch_wave",
+  "layout": "compact",
   "layout_presets": null,
   "style_variants": [
     {
@@ -75,13 +75,13 @@
   "outer_mm": {
     "width": 204.0,
     "length": 232.0,
-    "height_front": 88.0,
-    "height_back": 94.0
+    "height_front": 32.0,
+    "height_back": 152.0
   },
   "slope": {
-    "front_rim_mm": 86.0,
-    "back_rim_mm": 92.0,
-    "note": "Side view: high at back (letters) -> low at front (entryway). Front rim still clears 80 mm oil bottles."
+    "front_rim_mm": 30.0,
+    "back_rim_mm": 150.0,
+    "note": "Side view: gradual slope from ~30 mm front (entryway) to ~150 mm back (letters). Front items may sit above the low rim."
   },
   "front_lip_mm": 5.0,
   "item_assumptions": {
@@ -167,7 +167,7 @@
       "x1": 200.0,
       "y0": 198.0,
       "y1": 228.0,
-      "internal_depth": 25
+      "internal_depth": 148
     }
   ],
   "print_notes": {

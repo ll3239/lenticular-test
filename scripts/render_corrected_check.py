@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Render a readable dimension and printer-fit check sheet."""
 
+import json
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -18,11 +19,22 @@ CELLS = [
     (100, 200, 100, 133, "#d0d8e8", "Power bank 80 x 30\nclear 99.25 x 31.5"),
     (100, 200, 133, 166, "#d0d8e8", "Power bank 80 x 30\nclear 99.25 x 31.5"),
     (100, 200, 166, 198, "#d8e0d0", "Cable bundle 60 x 30\nclear 99.25 x 30.5"),
-    (0, 200, 198, 228, "#e8e0d0", "MAIL AT BACK / WALL\nnominal 200 x 30"),
+    (0, 200, 198, 228, "#e8e0d0", "MAIL AT BACK / WALL\n150 mm tall slot"),
 ]
 
 
 def main() -> None:
+    spec_path = Path("output/entryway_storage_box_spec.json")
+    spec = json.loads(spec_path.read_text(encoding="utf-8")) if spec_path.exists() else {}
+    outer = spec.get("outer_mm", {})
+    slope = spec.get("slope", {})
+    hf = outer.get("height_front", 32)
+    hb = outer.get("height_back", 152)
+    front_rim = slope.get("front_rim_mm", 30)
+    back_rim = slope.get("back_rim_mm", 150)
+    outer_text = f"{outer.get('width', 204):g} x {outer.get('length', 232):g} x {hb:g} mm"
+    brim_w = outer.get("width", 204) + 10
+    brim_l = outer.get("length", 232) + 10
     out = Path("output/previews/corrected_layout_check.png")
     fig, (ax, info) = plt.subplots(
         1, 2, figsize=(13, 8), dpi=180, gridspec_kw={"width_ratios": [1.35, 1]}
@@ -65,13 +77,13 @@ def main() -> None:
     info.set_ylim(0, 1)
     info.text(0.04, 0.94, "FINAL STL", fontsize=13, fontweight="bold")
     rows = [
-        ("Outer object", "204 x 232 x 94 mm", True),
-        ("With 5 mm brim", "214 x 242 mm", True),
+        ("Outer object", outer_text, True),
+        ("Slope (front → back rim)", f"{front_rim:g} mm → {back_rim:g} mm", True),
+        ("With 5 mm brim", f"{brim_w:g} x {brim_l:g} mm", True),
         ("P1S build plate", "256 x 256 mm", True),
-        ("Remaining bed margin", "42 x 14 mm total", True),
-        ("Six oil bottles", "3 x 2 arrangement", True),
-        ("Two power banks", "upright, 1.5 mm clearance", True),
-        ("Cable bundle", "60 x 30 mm", True),
+        ("Six oil bottles", "3 x 2 arrangement (may protrude at low front)", True),
+        ("Two power banks", "upright in mid band", True),
+        ("Letters at back", "150 mm standing height", True),
         ("STL geometry", "watertight single volume", True),
     ]
     y = 0.86

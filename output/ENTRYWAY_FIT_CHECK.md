@@ -1,6 +1,6 @@
 # Entryway organizer fit check
 
-- STL measured extents: **204 × 232 × 94 mm**
+- STL measured extents: **204 × 232 × 152 mm**
 - With 5 mm brim: **214 × 242 mm**
 - Mesh integrity: **PASS** (watertight, consistent winding, single volume)
 
@@ -13,7 +13,8 @@
 | Power bank 2 (vertical) | 99.25 × 31.5 mm | 80 × 30 mm | PASS |
 | Coiled data cable | 99.25 × 30.5 mm | 60 × 30 mm | PASS |
 | Standard cards | 99.25 × 20.5 mm | 85.6 × 3 mm | PASS |
-| Letters at back | 200 × 29.25 mm | 180 × 5 mm | PASS |
+| Letters at back (footprint) | 200 × 29.25 mm | 180 × 5 mm | PASS |
+| Letters standing height | 150 mm | 150 mm | PASS |
 
 ## Printer bed
 
@@ -22,4 +23,4 @@
 | Bambu P1/P1S/X1/A1 | 256 × 256 mm | 214 × 242 mm | 42 × 14 mm | PASS |
 | Bambu A1 mini | 180 × 180 mm | 214 × 242 mm | -34 × -62 mm | FAIL |
 
-> Cards are stored upright. Power banks are stored upright and protrude above the rim; the slot supports most of their height.
+> Front rim is ~30 mm; tall front items (e.g. 80 mm oil bottles) may protrude. Power banks in the mid band may also stand slightly above the local rim.

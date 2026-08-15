@@ -3,7 +3,7 @@
   "stl_extents_mm": [
     204.0,
     232.0,
-    94.0
+    152.0
   ],
   "mesh_integrity": {
     "watertight": true,
@@ -13,8 +13,8 @@
   "expected_outer_mm": {
     "width": 204.0,
     "length": 232.0,
-    "height_front": 88.0,
-    "height_back": 94.0
+    "height_front": 32.0,
+    "height_back": 152.0
   },
   "brim_mm_each_side": 5.0,
   "item_checks": [
@@ -84,7 +84,7 @@
       "note": "Cards fit upright, not flat; each slot can hold a small stack."
     },
     {
-      "name": "Letters at back",
+      "name": "Letters at back (footprint)",
       "actual_mm": [
         200.0,
         29.25
@@ -94,7 +94,18 @@
         5.0
       ],
       "pass": true,
-      "note": "Mail stands upright in the full-width rear slot."
+      "note": "Mail slot width and depth at the rear band."
+    },
+    {
+      "name": "Letters standing height",
+      "actual_mm": [
+        150.0
+      ],
+      "required_mm": [
+        150.0
+      ],
+      "pass": true,
+      "note": "Rear rim rises to ~150 mm so 15 cm envelopes can stand upright."
     }
   ],
   "printer_checks": [

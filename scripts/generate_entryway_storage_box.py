@@ -121,7 +121,7 @@ class Layout:
             Compartment("power_bank_1", xr0, xr1, ym0, ym0 + 33, 112),
             Compartment("power_bank_2", xr0, xr1, ym0 + 33, ym0 + 66, 112),
             Compartment("data_cable", xr0, xr1, ym0 + 66, ym1, 32),
-            Compartment("letters", 0, self.w_int, yl0, yl1, 25),
+            Compartment("letters", 0, self.w_int, yl0, yl1, 148),
         )
 
 
@@ -138,8 +138,8 @@ DEFAULT_LAYOUT = LAYOUT_COMPACT
 W_INT = DEFAULT_LAYOUT.w_int
 L_INT = DEFAULT_LAYOUT.l_int
 
-H_FRONT = 86.0
-H_BACK = 92.0
+H_FRONT = 30.0   # ~3 cm at entryway lip — low front tray
+H_BACK = 150.0   # ~15 cm at wall / letters end — standing mail
 
 COMPARTMENTS = DEFAULT_LAYOUT.compartments()
 
@@ -866,7 +866,7 @@ def main() -> None:
         "slope": {
             "front_rim_mm": args.h_front,
             "back_rim_mm": args.h_back,
-            "note": "Side view: high at back (letters) -> low at front (entryway). Front rim still clears 80 mm oil bottles.",
+            "note": "Side view: gradual slope from ~30 mm front (entryway) to ~150 mm back (letters). Front items may sit above the low rim.",
         },
         "front_lip_mm": args.lip,
         "item_assumptions": {
