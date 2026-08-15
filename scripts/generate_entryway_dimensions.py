@@ -21,12 +21,11 @@ from generate_entryway_storage_box import (
 COMPARTMENT_ZH = {
     "earphones_other": "耳机/杂物",
     "essential_oils": "精油",
-    "keys": "钥匙",
+    "receipts": "收据",
     "card_1": "卡片1",
     "card_2": "卡片2",
-    "receipts": "收据",
-    "power_bank_1": "充电宝1",
-    "power_bank_2": "充电宝2",
+    "misc_cards": "散卡片",
+    "power_banks": "充电宝",
     "data_cable": "数据线",
     "letters": "信件",
 }
@@ -82,9 +81,11 @@ def compartment_dividers_y_for_cell(c: Compartment, layout: Layout) -> tuple[flo
     spans_left = c.x0 < xl1 and c.x1 > xl0
     spans_right = c.x0 < xr1 and c.x1 > xr0
     if spans_left and not spans_right:
-        edges.extend([ym0 + 20, ym0 + 40, ym0 + 60])
+        edges.extend([ym0 + layout.left_receipts_d,
+                      ym0 + layout.left_receipts_d + layout.left_card_d,
+                      ym0 + layout.left_receipts_d + 2 * layout.left_card_d])
     elif spans_right and not spans_left:
-        edges.extend([ym0 + 30, ym0 + 60, ym1])
+        edges.append(ym0 + layout.right_power_banks_d)
 
     return tuple(sorted(set(edges)))
 
@@ -196,7 +197,7 @@ def write_markdown(report: dict, path: Path) -> None:
             "  ┌──────────100──────────┬──────────100──────────┐",
             "  │      耳机/杂物         │        精油           │ 100",
             "  ├──────────100──────────┼──────────100──────────┤",
-            "  │ 钥匙 │卡1│卡2│ 收据   │ 充1 │ 充2 │ 数据线    │  98",
+            "  │ 收据│卡1│卡2│散卡  │ gutter │ 充电宝 │ 数据线   │  98",
             "  ├───────────────────────┴───────────────────────┤",
             "  │                    信件 (200 宽)                 │  30",
             "  └─────────────────────────────────────────────────┘  Y=228 墙",

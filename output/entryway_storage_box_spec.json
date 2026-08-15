@@ -98,50 +98,42 @@
       "internal_depth": 82
     },
     {
-      "name": "keys",
+      "name": "receipts",
       "x0": 0,
       "x1": 100.0,
       "y0": 100.0,
-      "y1": 124.0,
-      "internal_depth": 22
+      "y1": 120.0,
+      "internal_depth": 20
     },
     {
       "name": "card_1",
       "x0": 0,
       "x1": 100.0,
-      "y0": 124.0,
-      "y1": 146.0,
+      "y0": 120.0,
+      "y1": 145.0,
       "internal_depth": 12
     },
     {
       "name": "card_2",
       "x0": 0,
       "x1": 100.0,
-      "y0": 146.0,
-      "y1": 168.0,
+      "y0": 145.0,
+      "y1": 170.0,
       "internal_depth": 12
     },
     {
-      "name": "receipts",
+      "name": "misc_cards",
       "x0": 0,
       "x1": 100.0,
-      "y0": 168.0,
+      "y0": 170.0,
       "y1": 198.0,
       "internal_depth": 28
     },
     {
-      "name": "power_bank_1",
+      "name": "power_banks",
       "x0": 100.0,
       "x1": 200.0,
       "y0": 100.0,
-      "y1": 133.0,
-      "internal_depth": 112
-    },
-    {
-      "name": "power_bank_2",
-      "x0": 100.0,
-      "x1": 200.0,
-      "y0": 133.0,
       "y1": 166.0,
       "internal_depth": 112
     },

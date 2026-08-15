@@ -32,30 +32,17 @@
       "note": "Six Ø30 mm bottles fit in a 3×2 arrangement."
     },
     {
-      "name": "Power bank 1 (vertical)",
+      "name": "Power banks (merged bay)",
       "actual_mm": [
         99.25,
-        31.5
+        64.5
       ],
       "required_mm": [
         80.0,
-        30.0
+        60.0
       ],
       "pass": true,
-      "note": "110×80×30 mm bank stands upright; 1.5 mm thickness clearance."
-    },
-    {
-      "name": "Power bank 2 (vertical)",
-      "actual_mm": [
-        99.25,
-        31.5
-      ],
-      "required_mm": [
-        80.0,
-        30.0
-      ],
-      "pass": true,
-      "note": "Same clearance as power bank 1."
+      "note": "Two 110×80×30 mm banks in one 66 mm-deep bay (no divider between them)."
     },
     {
       "name": "Coiled data cable",
@@ -74,14 +61,14 @@
       "name": "Standard cards",
       "actual_mm": [
         99.25,
-        20.5
+        23.5
       ],
       "required_mm": [
         85.6,
         3.0
       ],
       "pass": true,
-      "note": "Cards fit upright, not flat; each slot can hold a small stack."
+      "note": "Cards fit upright in 25 mm-deep slots; each slot can hold a small stack."
     },
     {
       "name": "Letters at back (footprint)",

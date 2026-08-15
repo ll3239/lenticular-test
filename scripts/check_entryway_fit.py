@@ -72,18 +72,11 @@ def main() -> None:
             "Six Ø30 mm bottles fit in a 3×2 arrangement.",
         ),
         result(
-            "Power bank 1 (vertical)",
-            [99.25, 31.5],
-            [80.0, 30.0],
-            99.25 >= 80 and 31.5 >= 30,
-            "110×80×30 mm bank stands upright; 1.5 mm thickness clearance.",
-        ),
-        result(
-            "Power bank 2 (vertical)",
-            [99.25, 31.5],
-            [80.0, 30.0],
-            99.25 >= 80 and 31.5 >= 30,
-            "Same clearance as power bank 1.",
+            "Power banks (merged bay)",
+            [99.25, 64.5],
+            [80.0, 60.0],
+            99.25 >= 80 and 64.5 >= 60,
+            "Two 110×80×30 mm banks in one 66 mm-deep bay (no divider between them).",
         ),
         result(
             "Coiled data cable",
@@ -94,10 +87,10 @@ def main() -> None:
         ),
         result(
             "Standard cards",
-            [99.25, 20.5],
+            [99.25, 23.5],
             [85.6, 3.0],
-            99.25 >= 85.6 and 20.5 >= 3,
-            "Cards fit upright, not flat; each slot can hold a small stack.",
+            99.25 >= 85.6 and 23.5 >= 3,
+            "Cards fit upright in 25 mm-deep slots; each slot can hold a small stack.",
         ),
         result(
             "Letters at back (footprint)",

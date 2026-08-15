@@ -9,7 +9,7 @@ Modular layout — same cell sizes (100×100, 100×80, …) with gutters between
   ┌─ margin ─┬──100──┬ gutter ┬──100──┬─ margin ─┐
   │ earphones│       │        │  oils  │          │  100
   ├──────────┴───────┤        ├────────┴──────────┤
-  │ keys / cards …   │ gutter │ power banks …     │   80
+  │ receipts/cards…  │ gutter │ power banks + cable │   98
   ├──────────────────┴────────┴───────────────────┤
   │              letters (full width)              │   30
   └────────────────────────────────────────────────┘
@@ -50,6 +50,14 @@ class Layout:
     # clearance after accounting for the 1.5 mm dividers.
     mid_h: float = 98.0
     letters_h: float = 30.0
+    # Left mid band (mm depth from y_mid0): receipts, card×2, misc cards
+    left_receipts_d: float = 20.0
+    left_card_d: float = 25.0
+    right_cable_d: float = 32.0
+
+    @property
+    def right_power_banks_d(self) -> float:
+        return self.mid_h - self.right_cable_d
 
     @property
     def w_int(self) -> float:
@@ -111,16 +119,19 @@ class Layout:
         yf0, yf1 = self.y_front0, self.y_front1
         ym0, ym1 = self.y_mid0, self.y_mid1
         yl0, yl1 = self.y_letters0, self.y_letters1
+        y_r1 = ym0 + self.left_receipts_d
+        y_c1 = y_r1 + self.left_card_d
+        y_c2 = y_c1 + self.left_card_d
+        y_pb1 = ym0 + self.right_power_banks_d
         return (
             Compartment("earphones_other", xl0, xl1, yf0, yf1, 48),
             Compartment("essential_oils", xr0, xr1, yf0, yf1, 82),
-            Compartment("keys", xl0, xl1, ym0, ym0 + 24, 22),
-            Compartment("card_1", xl0, xl1, ym0 + 24, ym0 + 46, 12),
-            Compartment("card_2", xl0, xl1, ym0 + 46, ym0 + 68, 12),
-            Compartment("receipts", xl0, xl1, ym0 + 68, ym1, 28),
-            Compartment("power_bank_1", xr0, xr1, ym0, ym0 + 33, 112),
-            Compartment("power_bank_2", xr0, xr1, ym0 + 33, ym0 + 66, 112),
-            Compartment("data_cable", xr0, xr1, ym0 + 66, ym1, 32),
+            Compartment("receipts", xl0, xl1, ym0, y_r1, 20),
+            Compartment("card_1", xl0, xl1, y_r1, y_c1, 12),
+            Compartment("card_2", xl0, xl1, y_c1, y_c2, 12),
+            Compartment("misc_cards", xl0, xl1, y_c2, ym1, 28),
+            Compartment("power_banks", xr0, xr1, ym0, y_pb1, 112),
+            Compartment("data_cable", xr0, xr1, y_pb1, ym1, 32),
             Compartment("letters", 0, self.w_int, yl0, yl1, 148),
         )
 
@@ -468,20 +479,19 @@ def _add_dividers_row_four(
             verts, faces, y0=oy, y1=oy + row_y1, x_center=ox + x_div,
             thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
-    for y_edge in (20, 40, 60):
+    for y_edge in (20, 45, 70):
         x0, x1 = _inset_partition_x(ox, 200.0, 300.0, 400.0)
         add_sloped_horizontal_partition(
             verts, faces, x0=x0, x1=x1,
             y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
             z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
-    for y_edge in (30, 60, 80):
-        x0, x1 = _inset_partition_x(ox, 300.0, 400.0, 400.0)
-        add_sloped_horizontal_partition(
-            verts, faces, x0=x0, x1=x1,
-            y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
-            z_floor=z_floor, top_z_at_y=top_z_at_y,
-        )
+    x0, x1 = _inset_partition_x(ox, 300.0, 400.0, 400.0)
+    add_sloped_horizontal_partition(
+        verts, faces, x0=x0, x1=x1,
+        y0=oy + 66 - divider / 2, y1=oy + 66 + divider / 2,
+        z_floor=z_floor, top_z_at_y=top_z_at_y,
+    )
 
 
 def _add_dividers_mail_spine(
@@ -523,20 +533,20 @@ def _add_dividers_mail_spine(
         verts, faces, y0=oy + ym0, y1=oy + ym1, x_center=ox + spine_x,
         thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
-    for y_edge in (ym0 + 24, ym0 + 46, ym0 + 68):
+    for y_edge in (ym0 + 20, ym0 + 45, ym0 + 70):
         x0, x1 = _inset_partition_x(ox, xl0, xl1, w_int)
         add_sloped_horizontal_partition(
             verts, faces, x0=x0, x1=x1,
             y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
             z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
-    for y_edge in (ym0 + 33, ym0 + 66, ym1):
-        x0, x1 = _inset_partition_x(ox, xr0, xr1, w_int)
-        add_sloped_horizontal_partition(
-            verts, faces, x0=x0, x1=x1,
-            y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
-            z_floor=z_floor, top_z_at_y=top_z_at_y,
-        )
+    y_cable = ym0 + 66
+    x0, x1 = _inset_partition_x(ox, xr0, xr1, w_int)
+    add_sloped_horizontal_partition(
+        verts, faces, x0=x0, x1=x1,
+        y0=oy + y_cable - divider / 2, y1=oy + y_cable + divider / 2,
+        z_floor=z_floor, top_z_at_y=top_z_at_y,
+    )
 
 
 def _add_dividers_grid(
@@ -580,20 +590,21 @@ def _add_dividers_grid(
         verts, faces, y0=oy + yf0, y1=oy + ym1, x_center=ox + x_col_div,
         thickness=divider, z_floor=z_floor, top_z_at_y=top_z_at_y,
     )
-    for y_edge in (ym0 + 20, ym0 + 40, ym0 + 60):
+    for y_edge in (ym0 + layout.left_receipts_d, ym0 + layout.left_receipts_d + layout.left_card_d,
+                   ym0 + layout.left_receipts_d + 2 * layout.left_card_d):
         x0, x1 = _inset_partition_x(ox, xl0, xl1, w_int)
         add_sloped_horizontal_partition(
             verts, faces, x0=x0, x1=x1,
             y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
             z_floor=z_floor, top_z_at_y=top_z_at_y,
         )
-    for y_edge in (ym0 + 30, ym0 + 60, ym1):
-        x0, x1 = _inset_partition_x(ox, xr0, xr1, w_int)
-        add_sloped_horizontal_partition(
-            verts, faces, x0=x0, x1=x1,
-            y0=oy + y_edge - divider / 2, y1=oy + y_edge + divider / 2,
-            z_floor=z_floor, top_z_at_y=top_z_at_y,
-        )
+    y_cable = ym0 + layout.right_power_banks_d
+    x0, x1 = _inset_partition_x(ox, xr0, xr1, w_int)
+    add_sloped_horizontal_partition(
+        verts, faces, x0=x0, x1=x1,
+        y0=oy + y_cable - divider / 2, y1=oy + y_cable + divider / 2,
+        z_floor=z_floor, top_z_at_y=top_z_at_y,
+    )
 
 
 def build_mesh(

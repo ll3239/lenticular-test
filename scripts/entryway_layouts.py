@@ -49,16 +49,20 @@ class LayoutPreset:
 def _core_grid(x0: float, y0: float) -> tuple[Compartment, ...]:
     """Corrected 200×228 cell block offset by (x0, y0)."""
     xl, xr = x0, x0 + COL
+    ym = y0 + FRONT
+    y_r1 = ym + 20
+    y_c1 = y_r1 + 25
+    y_c2 = y_c1 + 25
+    y_pb = ym + (MID - 32)
     return (
         Compartment("earphones_other", xl, xl + COL, y0, y0 + FRONT, 48),
         Compartment("essential_oils", xr, xr + COL, y0, y0 + FRONT, 82),
-        Compartment("keys", xl, xl + COL, y0 + FRONT, y0 + FRONT + 24, 22),
-        Compartment("card_1", xl, xl + COL, y0 + FRONT + 24, y0 + FRONT + 46, 12),
-        Compartment("card_2", xl, xl + COL, y0 + FRONT + 46, y0 + FRONT + 68, 12),
-        Compartment("receipts", xl, xl + COL, y0 + FRONT + 68, y0 + FRONT + MID, 28),
-        Compartment("power_bank_1", xr, xr + COL, y0 + FRONT, y0 + FRONT + 33, 112),
-        Compartment("power_bank_2", xr, xr + COL, y0 + FRONT + 33, y0 + FRONT + 66, 112),
-        Compartment("data_cable", xr, xr + COL, y0 + FRONT + 66, y0 + FRONT + MID, 32),
+        Compartment("receipts", xl, xl + COL, ym, y_r1, 20),
+        Compartment("card_1", xl, xl + COL, y_r1, y_c1, 12),
+        Compartment("card_2", xl, xl + COL, y_c1, y_c2, 12),
+        Compartment("misc_cards", xl, xl + COL, y_c2, ym + MID, 28),
+        Compartment("power_banks", xr, xr + COL, ym, y_pb, 112),
+        Compartment("data_cable", xr, xr + COL, y_pb, ym + MID, 32),
     )
 
 
@@ -67,13 +71,12 @@ def _row_four_compartments() -> tuple[Compartment, ...]:
     return (
         Compartment("earphones_other", 0, COL, 0, FRONT, 48),
         Compartment("essential_oils", COL, 2 * COL, 0, FRONT, 82),
-        Compartment("keys", 2 * COL, 3 * COL, 0, 20, 22),
-        Compartment("card_1", 2 * COL, 3 * COL, 20, 40, 12),
-        Compartment("card_2", 2 * COL, 3 * COL, 40, 60, 12),
-        Compartment("receipts", 2 * COL, 3 * COL, 60, MID, 28),
-        Compartment("power_bank_1", 3 * COL, 4 * COL, 0, 30, 112),
-        Compartment("power_bank_2", 3 * COL, 4 * COL, 30, 60, 112),
-        Compartment("data_cable", 3 * COL, 4 * COL, 60, MID, 32),
+        Compartment("receipts", 2 * COL, 3 * COL, 0, 20, 20),
+        Compartment("card_1", 2 * COL, 3 * COL, 20, 45, 12),
+        Compartment("card_2", 2 * COL, 3 * COL, 45, 70, 12),
+        Compartment("misc_cards", 2 * COL, 3 * COL, 70, MID, 28),
+        Compartment("power_banks", 3 * COL, 4 * COL, 0, 66, 112),
+        Compartment("data_cable", 3 * COL, 4 * COL, 66, MID, 32),
         Compartment("letters", 0, 4 * COL, FRONT, FRONT + LETTERS, 25),
     )
 
