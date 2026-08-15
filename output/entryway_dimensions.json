@@ -91,12 +91,12 @@
       },
       "baffle_height_mm": {
         "front_at_y0": 70.0,
-        "back_at_y1": 87.1,
+        "back_at_y1": 83.1,
         "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
       },
       "rim_height_mm": {
         "front_at_y0": 80.0,
-        "back_at_y1": 97.1
+        "back_at_y1": 93.1
       }
     },
     {
@@ -119,13 +119,13 @@
         "depth_y": 22.0
       },
       "baffle_height_mm": {
-        "front_at_y0": 87.1,
-        "back_at_y1": 102.9,
+        "front_at_y0": 83.1,
+        "back_at_y1": 95.2,
         "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
       },
       "rim_height_mm": {
-        "front_at_y0": 97.1,
-        "back_at_y1": 112.9
+        "front_at_y0": 93.1,
+        "back_at_y1": 105.2
       }
     },
     {
@@ -148,13 +148,13 @@
         "depth_y": 22.0
       },
       "baffle_height_mm": {
-        "front_at_y0": 102.9,
-        "back_at_y1": 118.6,
+        "front_at_y0": 95.2,
+        "back_at_y1": 107.2,
         "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
       },
       "rim_height_mm": {
-        "front_at_y0": 112.9,
-        "back_at_y1": 128.6
+        "front_at_y0": 105.2,
+        "back_at_y1": 117.2
       }
     },
     {
@@ -177,13 +177,13 @@
         "depth_y": 30.0
       },
       "baffle_height_mm": {
-        "front_at_y0": 118.6,
-        "back_at_y1": 140.0,
+        "front_at_y0": 107.2,
+        "back_at_y1": 123.6,
         "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
       },
       "rim_height_mm": {
-        "front_at_y0": 128.6,
-        "back_at_y1": 150.0
+        "front_at_y0": 117.2,
+        "back_at_y1": 133.6
       }
     },
     {
@@ -207,12 +207,12 @@
       },
       "baffle_height_mm": {
         "front_at_y0": 70.0,
-        "back_at_y1": 93.6,
+        "back_at_y1": 88.0,
         "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
       },
       "rim_height_mm": {
         "front_at_y0": 80.0,
-        "back_at_y1": 103.6
+        "back_at_y1": 98.0
       }
     },
     {
@@ -235,13 +235,13 @@
         "depth_y": 33.0
       },
       "baffle_height_mm": {
-        "front_at_y0": 93.6,
-        "back_at_y1": 117.1,
+        "front_at_y0": 88.0,
+        "back_at_y1": 106.1,
         "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
       },
       "rim_height_mm": {
-        "front_at_y0": 103.6,
-        "back_at_y1": 127.1
+        "front_at_y0": 98.0,
+        "back_at_y1": 116.1
       }
     },
     {
@@ -264,13 +264,13 @@
         "depth_y": 32.0
       },
       "baffle_height_mm": {
-        "front_at_y0": 117.1,
-        "back_at_y1": 140.0,
+        "front_at_y0": 106.1,
+        "back_at_y1": 123.6,
         "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
       },
       "rim_height_mm": {
-        "front_at_y0": 127.1,
-        "back_at_y1": 150.0
+        "front_at_y0": 116.1,
+        "back_at_y1": 133.6
       }
     },
     {
@@ -293,12 +293,12 @@
         "depth_y": 30.0
       },
       "baffle_height_mm": {
-        "front_at_y0": 140.0,
+        "front_at_y0": 123.6,
         "back_at_y1": 140.0,
         "note": "内腔可用高度：外沿高度减 10 mm 挡板间隙；前后因坡度不同"
       },
       "rim_height_mm": {
-        "front_at_y0": 150.0,
+        "front_at_y0": 133.6,
         "back_at_y1": 150.0
       }
     }

@@ -154,18 +154,18 @@ def rim_height(
     length: float,
     layout: Layout | None = None,
 ) -> float:
-    """Rim along internal Y: low front tray, steep mid rise, flat full-height letters band."""
+    """Rim along internal Y: low front tray, then one continuous rise to the back wall."""
     if layout is None:
         t = np.clip(y / length, 0.0, 1.0)
         return h_front + (h_back - h_front) * t
 
     yf1 = layout.y_front1
-    yl0 = layout.y_letters0
+    yl1 = layout.y_letters1  # slope continues through letters band to the wall
     if y <= yf1:
         t = y / yf1 if yf1 > 0 else 0.0
         return h_front + (H_MID_START - h_front) * t
-    if y <= yl0:
-        t = (y - yf1) / (yl0 - yf1) if yl0 > yf1 else 0.0
+    if y <= yl1:
+        t = (y - yf1) / (yl1 - yf1) if yl1 > yf1 else 0.0
         return H_MID_START + (h_back - H_MID_START) * t
     return h_back
 
