@@ -59,8 +59,29 @@ See `output/entryway_storage_box_spec.json` for compartment dimensions and `bamb
 
 ## Latest print file
 
+- `output/three_axis_rod_network.stl` — 50 mm volumetric line network, 3 independent photo projections (X/Y/Z)
 - `output/cube_connected_depth.stl` — 50 mm cube, 6 faces, connected depth lines  
 - `output/cube_10mm_fulldepth.stl` — small 10 mm example  
+
+### Three-axis volumetric line cube
+
+This is the non-solid concept: the whole cube volume is a connected network
+of 1.25 mm rods/voxels with no enclosing shell or hidden solid core. Three
+independent photos are reconstructed when viewed along X, Y, and Z; opposite
+faces show mirrored versions of those same three projections.
+
+```bash
+python3 scripts/generate_three_axis_rod_network.py
+python3 scripts/validate_three_axis_rod_network.py
+```
+
+The default generator evaluates all six candidate photos and selects a
+low-correlation trio so the projections remain distinguishable. Validation
+reconstructs occupancy from the exported STL itself. See
+`output/THREE_AXIS_ROD_NETWORK_VALIDATION.md`.
+
+This model is a print prototype: horizontal members require careful slicer
+inspection and will likely need substantial supports.
 
 ## Preview
 

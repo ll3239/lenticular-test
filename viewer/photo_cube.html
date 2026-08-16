@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Depth-line photo cube — 3D</title>
+  <title>Three-axis volumetric rod photo cube — 3D</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -48,12 +48,13 @@
 <body>
   <header>
     <div>
-      <h1>Depth-line photo cube · 50 mm</h1>
-      <p>拖动旋转 · 滚轮缩放 · 每面线条深度编码一张照片</p>
+      <h1>Three-axis rod-network photo cube · 50 mm</h1>
+      <p>整个体积是连通线材网络；X / Y / Z 各编码一张照片</p>
     </div>
     <div class="links">
       <button id="reset" class="secondary">重置视角</button>
-      <a class="btn secondary" href="https://github.com/ll3239/lenticular-test/raw/cursor/entryway-storage-box-597e/download/cube_connected_depth.stl">下载 STL</a>
+      <a class="btn secondary" href="../download/three_axis_rod_network.stl">下载 STL</a>
+      <a class="btn secondary" href="../download/three_axis_rod_network_package.zip">下载 ZIP</a>
     </div>
   </header>
   <main>
@@ -63,10 +64,10 @@
     </div>
     <aside>
       <h2>验证报告</h2>
-      <p class="hint">六面固定灯光模拟已通过。完整报告：</p>
-      <a href="https://github.com/ll3239/lenticular-test/blob/cursor/entryway-storage-box-597e/output/CUBE_CONNECTED_DEPTH_VALIDATION.md">CUBE_CONNECTED_DEPTH_VALIDATION.md</a>
-      <h2>Front 验证图</h2>
-      <img src="https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/output/cube_connected_depth_previews/front.png" alt="front validation" />
+      <p class="hint">验证由实际 STL 重建占用体素并测量三个正交投影。</p>
+      <a href="../output/THREE_AXIS_ROD_NETWORK_VALIDATION.md">THREE_AXIS_ROD_NETWORK_VALIDATION.md</a>
+      <h2>X 轴投影验证</h2>
+      <img src="../output/three_axis_rod_network_projections/axis_x.png" alt="X axis validation" />
       <p class="hint">本地预览：<code>http://localhost:8766/viewer/photo_cube.html</code></p>
     </aside>
   </main>
@@ -86,12 +87,12 @@
 
     const SIZE = 50;
     const CENTER = SIZE / 2;
-    const CACHE = '20260816-photo-cube-v2';
+    const CACHE = '20260816-three-axis-rods-v1';
     const RAW = 'https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/output';
     const STL_PATHS = [
-      `/output/cube_connected_depth.stl?v=${CACHE}`,
-      `../output/cube_connected_depth.stl?v=${CACHE}`,
-      `${RAW}/cube_connected_depth.stl?v=${CACHE}`,
+      `/output/three_axis_rod_network.stl?v=${CACHE}`,
+      `../output/three_axis_rod_network.stl?v=${CACHE}`,
+      `${RAW}/three_axis_rod_network.stl?v=${CACHE}`,
     ];
 
     const container = document.getElementById('canvas-container');
@@ -154,7 +155,7 @@
             }),
           );
           scene.add(mesh);
-          label.innerHTML = '50 × 50 × 50 mm<br>拖动旋转查看各面线条深度';
+          label.innerHTML = '50 × 50 × 50 mm<br>30% 材料 / 70% 空隙 · 体积线材网络';
         },
         undefined,
         () => loadNext(index + 1),
