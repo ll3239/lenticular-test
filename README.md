@@ -78,9 +78,24 @@ Photo vs line comparisons: `output/line_blank_faces/*_compare.png`
 python3 scripts/generate_connected_depth_lines.py \
   --images images/complex/01_photo.png images/complex/02_photo.png images/complex/03_photo.png \
            images/complex/04_photo.png images/complex/05_photo.png images/complex/06_photo.png \
-  --out output/cube_connected_depth.stl --size 50 --lines 48 \
-  --preview-dir output/line_blank_faces
+  --out output/cube_connected_depth.stl --size 50 --lines 50
+
+python3 scripts/validate_connected_depth_cube.py \
+  --mesh output/cube_connected_depth.stl \
+  --images images/complex/01_photo.png images/complex/02_photo.png images/complex/03_photo.png \
+           images/complex/04_photo.png images/complex/05_photo.png images/complex/06_photo.png \
+  --preview-dir output/cube_connected_depth_previews \
+  --report-json output/cube_connected_depth_validation.json \
+  --report-md output/CUBE_CONNECTED_DEPTH_VALIDATION.md
 ```
+
+The validator requires a 50 × 50 × 50 mm watertight, single-body mesh and
+checks every face against a deterministic fixed-angle light simulation with
+line-channel self-shadowing. See `output/CUBE_CONNECTED_DEPTH_VALIDATION.md`.
+
+The six images use the local light direction relative to each viewed face.
+Rotate the cube (or move the light) to reproduce that incidence angle. The
+bottom image is encoded, but bed contact makes it the least reliable face.
 
 ## Bambu tips
 

@@ -1,0 +1,172 @@
+{
+  "passed": true,
+  "mesh": "output/cube_connected_depth.stl",
+  "settings": {
+    "size_mm": 50.0,
+    "lines_per_face": 50,
+    "grid_resolution": 251,
+    "max_depth_mm": 0.45,
+    "lighting": {
+      "projection": "orthographic",
+      "local_direction": [
+        -1.0,
+        0.0,
+        0.75
+      ],
+      "ambient": 0.15,
+      "self_shadow": "heightfield horizon rays"
+    },
+    "thresholds": {
+      "depth_pearson_min": 0.9,
+      "depth_normalized_mae_max": 0.15,
+      "rendered_light_pearson_min": 0.85,
+      "rendered_light_exposure_aligned_mae_max": 0.1
+    }
+  },
+  "topology": {
+    "watertight": true,
+    "winding_consistent": true,
+    "body_count": 1,
+    "connected_components": 1,
+    "bounds_mm": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        50.0,
+        50.0,
+        50.0
+      ]
+    ],
+    "extents_mm": [
+      50.0,
+      50.0,
+      50.0
+    ],
+    "bounds_max_error_mm": 0.0,
+    "volume_mm3": 123225.01532996299,
+    "triangles": 750000,
+    "sha256": "26b935b618662aba3c982da3b0b5d7f394934b8cc6c37b8b6f0fdb7e926dff91",
+    "matches_deterministic_encoded_mesh": true
+  },
+  "feature_constraints": {
+    "line_pitch_mm": 1.0,
+    "separator_width_mm": 0.4,
+    "groove_width_mm": 0.6,
+    "grid_spacing_mm": 0.2,
+    "nozzle_diameter_mm": 0.4,
+    "passes_0_4mm_xy_feature_rule": true
+  },
+  "faces": [
+    {
+      "face": "front",
+      "source": "images/complex/01_photo.png",
+      "preview": "output/cube_connected_depth_previews/front.png",
+      "depth_pearson": 0.9896361955523729,
+      "depth_normalized_mae": 0.015327610324930133,
+      "rendered_light_pearson": 0.9680913280302691,
+      "rendered_light_exposure_aligned_mae": 0.06910046638016286,
+      "render_exposure_fit": {
+        "scale": 1.9898798093448922,
+        "black_offset": -1.011883686441051
+      },
+      "depth_range_mm": [
+        0.0,
+        0.45
+      ]
+    },
+    {
+      "face": "back",
+      "source": "images/complex/02_photo.png",
+      "preview": "output/cube_connected_depth_previews/back.png",
+      "depth_pearson": 0.9913457936783335,
+      "depth_normalized_mae": 0.011480221399198067,
+      "rendered_light_pearson": 0.9613324492359656,
+      "rendered_light_exposure_aligned_mae": 0.07341149173467457,
+      "render_exposure_fit": {
+        "scale": 1.9148851543541827,
+        "black_offset": -0.9695947777239352
+      },
+      "depth_range_mm": [
+        0.0,
+        0.45
+      ]
+    },
+    {
+      "face": "right",
+      "source": "images/complex/03_photo.png",
+      "preview": "output/cube_connected_depth_previews/right.png",
+      "depth_pearson": 0.9896058719219358,
+      "depth_normalized_mae": 0.014357524066921576,
+      "rendered_light_pearson": 0.9707612557490077,
+      "rendered_light_exposure_aligned_mae": 0.06373141766837687,
+      "render_exposure_fit": {
+        "scale": 1.897564104467053,
+        "black_offset": -0.9384448968964256
+      },
+      "depth_range_mm": [
+        0.0,
+        0.45
+      ]
+    },
+    {
+      "face": "left",
+      "source": "images/complex/04_photo.png",
+      "preview": "output/cube_connected_depth_previews/left.png",
+      "depth_pearson": 0.992444446367259,
+      "depth_normalized_mae": 0.011197120335995743,
+      "rendered_light_pearson": 0.955872341055593,
+      "rendered_light_exposure_aligned_mae": 0.08697596343484704,
+      "render_exposure_fit": {
+        "scale": 2.0407094510764594,
+        "black_offset": -1.0832564110302239
+      },
+      "depth_range_mm": [
+        0.0,
+        0.45
+      ]
+    },
+    {
+      "face": "top",
+      "source": "images/complex/05_photo.png",
+      "preview": "output/cube_connected_depth_previews/top.png",
+      "depth_pearson": 0.9982786543953875,
+      "depth_normalized_mae": 0.003523504206605174,
+      "rendered_light_pearson": 0.9582197341385837,
+      "rendered_light_exposure_aligned_mae": 0.06439002766184725,
+      "render_exposure_fit": {
+        "scale": 1.8304619308813392,
+        "black_offset": -0.9297184973409685
+      },
+      "depth_range_mm": [
+        0.0,
+        0.45
+      ]
+    },
+    {
+      "face": "bottom",
+      "source": "images/complex/06_photo.png",
+      "preview": "output/cube_connected_depth_previews/bottom.png",
+      "depth_pearson": 0.9731138962207142,
+      "depth_normalized_mae": 0.016191867591987378,
+      "rendered_light_pearson": 0.8896623003462762,
+      "rendered_light_exposure_aligned_mae": 0.09523766082888559,
+      "render_exposure_fit": {
+        "scale": 1.6045327188640726,
+        "black_offset": -0.7469743594221191
+      },
+      "depth_range_mm": [
+        0.0,
+        0.45
+      ]
+    }
+  ],
+  "print_note": "The bottom face retains its image mapping, but it is against the print bed in the default orientation; bed texture and first-layer limits reduce visibility.",
+  "limitations": [
+    "Lighting direction is fixed in each face's local coordinates; one world-space lamp cannot illuminate all six differently oriented faces at this same angle.",
+    "The renderer models directional Lambert light, ambient fill, and heightfield occlusion, but not printer-layer stair stepping, scattering, gloss, or interreflection.",
+    "The 0.4 mm separator is exactly one nominal 0.4 mm nozzle width; slicer line-width policy, XY compensation, and printer calibration can materially change it."
+  ]
+}
