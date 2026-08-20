@@ -27,6 +27,24 @@ python3 scripts/generate_connected_depth_lines.py \
   --preview-dir output/line_blank_faces
 ```
 
+## Aurora ellipse lampshade (floor lamp)
+
+One-piece clip-on shade for ~13"×6" pill lamp heads (Govee Torchiere class).
+
+```bash
+python3 scripts/generate_aurora_shade.py --out output/aurora_ellipse_shade.stl
+```
+
+Print tips: black PLA, 0.2 mm layers, 3 walls, no supports (tabs print vertically). Slide down onto lamp head; pull up to remove.
+
+Custom size (mm):
+
+```bash
+python3 scripts/generate_aurora_shade.py \
+  --major 330 --minor 152 --clearance 102 --height 112 --seed 42 \
+  --out output/aurora_ellipse_shade.stl
+```
+
 ## Bambu tips
 
 - 0.2 mm nozzle if available  
