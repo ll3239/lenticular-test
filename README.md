@@ -27,23 +27,40 @@ python3 scripts/generate_connected_depth_lines.py \
   --preview-dir output/line_blank_faces
 ```
 
-## Aurora ellipse lampshade (floor lamp)
+## Aurora clip-on lampshade (floor lamp)
 
-One-piece clip-on shade for ~13"×6" pill lamp heads (Govee Torchiere class).
+Removable capsule/ellipse shade for ~13"×6" pill lamp heads (Govee
+Torchiere class). The generator validates watertight geometry and creates:
+
+- assembled reference STL
+- left/right halves already oriented with the seam on the print bed
+- low-filament fit-test ring and printable left/right fit-test halves
 
 ```bash
+python3 -m pip install -r requirements.txt
 python3 scripts/generate_aurora_shade.py --out output/aurora_ellipse_shade.stl
 ```
 
-Print tips: black PLA, 0.2 mm layers, 3 walls, no supports (tabs print vertically). Slide down onto lamp head; pull up to remove.
+For a 256 mm bed, print `*_left.stl` and `*_right.stl`, then glue the flat
+center seam. Print the two `aurora_fit_test_ring_*.stl` files first and tape
+them together temporarily to check the fit before committing to the full
+shade.
+
+Print tips: black PLA, 0.2 mm layers, 3 walls, no supports. Slide the assembled
+shade down over the lamp head; pull upward to remove.
 
 Custom size (mm):
 
 ```bash
 python3 scripts/generate_aurora_shade.py \
-  --major 330 --minor 152 --clearance 102 --height 112 --seed 42 \
+  --length 330 --width 152 --height 110 \
+  --clearance 1.2 --grip 0.5 --seed 42 \
   --out output/aurora_ellipse_shade.stl
 ```
+
+`--length` and `--width` are the exact black-rim dimensions. `--clearance`
+adds room around that measurement; `--grip` controls the four inward friction
+pads.
 
 ## Bambu tips
 
