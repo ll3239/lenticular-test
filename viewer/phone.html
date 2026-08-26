@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>收纳盒 3D 预览</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #12141a; color: #e8eaef; margin: 0; padding: 20px;
+      line-height: 1.55; max-width: 520px; margin-inline: auto;
+    }
+    h1 { font-size: 20px; margin-bottom: 8px; }
+    p { color: #9aa3b5; font-size: 14px; }
+    a.btn {
+      display: block; text-align: center; margin: 20px 0;
+      background: #3d6dd4; color: #fff; text-decoration: none;
+      padding: 14px 16px; border-radius: 12px; font-weight: 600; font-size: 16px;
+    }
+    ol { padding-left: 20px; color: #c8cdd8; font-size: 14px; }
+    li { margin-bottom: 10px; }
+    code { background: #22262f; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+    .box {
+      background: #181b22; border: 1px solid #2e3340; border-radius: 12px;
+      padding: 14px; margin-top: 16px; font-size: 13px; color: #8b92a3;
+    }
+  </style>
+</head>
+<body>
+  <h1>门口收纳盒 · 3D 预览</h1>
+  <p>7 款外观对比。电脑上直接打开 3D 预览即可旋转查看。</p>
+  <a class="btn" href="entryway.html">打开 3D 预览（默认波浪款）</a>
+  <a class="btn" href="preview.html" style="background:#2a3348;margin-top:10px;">看图片预览页</a>
+
+  <h2 style="font-size:16px;margin-top:24px;color:#e8eaef;">手机上怎么看？</h2>
+  <ol>
+    <li>电脑在项目目录运行：<br><code>bash scripts/serve_preview.sh</code></li>
+    <li>手机和电脑连<strong>同一个 WiFi</strong></li>
+    <li>手机浏览器打开终端里显示的地址<br>（形如 <code>http://192.168.x.x:8766/viewer/entryway.html</code>）</li>
+  </ol>
+
+  <div class="box">
+    <strong>没有电脑在身边？</strong><br>
+    合并 PR 后开启 GitHub Pages，手机打开：<br>
+    <code>https://ll3239.github.io/lenticular-test/viewer/entryway.html</code><br><br>
+    或下载 <code>output/styles/*.stl</code>，用 STL 查看 App 打开。
+  </div>
+</body>
+</html>

@@ -1,0 +1,169 @@
+{
+  "passed": true,
+  "method": "Occupancy is reconstructed from oriented, axis-aligned faces in the actual STL. Projections and connectivity use that reconstruction, not generator state.",
+  "topology": {
+    "watertight": true,
+    "winding_consistent": true,
+    "mesh_components": 1,
+    "reconstructed_voxel_components": 1,
+    "extents_mm": [
+      50.0,
+      50.0,
+      50.0
+    ],
+    "triangles": 71264,
+    "sha256": "7e86f8907554161aa8a46234ae50aa6b9568231bc769e4faf04802e7b57d9afd"
+  },
+  "structure": {
+    "resolution": 40,
+    "rod_width_mm": 1.25,
+    "reconstructed_occupied_voxels": 18857,
+    "volume_mm3": 36830.078125,
+    "volume_fraction": 0.294640625,
+    "void_fraction": 0.705359375,
+    "center_slice_occupancy_fraction": {
+      "x": 0.31125,
+      "y": 0.360625,
+      "z": 0.38125
+    },
+    "occupancy_reconstruction": "oriented X-face scan conversion of actual STL",
+    "opposite_views": "same projection mirrored; only X, Y, Z are independent"
+  },
+  "axes": [
+    {
+      "axis": "X",
+      "image": "images/complex/01_photo.png",
+      "pearson_to_own_target": 0.7344025017352671,
+      "exposure_aligned_mae": 0.19192815673297234,
+      "pearson_to_other_targets": [
+        -0.00472100073495605,
+        -0.198777567699823
+      ],
+      "crosstalk_margin": 0.7391235024702232,
+      "projection_min_max_voxels": [
+        4,
+        40
+      ],
+      "preview": "output/three_axis_rod_network_projections/axis_x.png"
+    },
+    {
+      "axis": "Y",
+      "image": "images/complex/04_photo.png",
+      "pearson_to_own_target": 0.6728484450323201,
+      "exposure_aligned_mae": 0.19344394985752827,
+      "pearson_to_other_targets": [
+        0.43439300471025544,
+        0.14358994491569058
+      ],
+      "crosstalk_margin": 0.23845544032206467,
+      "projection_min_max_voxels": [
+        0,
+        40
+      ],
+      "preview": "output/three_axis_rod_network_projections/axis_y.png"
+    },
+    {
+      "axis": "Z",
+      "image": "images/complex/05_photo.png",
+      "pearson_to_own_target": 0.8068671493378933,
+      "exposure_aligned_mae": 0.1050556608351042,
+      "pearson_to_other_targets": [
+        -0.013324811654530089,
+        0.05192541104954966
+      ],
+      "crosstalk_margin": 0.7549417382883437,
+      "projection_min_max_voxels": [
+        0,
+        40
+      ],
+      "preview": "output/three_axis_rod_network_projections/axis_z.png"
+    }
+  ],
+  "target_intercorrelation": [
+    [
+      1.0,
+      -0.025602273216949505,
+      -0.058413741796224085
+    ],
+    [
+      -0.025602273216949505,
+      0.9999999999999998,
+      -0.17631340396976883
+    ],
+    [
+      -0.058413741796224085,
+      -0.17631340396976883,
+      1.0
+    ]
+  ],
+  "all_six_target_intercorrelation": [
+    [
+      1.0,
+      -0.8169542041443112,
+      0.8176031299222446,
+      -0.025602273216949505,
+      -0.058413741796224085,
+      -0.3679392384689647
+    ],
+    [
+      -0.8169542041443112,
+      1.0000000000000002,
+      -0.8432612870277726,
+      -0.004467186996616914,
+      0.02843335387839256,
+      0.4534372015435106
+    ],
+    [
+      0.8176031299222446,
+      -0.8432612870277726,
+      1.0000000000000002,
+      -0.04669631951870399,
+      -0.07379403513619948,
+      -0.3907313539505465
+    ],
+    [
+      -0.025602273216949505,
+      -0.004467186996616914,
+      -0.04669631951870399,
+      0.9999999999999998,
+      -0.17631340396976883,
+      -0.05997846443264858
+    ],
+    [
+      -0.058413741796224085,
+      0.02843335387839256,
+      -0.07379403513619948,
+      -0.17631340396976883,
+      1.0,
+      -0.13631401067788734
+    ],
+    [
+      -0.3679392384689647,
+      0.4534372015435106,
+      -0.3907313539505465,
+      -0.05997846443264858,
+      -0.13631401067788734,
+      1.0
+    ]
+  ],
+  "automatic_selection": [
+    "images/complex/01_photo.png",
+    "images/complex/04_photo.png",
+    "images/complex/05_photo.png"
+  ],
+  "thresholds": {
+    "own_pearson_min": 0.65,
+    "exposure_aligned_mae_max": 0.2,
+    "crosstalk_margin_min": 0.03,
+    "mesh_components": 1,
+    "volume_fraction_max": 0.35,
+    "minimum_feature_mm": 0.45
+  },
+  "limitations": [
+    "A binary single-material object cannot reproduce three arbitrary grayscale images exactly; these are jointly optimized low-resolution density projections.",
+    "The default trio 01/04/05 was selected from all six photos because its largest absolute pairwise preprocessed-target correlation is below 0.177. The complete six-photo selection matrix is recorded in this report.",
+    "Projection validation measures line-integral occupancy, not a calibrated optical render. Real appearance depends on filament, lighting, and background.",
+    "Voxel rods are 1.25 mm at default settings, printable with a 0.4 mm nozzle, but many bridges run horizontally; use supports or rotate and inspect the slicer.",
+    "Axis-aligned scan conversion is specific to this voxel STL representation; it is not a general-purpose occupancy test for arbitrary meshes."
+  ]
+}
