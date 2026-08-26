@@ -1,0 +1,204 @@
+{
+  "stl": "output/entryway_storage_box.stl",
+  "stl_extents_mm": [
+    206.0,
+    233.0,
+    152.0
+  ],
+  "mesh_integrity": {
+    "watertight": true,
+    "winding_consistent": true,
+    "single_printable_volume": true
+  },
+  "unsupported_horizontal_area_above_base_mm2": 0.0,
+  "support_free_pass": true,
+  "solid_model_volume_cm3": 399.7,
+  "material_estimates_g": {
+    "PETG": 508,
+    "PLA": 496
+  },
+  "expected_outer_mm": {
+    "width": 206.0,
+    "length": 233.0,
+    "height_front": 32.0,
+    "height_back": 152.0
+  },
+  "brim_mm_each_side": 5.0,
+  "item_checks": [
+    {
+      "name": "Earphones / misc front bay",
+      "actual_mm": [
+        100.0,
+        100.0
+      ],
+      "required_mm": [
+        90.0,
+        90.0
+      ],
+      "pass": true,
+      "note": "100×100 mm clear front-left tray."
+    },
+    {
+      "name": "Six oil bottles (3×2)",
+      "actual_mm": [
+        100.0,
+        96.0
+      ],
+      "required_mm": [
+        90.0,
+        60.0
+      ],
+      "pass": true,
+      "note": "Six Ø30×80 mm bottles fit 3×2 in the left mid bay."
+    },
+    {
+      "name": "Oil bottle rear retention",
+      "actual_mm": [
+        70.0,
+        123.6
+      ],
+      "required_mm": [
+        70.0,
+        80.0
+      ],
+      "pass": true,
+      "note": "Place bottles toward the rear; 80 mm bottles protrude ~10 mm at the low front edge."
+    },
+    {
+      "name": "Power banks (merged bay, rear)",
+      "actual_mm": [
+        100.0,
+        70.0
+      ],
+      "required_mm": [
+        80.0,
+        60.0
+      ],
+      "pass": true,
+      "note": "Two 110×80×30 mm banks in one ≥60 mm-deep rear bay."
+    },
+    {
+      "name": "Power-bank rear retention",
+      "actual_mm": [
+        123.6
+      ],
+      "required_mm": [
+        110.0
+      ],
+      "pass": true,
+      "note": "Place both 110 mm-tall banks against the rear baffle."
+    },
+    {
+      "name": "Coiled data cable (shallow front)",
+      "actual_mm": [
+        100.0,
+        24.0
+      ],
+      "required_mm": [
+        60.0,
+        24.0
+      ],
+      "pass": true,
+      "note": "Shallow 24 mm front tray; width fits a ~60 mm coiled bundle."
+    },
+    {
+      "name": "Card wallets (each slot)",
+      "actual_mm": [
+        100.0,
+        25.0
+      ],
+      "required_mm": [
+        85.6,
+        25.0
+      ],
+      "pass": true,
+      "note": "Each front-right slot accepts an 85.6 mm-wide wallet up to 25 mm thick."
+    },
+    {
+      "name": "Card retrieval exposure",
+      "actual_mm": [
+        43.8
+      ],
+      "required_mm": [
+        40.0,
+        54.0
+      ],
+      "pass": true,
+      "note": "A 54 mm-tall standard card remains exposed above the low front-row baffle."
+    },
+    {
+      "name": "Receipts",
+      "actual_mm": [
+        100.0,
+        20.0
+      ],
+      "required_mm": [
+        85.6,
+        20.0
+      ],
+      "pass": true,
+      "note": "Folded receipts fit the 20 mm-target front slot."
+    },
+    {
+      "name": "Letters at back (footprint)",
+      "actual_mm": [
+        200.0,
+        29.0
+      ],
+      "required_mm": [
+        180.0,
+        5.0
+      ],
+      "pass": true,
+      "note": "Fits mail up to 200 mm wide; not unfolded A4/C5 (210–229 mm wide)."
+    },
+    {
+      "name": "Letters retaining baffle",
+      "actual_mm": [
+        140.0
+      ],
+      "required_mm": [
+        140.0
+      ],
+      "pass": true,
+      "note": "A 150 mm-tall envelope protrudes ~10 mm above the 140 mm internal baffle."
+    }
+  ],
+  "printer_checks": [
+    {
+      "printer": "Bambu P1/P1S/X1/A1",
+      "bed_mm": [
+        256.0,
+        256.0
+      ],
+      "with_brim_mm": [
+        216.0,
+        243.0
+      ],
+      "pass": true,
+      "remaining_margin_mm": [
+        40.0,
+        13.0
+      ]
+    },
+    {
+      "printer": "Bambu A1 mini",
+      "bed_mm": [
+        180.0,
+        180.0
+      ],
+      "with_brim_mm": [
+        216.0,
+        243.0
+      ],
+      "pass": false,
+      "remaining_margin_mm": [
+        -36.0,
+        -63.0
+      ]
+    }
+  ],
+  "all_item_checks_pass": true,
+  "p1s_fit_pass": true,
+  "mesh_integrity_pass": true
+}

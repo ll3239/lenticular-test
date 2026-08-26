@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>门口收纳盒 · 看图</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+      background: #0f1117; color: #e8eaef; padding: 16px; padding-bottom: 48px;
+      max-width: 960px; margin: 0 auto;
+    }
+    #viewer-wrap {
+      position: relative;
+      width: 100%;
+      height: min(72vh, 640px);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #2a3040;
+      background: #1a1d24;
+      margin: 16px 0 8px;
+    }
+    #viewer-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+    h1 { font-size: 20px; margin-bottom: 6px; }
+    h2 { font-size: 15px; margin: 28px 0 10px; color: #c8d0e0; }
+    p, li { color: #9aa3b5; font-size: 14px; line-height: 1.55; }
+    ul { padding-left: 18px; margin-top: 8px; }
+    li { margin-bottom: 8px; }
+    img {
+      width: 100%; border-radius: 12px; border: 1px solid #2a3040;
+      margin: 10px 0; background: #1a1d24; display: block;
+    }
+    a { color: #6b9fff; word-break: break-all; }
+    .btn {
+      display: block; text-align: center; margin: 16px 0;
+      background: #3d6dd4; color: #fff !important; text-decoration: none;
+      padding: 14px; border-radius: 12px; font-weight: 600; font-size: 15px;
+    }
+    .btn2 {
+      background: #2a3348; margin-top: 8px;
+    }
+    .cap { font-size: 12px; color: #7a8496; text-align: center; margin-bottom: 16px; }
+    .note {
+      background: #181b22; border: 1px solid #2e3340; border-radius: 12px;
+      padding: 14px; margin-top: 20px; font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <h1>门口收纳盒 · 3D 预览</h1>
+  <p>默认显示：圆角柔和款。拖动旋转，滚轮缩放。右侧可切换其他外观。</p>
+
+  <div id="viewer-wrap">
+    <iframe src="/viewer/entryway.html" title="门口收纳盒 3D 模型" allow="fullscreen"></iframe>
+  </div>
+  <div class="cap">交互 3D · 默认 Rounded 圆角</div>
+
+  <a class="btn" href="/viewer/entryway.html">全屏打开 3D 预览</a>
+  <a class="btn btn2" href="https://github.com/ll3239/lenticular-test/raw/cursor/entryway-storage-box-597e/output/entryway_storage_box.stl">
+    下载圆角版 STL（默认打印文件）
+  </a>
+
+  <a class="btn btn2" href="dimensions.html">打开内腔尺寸图（SVG + 表格）</a>
+
+  <h2>① 内腔尺寸图（最新布局）</h2>
+  <img src="https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/output/entryway_dimensions.svg" alt="内腔尺寸 SVG" style="background:#fff;padding:8px;border-radius:12px;" />
+  <div class="cap">精油 100×96 mm · 卡包 100×25 mm · 数据线 100×24 mm · 充电宝 100×70 mm · <a href="dimensions.html">完整尺寸页</a></div>
+
+  <h2>② 最终尺寸检查（推荐先看）</h2>
+  <img src="https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/output/previews/corrected_layout_check.png" alt="最终尺寸与打印检查" />
+  <div class="cap">每格净尺寸、物品适配、P1S 热床与 STL 封闭性全部通过</div>
+
+  <h2>③ 推荐款 · 圆角 3D 效果</h2>
+  <img src="https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/output/previews/rounded/rounded_iso.png" alt="圆角 3/4 视角" />
+  <div class="cap">圆角 · 3/4 视角</div>
+
+  <img src="https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/output/previews/rounded/rounded_top.png" alt="圆角俯视" />
+  <div class="cap">圆角 · 俯视图（看分格）</div>
+
+  <img src="https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/output/previews/rounded/rounded_side.png" alt="圆角侧面" />
+  <div class="cap">圆角 · 侧面（信件端更高）</div>
+
+  <h2>④ 布局俯视图</h2>
+  <img src="https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/output/previews/layout_from_sketch.png" alt="布局俯视图" />
+  <div class="cap">202×229 mm 内腔；数据线在前（浅），充电宝在后（≥60 mm 深）</div>
+
+  <h2>⑤ 六款外观对比</h2>
+  <img src="https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/output/previews/compare_all_iso.png" alt="六款对比" />
+  <div class="cap">极简直角 / 圆角 / 倒角 / 阶梯 / 精油环 / 装饰槽</div>
+
+  <a class="btn btn2" href="entryway.html">打开交互 3D（需联网加载模型）</a>
+
+  <div class="note">
+    <strong>图片打不开？</strong> 点下面链接，在浏览器里单独打开每张图：<br><br>
+    <ul>
+      <li><a href="https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/output/previews/rounded/rounded_iso.png">圆角 3D 图</a></li>
+      <li><a href="dimensions.html">内腔尺寸图（SVG + 表格）</a></li>
+      <li><a href="https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/output/entryway_dimensions.svg">内腔 SVG 原文件</a></li>
+      <li><a href="https://raw.githubusercontent.com/ll3239/lenticular-test/cursor/entryway-storage-box-597e/output/previews/layout_from_sketch.png">布局俯视图</a></li>
+      <li><a href="https://github.com/ll3239/lenticular-test/pull/1">GitHub PR #1（网页里也能看图）</a></li>
+    </ul>
+  </div>
+</body>
+</html>

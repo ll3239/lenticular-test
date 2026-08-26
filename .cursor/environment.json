@@ -1,0 +1,17 @@
+{
+  "name": "lenticular-test",
+  "install": "pip install -r requirements.txt && python3 scripts/generate_entryway_storage_box.py --all-styles",
+  "terminals": [
+    {
+      "name": "3d-preview",
+      "command": "python3 -m http.server 8766 --bind 0.0.0.0",
+      "description": "Local 3D preview on port 8766. If localhost fails, open viewer/cursor.html in Cursor browser (no port forward needed). Entryway: /viewer/entryway.html · Cursor fallback: /viewer/cursor.html"
+    }
+  ],
+  "ports": [
+    {
+      "name": "preview",
+      "port": 8766
+    }
+  ]
+}

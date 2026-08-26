@@ -1,4 +1,6 @@
-manifold3d
-numpy
+numpy==2.4.4
+matplotlib==3.11.1
+trimesh==4.12.2
+manifold3d==3.5.2
+networkx==3.6.1
 pillow
-trimesh
