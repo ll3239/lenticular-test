@@ -1,4 +1,12 @@
-# Lenticular / depth-line photo cube (Bambu P1S)
+# Lenticular / depth-line photo cube & Bambu P1S prints
+
+Three printable projects in one repo:
+
+1. **Depth-line photo cube** — six faces, connected vertical ribbons at continuous depth  
+2. **Entryway storage box** — sloped organizer for mail, cables, power banks, and essentials  
+3. **Aurora clip-on lampshade** — elliptical capsule shade for pill-shaped floor lamps  
+
+## Depth-line photo cube
 
 Square cube where each face encodes a different photo as **connected vertical lines at continuous depth** (darker → deeper into the cube). No LED required.
 
@@ -117,6 +125,41 @@ line-channel self-shadowing. See `output/CUBE_CONNECTED_DEPTH_VALIDATION.md`.
 The six images use the local light direction relative to each viewed face.
 Rotate the cube (or move the light) to reproduce that incidence angle. The
 bottom image is encoded, but bed contact makes it the least reliable face.
+
+## Aurora clip-on lampshade (floor lamp)
+
+Removable capsule/ellipse shade for ~13"×6" pill lamp heads (Govee
+Torchiere class). The generator validates watertight geometry and creates:
+
+- assembled reference STL
+- left/right halves already oriented with the seam on the print bed
+- low-filament fit-test ring and printable left/right fit-test halves
+
+```bash
+python3 -m pip install -r requirements.txt
+python3 scripts/generate_aurora_shade.py --out output/aurora_ellipse_shade.stl
+```
+
+For a 256 mm bed, print `*_left.stl` and `*_right.stl`, then glue the flat
+center seam. Print the two `aurora_fit_test_ring_*.stl` files first and tape
+them together temporarily to check the fit before committing to the full
+shade.
+
+Print tips: black PLA, 0.2 mm layers, 3 walls, no supports. Slide the assembled
+shade down over the lamp head; pull upward to remove.
+
+Custom size (mm):
+
+```bash
+python3 scripts/generate_aurora_shade.py \
+  --length 330 --width 152 --height 110 \
+  --clearance 1.2 --grip 0.5 --seed 42 \
+  --out output/aurora_ellipse_shade.stl
+```
+
+`--length` and `--width` are the exact black-rim dimensions. `--clearance`
+adds room around that measurement; `--grip` controls the four inward friction
+pads.
 
 ## Bambu tips
 
